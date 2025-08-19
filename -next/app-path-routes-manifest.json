@@ -1,0 +1,18 @@
+{
+  "/api/admin/users/route": "/api/admin/users",
+  "/api/public/programs/route": "/api/public/programs",
+  "/favicon.ico/route": "/favicon.ico",
+  "/_not-found/page": "/_not-found",
+  "/contact/page": "/contact",
+  "/(auth)/register/page": "/register",
+  "/(auth)/login/page": "/login",
+  "/(public)/academics/page": "/academics",
+  "/(public)/admissions/page": "/admissions",
+  "/(public)/about/page": "/about",
+  "/(public)/page": "/",
+  "/(public)/student-life/page": "/student-life",
+  "/(auth)/forgot-password/page": "/forgot-password",
+  "/portal/student/page": "/portal/student",
+  "/admin/page": "/admin",
+  "/teacher/page": "/teacher"
+}

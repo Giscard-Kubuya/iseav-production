@@ -1,0 +1,9 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="60" cy="60" r="60" fill="#0e7490"/>
+  <circle cx="60" cy="60" r="45" fill="#f59e0b"/>
+  <path d="M40 45h40v6H40v-6z" fill="white"/>
+  <path d="M40 57h40v6H40v-6z" fill="white"/>
+  <path d="M40 69h40v6H40v-6z" fill="white"/>
+  <circle cx="60" cy="60" r="8" fill="white"/>
+  <text x="60" y="95" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">ISEAV-ARU</text>
+</svg>

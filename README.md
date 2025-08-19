@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ISEAV-ARU Website
 
-## Getting Started
+Institut Supérieur d'Enseignement Appliqué et de Valorisation - Ariana
 
-First, run the development server:
+## Architecture du Projet
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Ce projet utilise **Next.js 13+ App Router** avec une architecture séparée en 4 logiques principales :
+
+### 🌐 Site Web Public - `app/(public)/`
+- Pages publiques du site institutionnel
+- Informations sur l'université, programmes, actualités
+- Processus de candidature en ligne
+- Multilingue (Français, Anglais, Arabe)
+
+### 🔐 Portails Utilisateurs - `app/portal/`
+- **Portail Étudiant** (`/portal/student/`) : Notes, présences, devoirs, finances
+- **Portail Parent** (`/portal/parent/`) : Suivi des enfants, communications
+
+### 🛡️ Administration - `app/admin/`
+- Gestion complète du système
+- Utilisateurs, candidatures, contenu, finances
+- Rapports et analytics
+- Configuration système
+
+### 🔧 Enseignants - `app/teacher/`
+- Gestion des classes et étudiants
+- Saisie notes et présences
+- Devoirs et évaluations
+- Communications
+
+## Structure des Dossiers
+
+```
+app/
+├── (public)/           # Site web public
+├── portal/            # Portails utilisateurs
+├── admin/             # Back-office administration
+├── teacher/           # Portail enseignants
+├── (auth)/            # Pages d'authentification
+└── api/               # Routes API séparées par logique
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework** : Next.js 13+ (App Router)
+- **Styling** : Tailwind CSS
+- **Language** : TypeScript
+- **Database** : PostgreSQL (prévu)
+- **Authentication** : NextAuth.js (prévu)
+- **Deployment** : Vercel/Docker
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Installation
 
-## Learn More
+```bash
+npm install
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Variables d'environnement
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Copiez `.env.example` vers `.env.local` et configurez :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+DATABASE_URL="postgresql://..."
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret"
+```
 
-## Deploy on Vercel
+## Routes principales
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Site Public
+- `/` - Accueil
+- `/about` - À propos
+- `/academics` - Programmes académiques
+- `/admissions` - Candidatures
+- `/news` - Actualités
+- `/contact` - Contact
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Portails
+- `/portal/student` - Dashboard étudiant
+- `/portal/parent` - Dashboard parent
+
+### Administration
+- `/admin` - Dashboard admin
+- `/admin/users` - Gestion utilisateurs
+- `/admin/admissions` - Gestion candidatures
+- `/admin/academic` - Gestion académique
+
+### Enseignants
+- `/teacher` - Dashboard enseignant
+- `/teacher/classes` - Gestion des classes
+
+## API
+
+Les APIs sont organisées par logique :
+
+- `/api/public/*` - APIs publiques
+- `/api/portal/*` - APIs portails utilisateurs
+- `/api/admin/*` - APIs administration
+- `/api/auth/*` - Authentification
+
+## Sécurité
+
+Le middleware gère :
+- Authentification par rôle
+- Redirection selon les permissions
+- Internationalisation
+- Protection des routes sensibles
+
+## Développement
+
+1. Cloner le repository
+2. Installer les dépendances : `npm install`
+3. Configurer `.env.local`
+4. Lancer : `npm run dev`
+5. Ouvrir http://localhost:3000
+
+## Déploiement
+
+Voir `docs/deployment.md` pour les instructions détaillées.
+
+## Contribution
+
+Voir `docs/contributing.md` pour les guidelines de contribution.

@@ -1,41 +1,232 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
-export default function HomePage() {
+export default function HomeContent() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+
+  const slides = [
+    {
+      id: 1,
+      image: "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80",
+      title: "Bienvenue à ISEAV-ARU",
+      subtitle: "Institut Supérieur d'Enseignement Appliqué et de Valorisation",
+      description: "Formant les leaders de demain dans l'agriculture et les sciences appliquées",
+      primaryAction: { text: "Candidater maintenant", href: "/admissions" },
+      secondaryAction: { text: "Découvrir nos formations", href: "/visit" }
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80",
+      title: "Excellence Académique",
+      subtitle: "Innovation dans l'Enseignement Agricole",
+      description: "Des programmes de pointe alliant tradition et technologies modernes pour une formation complète",
+      primaryAction: { text: "Nos Programmes", href: "/academics" },
+      secondaryAction: { text: "Visite Virtuelle", href: "/virtual-tour" }
+    },
+    {
+      id: 3,
+      image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80",
+      title: "Recherche & Innovation",
+      subtitle: "Laboratoires de Pointe",
+      description: "Découvrez nos installations modernes et participez à des projets de recherche révolutionnaires",
+      primaryAction: { text: "Nos Recherches", href: "/research" },
+      secondaryAction: { text: "Laboratoires", href: "/facilities" }
+    },
+    {
+      id: 4,
+      image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80",
+      title: "Vie Étudiante Dynamique",
+      subtitle: "Campus Moderne & Accueillant",
+      description: "Un environnement stimulant favorisant l'épanouissement personnel et académique",
+      primaryAction: { text: "Vie Campus", href: "/student-life" },
+      secondaryAction: { text: "Activités", href: "/activities" }
+    }
+  ]
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isAutoPlaying) return
+    
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [isAutoPlaying, slides.length])
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index)
+    setIsAutoPlaying(false)
+    setTimeout(() => setIsAutoPlaying(true), 10000) // Resume auto-play after 10s
+  }
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+    setIsAutoPlaying(false)
+    setTimeout(() => setIsAutoPlaying(true), 10000)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+    setIsAutoPlaying(false)
+    setTimeout(() => setIsAutoPlaying(true), 10000)
+  }
+
   return (
-    <div className="min-h-screen bg-white">
-      
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 to-yellow-50">
-        <div className="max-w-7xl mx-auto px-4 py-32">
-          <div className="text-center">
-            <h1 className="text-6xl font-bold text-blue-900 mb-6 animate-fade-in">
-              Bienvenue à ISEAV-ARU
-            </h1>
-            <p className="text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Institut Supérieur d'Enseignement Appliqué et de Valorisation d'Ariana - 
-              Formant les leaders de demain dans l'agriculture et les sciences appliquées
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-12">
-              <Link 
-                href="/admissions"
-                className="bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                Candidater maintenant
-              </Link>
-              <Link 
-                href="/visit"
-                className="border-2 border-yellow-600 text-yellow-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                Découvrir nos formations
-              </Link>
+    <>
+      {/* Hero Slider Section */}
+      <section className="relative h-screen overflow-hidden">
+        {/* Background Images */}
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+              index === currentSlide 
+                ? 'opacity-100 scale-100' 
+                : 'opacity-0 scale-105'
+            }`}
+          >
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${slide.image})` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30" />
+          </div>
+        ))}
+
+        {/* Content Overlay */}
+        <div className="relative z-10 h-full flex items-center">
+          <div className="max-w-7xl mx-auto px-4 w-full">
+            <div className="text-center text-white">
+              {slides.map((slide, index) => (
+                <div
+                  key={slide.id}
+                  className={`transition-all duration-700 ${
+                    index === currentSlide
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{ display: index === currentSlide ? 'block' : 'none' }}
+                >
+                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in-up">
+                    <span className="bg-gradient-to-r from-cyan-300 to-amber-300 bg-clip-text text-transparent">
+                      {slide.title}
+                    </span>
+                  </h1>
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-4 text-cyan-100 animate-fade-in-up delay-200">
+                    {slide.subtitle}
+                  </h2>
+                  <p className="text-lg md:text-xl lg:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed text-gray-200 animate-fade-in-up delay-400">
+                    {slide.description}
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up delay-600">
+                    <Link 
+                      href={slide.primaryAction.href}
+                      className="bg-gradient-to-r from-cyan-600 to-amber-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-cyan-700 hover:to-amber-600 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-cyan-500/25 group"
+                    >
+                      <span className="group-hover:scale-105 transition-transform duration-300">
+                        {slide.primaryAction.text}
+                      </span>
+                    </Link>
+                    <Link 
+                      href={slide.secondaryAction.href}
+                      className="border-2 border-white/50 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 hover:border-white transition-all duration-300 transform hover:scale-105 shadow-2xl backdrop-blur-sm group"
+                    >
+                      <span className="group-hover:scale-105 transition-transform duration-300">
+                        {slide.secondaryAction.text}
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30 transition-all duration-300 group"
+        >
+          <svg className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30 transition-all duration-300 group"
+        >
+          <svg className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Slide Indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide
+                  ? 'bg-white scale-125 shadow-lg'
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Progress Bar */}
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-20">
+          <div 
+            className="h-full bg-gradient-to-r from-cyan-400 to-amber-400 transition-all duration-1000 ease-linear"
+            style={{ 
+              width: isAutoPlaying ? '100%' : '0%',
+              animation: isAutoPlaying ? 'progress 5s linear infinite' : 'none'
+            }}
+          />
+        </div>
       </section>
+
+      <style jsx>{`
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes progress {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+        
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out forwards;
+        }
+        
+        .delay-200 {
+          animation-delay: 0.2s;
+        }
+        
+        .delay-400 {
+          animation-delay: 0.4s;
+        }
+        
+        .delay-600 {
+          animation-delay: 0.6s;
+        }
+      `}</style>
 
       {/* Statistics */}
       <section className="py-20 bg-white">
@@ -290,209 +481,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Our Teachers */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-blue-900 mb-4">
-              Notre Équipe Pédagogique
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Une équipe d'experts passionnés et dévoués à l'excellence dans l'enseignement 
-              agricole et les sciences appliquées
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Teacher 1 */}
-            <div className="group">
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src="/images/teachers/prof-1.jpg" 
-                    alt="Professeur"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-blue-900 mb-2">Dr. Ahmed Mansouri</h3>
-                  <p className="text-yellow-600 font-semibold mb-3">Spécialiste Agriculture Durable</p>
-                  <p className="text-gray-600 text-sm">
-                    Expert en agriculture biologique et développement rural durable
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Teacher 2 */}
-            <div className="group">
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src="/images/teachers/t-2.jpg" 
-                    alt="Professeur"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-blue-900 mb-2">Dr. Salma Ben Ali</h3>
-                  <p className="text-yellow-600 font-semibold mb-3">Sciences Alimentaires</p>
-                  <p className="text-gray-600 text-sm">
-                    Spécialiste en technologie alimentaire et sécurité nutritionnelle
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Teacher 3 */}
-            <div className="group">
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src="/images/teachers/t-5.jpg" 
-                    alt="Professeur"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-blue-900 mb-2">Prof. Mohamed Triki</h3>
-                  <p className="text-yellow-600 font-semibold mb-3">Biotechnologies</p>
-                  <p className="text-gray-600 text-sm">
-                    Recherche en biotechnologies agricoles et génie génétique
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Teacher 4 */}
-            <div className="group">
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src="/images/teachers/t-7.jpg" 
-                    alt="Professeur"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-blue-900 mb-2">Dr. Karim Gharbi</h3>
-                  <p className="text-yellow-600 font-semibold mb-3">Économie Agricole</p>
-                  <p className="text-gray-600 text-sm">
-                    Expert en économie rurale et développement agricole
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center mt-12">
-            <Link
-              href="/about/faculty"
-              className="inline-flex items-center bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              Découvrir toute l'équipe
-              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Nos Partenaires */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-blue-900 mb-4">
-              Nos Partenaires Stratégiques
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Des collaborations privilégiées avec des organisations de référence 
-              pour enrichir la formation et favoriser l'insertion professionnelle
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-12 items-center">
-            {/* ACAV */}
-            <div className="group text-center">
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                <div className="h-20 flex items-center justify-center mb-6">
-                  <img 
-                    src="/images/partners/acav_logo-.png" 
-                    alt="ACAV - Association Centre Anti Volontaire"
-                    className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="text-lg font-bold text-blue-900 mb-3">ACAV</h3>
-                <p className="text-gray-600 text-sm">
-                  Association Centre Anti Volontaire - Partenaire en développement rural et formation agricole
-                </p>
-              </div>
-            </div>
-
-            {/* IRERA */}
-            <div className="group text-center">
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                <div className="h-20 flex items-center justify-center mb-6">
-                  <img 
-                    src="/images/partners/irera_logo.png" 
-                    alt="IRERA - Institut de Recherche et d'Enseignement en Agriculture"
-                    className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="text-lg font-bold text-blue-900 mb-3">IRERA</h3>
-                <p className="text-gray-600 text-sm">
-                  Institut de Recherche et d'Enseignement - Collaboration en recherche appliquée et innovation
-                </p>
-              </div>
-            </div>
-
-            {/* Malteser */}
-            <div className="group text-center">
-              <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                <div className="h-20 flex items-center justify-center mb-6">
-                  <img 
-                    src="/images/partners/malteser_logo-.svg" 
-                    alt="Malteser International"
-                    className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="text-lg font-bold text-blue-900 mb-3">Malteser International</h3>
-                <p className="text-gray-600 text-sm">
-                  Partenaire international en développement durable et coopération humanitaire
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-16 bg-gradient-to-r from-blue-50 to-yellow-50 rounded-xl p-8">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-blue-900 mb-4">
-                Devenez Notre Partenaire
-              </h3>
-              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                Rejoignez notre réseau de partenaires stratégiques et contribuez à la formation 
-                des futurs professionnels de l'agriculture et des sciences appliquées.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link 
-                  href="/partnerships"
-                  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300"
-                >
-                  Partenariat Académique
-                </Link>
-                <Link 
-                  href="/contact"
-                  className="border-2 border-yellow-600 text-yellow-700 px-8 py-3 rounded-lg font-semibold hover:bg-yellow-50 hover:text-yellow-900 transition-colors duration-300"
-                >
-                  Nous Contacter
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Call to Action */}
       <section className="py-20 bg-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-4 text-center">
@@ -516,7 +504,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-    </div>
+    </>
   )
 }

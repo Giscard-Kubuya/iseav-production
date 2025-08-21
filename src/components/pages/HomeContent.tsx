@@ -6,13 +6,17 @@ import Link from 'next/link'
 export default function HomeContent() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [professorsOffset, setProfessorsOffset] = useState(0)
+  const [partnersOffset, setPartnersOffset] = useState(0)
+  const [isProfessorsManualControl, setIsProfessorsManualControl] = useState(false)
+  const [isPartnersManualControl, setIsPartnersManualControl] = useState(false)
 
   const slides = [
     {
       id: 1,
       image: "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80",
-      title: "Bienvenue à ISEAV-ARU",
-      subtitle: "Institut Supérieur d'Enseignement Appliqué et de Valorisation",
+      title: "Bienvenue à ISEAV WALUNGU",
+      subtitle: "Institut Supérieur d'Études Agronomiques et Vétérinaires",
       description: "Formant les leaders de demain dans l'agriculture et les sciences appliquées",
       primaryAction: { text: "Candidater maintenant", href: "/admissions" },
       secondaryAction: { text: "Découvrir nos formations", href: "/visit" }
@@ -74,6 +78,53 @@ export default function HomeContent() {
     setIsAutoPlaying(false)
     setTimeout(() => setIsAutoPlaying(true), 10000)
   }
+
+  // Arrow control handlers for professors section
+  const professorsPrevious = () => {
+    setIsProfessorsManualControl(true)
+    setProfessorsOffset(prev => {
+      const newOffset = Math.min(prev + 320, 500)
+      console.log('Previous clicked, current offset:', prev, 'new offset:', newOffset)
+      return newOffset
+    })
+    // Reset manual control after animation
+    setTimeout(() => setIsProfessorsManualControl(false), 5000)
+  }
+
+  const professorsNext = () => {
+    setIsProfessorsManualControl(true)
+    setProfessorsOffset(prev => {
+      const newOffset = Math.max(prev - 320, -2000)
+      console.log('Next clicked, current offset:', prev, 'new offset:', newOffset)
+      return newOffset
+    })
+    // Reset manual control after animation
+    setTimeout(() => setIsProfessorsManualControl(false), 5000)
+  }
+
+  // Arrow control handlers for partners section
+  const partnersPrevious = () => {
+    setIsPartnersManualControl(true)
+    setPartnersOffset(prev => {
+      const newOffset = Math.min(prev + 280, 500)
+      console.log('Partners Previous clicked, current offset:', prev, 'new offset:', newOffset)
+      return newOffset
+    })
+    // Reset manual control after animation
+    setTimeout(() => setIsPartnersManualControl(false), 5000)
+  }
+
+  const partnersNext = () => {
+    setIsPartnersManualControl(true)
+    setPartnersOffset(prev => {
+      const newOffset = Math.max(prev - 280, -2000)
+      console.log('Partners Next clicked, current offset:', prev, 'new offset:', newOffset)
+      return newOffset
+    })
+    // Reset manual control after animation
+    setTimeout(() => setIsPartnersManualControl(false), 5000)
+  }
+
 
   return (
     <>
@@ -210,9 +261,40 @@ export default function HomeContent() {
           from { width: 0%; }
           to { width: 100%; }
         }
+
+        @keyframes slide-left {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-100%);
+          }
+        }
+
+        @keyframes slide-right {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
         
         .animate-fade-in-up {
           animation: fade-in-up 0.8s ease-out forwards;
+        }
+
+        .animate-slide-left {
+          animation: slide-left 30s linear infinite;
+        }
+
+        .animate-slide-right {
+          animation: slide-right 25s linear infinite;
+        }
+
+        .group.paused .animate-slide-left,
+        .group.paused .animate-slide-right {
+          animation-play-state: paused;
         }
         
         .delay-200 {
@@ -298,7 +380,7 @@ export default function HomeContent() {
                   Nouveau laboratoire d'agriculture durable
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  ISEAV-ARU inaugure son nouveau laboratoire de recherche en agriculture 
+                  ISEAV WALUNGU inaugure son nouveau laboratoire de recherche en agriculture 
                   durable, équipé des dernières technologies...
                 </p>
                 <Link
@@ -336,7 +418,7 @@ export default function HomeContent() {
                 </h3>
                 <p className="text-gray-600 mb-4">
                   Signature d'accords avec les leaders de l'industrie agroalimentaire 
-                  tunisienne pour des stages et projets...
+                  congolaise pour des stages et projets...
                 </p>
                 <Link
                   href="/news/partenariat-agroalimentaire"
@@ -372,7 +454,7 @@ export default function HomeContent() {
                   Prix d'excellence académique 2024
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  ISEAV-ARU reçoit le prix national d'excellence pour l'innovation 
+                  ISEAV WALUNGU reçoit le prix national d'excellence pour l'innovation 
                   dans l'enseignement agricole...
                 </p>
                 <Link
@@ -431,7 +513,7 @@ export default function HomeContent() {
                 Excellence Académique
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                ISEAV-ARU se distingue par son approche innovante de l'enseignement agricole et 
+                ISEAV WALUNGU se distingue par son approche innovante de l'enseignement agricole et 
                 des sciences appliquées. Nos programmes académiques sont conçus pour répondre aux 
                 défis contemporains de l'agriculture moderne et du développement durable.
               </p>
@@ -481,12 +563,373 @@ export default function HomeContent() {
         </div>
       </section>
 
+      {/* Professors Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-blue-900 mb-4">
+              Nos Professeurs & Conférenciers
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Une équipe d'experts passionnés dédiés à l'excellence académique et à la formation pratique
+            </p>
+          </div>
+          
+          <div className="relative overflow-hidden group">
+            {/* Navigation Arrows for Professors */}
+            <button
+              onClick={professorsPrevious}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-lg group/btn"
+            >
+              <svg className="w-5 h-5 group-hover/btn:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <button
+              onClick={professorsNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-lg group/btn"
+            >
+              <svg className="w-5 h-5 group-hover/btn:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            <div 
+              className={`flex space-x-8 transition-transform duration-500 ${!isProfessorsManualControl ? 'animate-slide-left group-hover:pause' : ''}`}
+              style={{ 
+                transform: `translateX(${professorsOffset}px)`
+              }}
+            >
+              {/* Professor 1 */}
+              <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="p-6">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
+                      alt="Dr. Mwami Furaha"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Mwami Furaha</h3>
+                  <p className="text-cyan-600 font-semibold text-center mb-3">Directeur Agronomie</p>
+                  <p className="text-gray-600 text-sm text-center mb-4">
+                    Spécialiste en phytopathologie et protection des cultures avec 20 ans d'expérience
+                  </p>
+                  <div className="flex justify-center space-x-2">
+                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Agronomie</span>
+                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Recherche</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Professor 2 */}
+              <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="p-6">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1594736797933-d0dadb11fcfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
+                      alt="Dr. Grace Kahindo"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Grace Kahindo</h3>
+                  <p className="text-cyan-600 font-semibold text-center mb-3">Professeure Biotechnologies</p>
+                  <p className="text-gray-600 text-sm text-center mb-4">
+                    Experte en biotechnologies végétales et génomique avec formation internationale
+                  </p>
+                  <div className="flex justify-center space-x-2">
+                    <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">Biotech</span>
+                    <span className="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-xs">Génomique</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Professor 3 */}
+              <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="p-6">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
+                      alt="Pr. Jean-Claude Mukendi"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Pr. Jean-Claude Mukendi</h3>
+                  <p className="text-cyan-600 font-semibold text-center mb-3">Professeur Microbiologie</p>
+                  <p className="text-gray-600 text-sm text-center mb-4">
+                    Spécialiste en microbiologie appliquée et fermentation industrielle
+                  </p>
+                  <div className="flex justify-center space-x-2">
+                    <span className="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-xs">Microbiologie</span>
+                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Innovation</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Professor 4 */}
+              <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="p-6">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
+                      alt="Dr. Esperance Nyota"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Esperance Nyota</h3>
+                  <p className="text-cyan-600 font-semibold text-center mb-3">Professeure Technologie Alimentaire</p>
+                  <p className="text-gray-600 text-sm text-center mb-4">
+                    Innovation alimentaire et développement de produits durables
+                  </p>
+                  <div className="flex justify-center space-x-2">
+                    <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Alimentaire</span>
+                    <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">Innovation</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Professor 5 */}
+              <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="p-6">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
+                      alt="Dr. Claudine Bahati"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Claudine Bahati</h3>
+                  <p className="text-cyan-600 font-semibold text-center mb-3">Directrice de Recherche</p>
+                  <p className="text-gray-600 text-sm text-center mb-4">
+                    Intelligence artificielle appliquée à l'agriculture moderne
+                  </p>
+                  <div className="flex justify-center space-x-2">
+                    <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs">IA</span>
+                    <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">AgriTech</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Duplicate first few for seamless loop */}
+              <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="p-6">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
+                      alt="Dr. Mwami Furaha"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Mwami Furaha</h3>
+                  <p className="text-cyan-600 font-semibold text-center mb-3">Directeur Agronomie</p>
+                  <p className="text-gray-600 text-sm text-center mb-4">
+                    Spécialiste en phytopathologie et protection des cultures avec 20 ans d'expérience
+                  </p>
+                  <div className="flex justify-center space-x-2">
+                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Agronomie</span>
+                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Recherche</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-blue-900 mb-4">
+              Nos Partenaires Stratégiques
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Collaborations d'excellence avec des institutions de renommée internationale
+            </p>
+          </div>
+          
+          <div className="relative overflow-hidden group">
+            {/* Navigation Arrows for Partners */}
+            <button
+              onClick={partnersPrevious}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-lg group/btn"
+            >
+              <svg className="w-5 h-5 group-hover/btn:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <button
+              onClick={partnersNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-lg group/btn"
+            >
+              <svg className="w-5 h-5 group-hover/btn:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            <div 
+              className={`flex space-x-8 items-center transition-transform duration-500 ${!isPartnersManualControl ? 'animate-slide-right group-hover:pause' : ''}`}
+              style={{ 
+                transform: `translateX(${partnersOffset}px)`
+              }}>
+              {/* Partner 1 - Université de Kinshasa */}
+              <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Université de Kinshasa"
+                    className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Université de Kinshasa</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Enseignement Supérieur</p>
+              </div>
+
+              {/* Partner 2 - Ministère Agriculture */}
+              <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Ministère Agriculture RDC"
+                    className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Ministère Agriculture</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">République Démocratique du Congo</p>
+              </div>
+
+              {/* Partner 3 - CGIAR */}
+              <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="CGIAR Research"
+                    className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <h3 className="text-sm font-bold text-gray-800 text-center">CGIAR</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Recherche Agricole Mondiale</p>
+              </div>
+
+              {/* Partner 4 - FAO */}
+              <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="FAO Congo"
+                    className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <h3 className="text-sm font-bold text-gray-800 text-center">FAO Congo</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Organisation des Nations Unies</p>
+              </div>
+
+              {/* Partner 5 - Union Européenne */}
+              <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1464207687429-7505649dae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Union Européenne"
+                    className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Union Européenne</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Coopération Internationale</p>
+              </div>
+
+              {/* Partner 6 - Banque Mondiale */}
+              <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Banque Mondiale"
+                    className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Banque Mondiale</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Financement & Développement</p>
+              </div>
+
+              {/* Partner 7 - ONU */}
+              <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1515847049296-a281d6401047?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="ONU Développement"
+                    className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <h3 className="text-sm font-bold text-gray-800 text-center">PNUD</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Programme des Nations Unies</p>
+              </div>
+
+              {/* Duplicate first few for seamless loop */}
+              <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
+                   onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
+                   onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
+                <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Université de Kinshasa"
+                    className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                  />
+                </div>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Université de Kinshasa</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Enseignement Supérieur</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Partnership Stats */}
+          <div className="mt-16 grid md:grid-cols-3 gap-8 text-center">
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <div className="text-3xl font-bold text-blue-600 mb-2">15+</div>
+              <div className="text-gray-600">Partenaires Internationaux</div>
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <div className="text-3xl font-bold text-green-600 mb-2">50+</div>
+              <div className="text-gray-600">Projets Collaboratifs</div>
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <div className="text-3xl font-bold text-amber-600 mb-2">8</div>
+              <div className="text-gray-600">Pays Partenaires</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Call to Action */}
       <section className="py-20 bg-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">Rejoignez l'Excellence</h2>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Découvrez comment ISEAV-ARU peut transformer votre avenir académique et professionnel dans l'agriculture et les sciences appliquées
+            Découvrez comment ISEAV WALUNGU peut transformer votre avenir académique et professionnel dans l'agriculture et les sciences appliquées
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 

@@ -6,6 +6,16 @@ import { useState } from 'react'
 export default function PublicHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [mobileActiveSubmenu, setMobileActiveSubmenu] = useState<string | null>(null)
+
+  const toggleMobileSubmenu = (submenu: string) => {
+    setMobileActiveSubmenu(mobileActiveSubmenu === submenu ? null : submenu)
+  }
+
+  const closeMobileMenu = () => {
+    setIsMenuOpen(false)
+    setMobileActiveSubmenu(null)
+  }
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -20,16 +30,16 @@ export default function PublicHeader() {
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                 </svg>
-                <a href="mailto:contact@iseav-aru.edu.tn" className="hover:text-amber-200 transition-colors duration-300 group-hover:underline">
-                  contact@iseav-aru.edu.tn
+                <a href="mailto:contact@iseav-walungu.edu.cd" className="hover:text-amber-200 transition-colors duration-300 group-hover:underline">
+                  contact@iseav-walungu.edu.cd
                 </a>
               </div>
               <div className="hidden sm:flex items-center space-x-2 group">
                 <svg className="w-4 h-4 text-amber-200 group-hover:text-amber-100 transition-colors duration-300" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                 </svg>
-                <a href="tel:+21671234567" className="hover:text-amber-200 transition-colors duration-300 group-hover:underline">
-                  +216 71 234 567
+                <a href="tel:+243971234567" className="hover:text-amber-200 transition-colors duration-300 group-hover:underline">
+                  +243 97 123 4567
                 </a>
               </div>
             </div>
@@ -117,15 +127,15 @@ export default function PublicHeader() {
                 <Link href="/" className="flex flex-col items-center group">
                   <div className="w-20 h-20 mb-2 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                     <img 
-                      src="/images/logos/logo.jpg" 
-                      alt="ISEAV-ARU Logo"
+                      src="/images/logos/logo_extracted.png" 
+                      alt="ISEAV WALUNGU Logo"
                       className="w-full h-full object-contain rounded-lg shadow-sm transition-all duration-500 group-hover:brightness-110 group-hover:shadow-lg group-hover:shadow-amber-200/50"
                     />
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-amber-500 bg-clip-text text-transparent group-hover:from-cyan-700 group-hover:to-amber-600 transition-all duration-300 group-hover:scale-105 pb-2 border-b-2 border-gradient-to-r from-cyan-600 to-amber-500 relative">
-                      ISEAV-ARU
-                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-cyan-600 to-amber-500 group-hover:w-60 transition-all duration-300"></div>
+                      ISEAV WALUNGU
+                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-64 h-1 bg-gradient-to-r from-cyan-600 to-amber-500 group-hover:w-80 transition-all duration-300"></div>
                     </div>
                   </div>
                 </Link>
@@ -134,17 +144,17 @@ export default function PublicHeader() {
               {/* Right Navigation & Actions */}
               <div className="flex items-center justify-end space-x-6">
                 <nav className="flex space-x-6">
-                  <Link href="/student-life" className="text-gray-600 hover:text-cyan-600 font-medium transition-colors duration-200">Vie étudiante</Link>
-                  <Link href="/about" className="text-gray-600 hover:text-cyan-600 font-medium transition-colors duration-200">À propos</Link>
+                  <Link href="/student-life" className="text-gray-600 hover:text-cyan-600 font-medium transition-colors duration-200 whitespace-nowrap">Vie étudiante</Link>
+                  <Link href="/about" className="text-gray-600 hover:text-cyan-600 font-medium transition-colors duration-200 whitespace-nowrap">À propos</Link>
                 </nav>
                 <div className="flex items-center space-x-4">
-                  <Link href="/student-portal" className="text-gray-600 hover:text-cyan-600 transition-all duration-300 hover:scale-110 group flex items-center space-x-2">
+                  <Link href="/student-portal" className="text-gray-600 hover:text-cyan-600 transition-all duration-300 hover:scale-110 group flex items-center space-x-2 whitespace-nowrap">
                     <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                     <span className="hidden xl:inline text-sm font-medium">Étudiant</span>
                   </Link>
-                  <Link href="/contact" className="bg-gradient-to-r from-cyan-600 to-amber-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:from-cyan-700 hover:to-amber-600 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                  <Link href="/contact" className="bg-gradient-to-r from-cyan-600 to-amber-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:from-cyan-700 hover:to-amber-600 transition-all duration-300 hover:scale-105 hover:shadow-lg whitespace-nowrap">
                     Contact
                   </Link>
                 </div>
@@ -161,17 +171,17 @@ export default function PublicHeader() {
                 <Link href="/" className="flex flex-col items-center group">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 mb-2 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                     <img 
-                      src="/images/logos/logo.jpg" 
-                      alt="ISEAV-ARU Logo"
+                      src="/images/logos/logo_extracted.png" 
+                      alt="ISEAV WALUNGU Logo"
                       className="w-full h-full object-contain rounded-lg shadow-sm transition-all duration-500 group-hover:brightness-110 group-hover:shadow-lg group-hover:shadow-amber-200/50"
                     />
                   </div>
                   <div className="text-center">
                     <div className="text-lg sm:text-xl font-bold bg-gradient-to-r from-cyan-600 to-amber-500 bg-clip-text text-transparent group-hover:from-cyan-700 group-hover:to-amber-600 transition-all duration-300 group-hover:scale-105">
-                      ISEAV-ARU
+                      ISEAV WALUNGU
                     </div>
                     <div className="text-xs sm:text-sm text-gray-500 group-hover:text-gray-600 transition-colors duration-300 max-w-xs text-center leading-tight group-hover:text-cyan-600 px-2">
-                      Institut Supérieur d'Enseignement Appliqué et de Valorisation
+                      Institut Supérieur d'Études Agronomiques et Vétérinaires
                     </div>
                   </div>
                 </Link>
@@ -195,47 +205,135 @@ export default function PublicHeader() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="bg-gradient-to-br from-white to-gray-50 border-t border-gray-100 shadow-lg">
-            <div className="px-4 py-6 space-y-1">
-              <Link href="/academics" className="block py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-xl px-4 transition-all duration-300 hover:scale-105 hover:shadow-sm font-medium">
+            <div className="px-4 py-6 space-y-2 max-h-96 overflow-y-auto">
+              
+              {/* Academic Menu with Submenu */}
+              <div className="space-y-1">
+                <button 
+                  onClick={() => toggleMobileSubmenu('academic')}
+                  className="w-full flex items-center justify-between py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium"
+                >
+                  <span className="flex items-center">
+                    <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3"></span>
+                    Académique
+                  </span>
+                  <svg 
+                    className={`w-4 h-4 transition-transform duration-300 ${mobileActiveSubmenu === 'academic' ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileActiveSubmenu === 'academic' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <div className="pl-6 space-y-1">
+                    <Link href="/academics" onClick={closeMobileMenu} className="block py-3 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
+                      <span className="flex items-center">
+                        <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3"></span>
+                        Programmes d'études
+                      </span>
+                    </Link>
+                    <Link href="/academics/faculties" onClick={closeMobileMenu} className="block py-3 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
+                      <span className="flex items-center">
+                        <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3"></span>
+                        Facultés
+                      </span>
+                    </Link>
+                    <Link href="/academics/courses" onClick={closeMobileMenu} className="block py-3 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
+                      <span className="flex items-center">
+                        <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3"></span>
+                        Catalogue des cours
+                      </span>
+                    </Link>
+                    <Link href="/academics/calendar" onClick={closeMobileMenu} className="block py-3 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
+                      <span className="flex items-center">
+                        <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3"></span>
+                        Calendrier académique
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              {/* Research Menu with Submenu */}
+              <div className="space-y-1">
+                <button 
+                  onClick={() => toggleMobileSubmenu('research')}
+                  className="w-full flex items-center justify-between py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium"
+                >
+                  <span className="flex items-center">
+                    <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3"></span>
+                    Recherche
+                  </span>
+                  <svg 
+                    className={`w-4 h-4 transition-transform duration-300 ${mobileActiveSubmenu === 'research' ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileActiveSubmenu === 'research' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <div className="pl-6 space-y-1">
+                    <Link href="/research/projects" onClick={closeMobileMenu} className="block py-3 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
+                      <span className="flex items-center">
+                        <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3"></span>
+                        Projets de recherche
+                      </span>
+                    </Link>
+                    <Link href="/research/centers" onClick={closeMobileMenu} className="block py-3 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
+                      <span className="flex items-center">
+                        <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3"></span>
+                        Centres de recherche
+                      </span>
+                    </Link>
+                    <Link href="/research/publications" onClick={closeMobileMenu} className="block py-3 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
+                      <span className="flex items-center">
+                        <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3"></span>
+                        Publications
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              {/* Regular Menu Items */}
+              <Link href="/admissions" onClick={closeMobileMenu} className="block py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
                 <span className="flex items-center">
-                  <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  Académique
-                </span>
-              </Link>
-              <Link href="/research" className="block py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-xl px-4 transition-all duration-300 hover:scale-105 hover:shadow-sm font-medium">
-                <span className="flex items-center">
-                  <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  Recherche
-                </span>
-              </Link>
-              <Link href="/admissions" className="block py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-xl px-4 transition-all duration-300 hover:scale-105 hover:shadow-sm font-medium">
-                <span className="flex items-center">
-                  <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3"></span>
                   Admissions
                 </span>
               </Link>
-              <Link href="/student-life" className="block py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-xl px-4 transition-all duration-300 hover:scale-105 hover:shadow-sm font-medium">
+              
+              <Link href="/student-life" onClick={closeMobileMenu} className="block py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
                 <span className="flex items-center">
-                  <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3"></span>
                   Vie étudiante
                 </span>
               </Link>
-              <Link href="/about" className="block py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-xl px-4 transition-all duration-300 hover:scale-105 hover:shadow-sm font-medium">
+              
+              <Link href="/about" onClick={closeMobileMenu} className="block py-4 text-gray-600 hover:text-cyan-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-amber-50 rounded-lg px-4 transition-all duration-300 font-medium">
                 <span className="flex items-center">
-                  <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  <span className="w-2 h-2 bg-cyan-400 rounded-full mr-3"></span>
                   À propos
                 </span>
               </Link>
+
+              {/* Action Buttons */}
               <div className="pt-4 mt-4 border-t border-gray-200 space-y-3">
-                <Link href="/student-portal" className="block py-3 text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2">
+                <Link href="/student-portal" onClick={closeMobileMenu} className="block py-3 text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center space-x-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                   <span>Portail Étudiant</span>
                 </Link>
-                <Link href="/contact" className="block py-3 text-center bg-gradient-to-r from-cyan-600 to-amber-500 text-white rounded-xl font-medium hover:from-cyan-700 hover:to-amber-600 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                <Link href="/contact" onClick={closeMobileMenu} className="block py-3 text-center bg-gradient-to-r from-cyan-600 to-amber-500 text-white rounded-lg font-medium hover:from-cyan-700 hover:to-amber-600 transition-all duration-300">
                   Nous Contacter
                 </Link>
               </div>

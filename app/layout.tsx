@@ -11,9 +11,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title:
-    "ISEAV-ARU | Institut Supérieur d'Enseignement Appliqué et de Valorisation - Ariana",
+    "ISEAV WALUNGU | Institut Supérieur d'Études Agronomiques et Vétérinaires - Walungu",
   description:
-    "Institut Supérieur d'Enseignement Appliqué et de Valorisation - Université de Ariana",
+    "Institut Supérieur d'Études Agronomiques et Vétérinaires - Université de Walungu",
 };
 
 export default function RootLayout({

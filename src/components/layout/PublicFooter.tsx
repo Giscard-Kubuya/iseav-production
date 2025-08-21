@@ -9,17 +9,17 @@ export default function PublicFooter() {
             <div className="flex items-center mb-4">
               <div className="w-12 h-12 mr-3">
                 <img 
-                  src="/images/logos/logo.jpg" 
-                  alt="ISEAV-ARU Logo"
+                  src="/images/logos/logo_extracted.png" 
+                  alt="ISEAV WALUNGU Logo"
                   className="w-full h-full object-contain rounded-lg"
                 />
               </div>
               <div>
-                <div className="font-bold text-lg">ISEAV-ARU</div>
+                <div className="font-bold text-lg">ISEAV WALUNGU</div>
               </div>
             </div>
             <p className="text-blue-200 text-sm mb-6 leading-relaxed">
-              Institut Supérieur d'Enseignement Appliqué et de Valorisation - Ariana. 
+              Institut Supérieur d'Études Agronomiques et Vétérinaires - Walungu. 
               Excellence en éducation, innovation en recherche.
             </p>
             <div className="flex space-x-4">
@@ -66,21 +66,21 @@ export default function PublicFooter() {
               <div className="flex items-start">
                 <span className="mr-2 mt-1">📍</span>
                 <div>
-                  <p>Avenue de la République</p>
-                  <p>2080 Ariana, Tunisie</p>
+                  <p>Campus Universitaire</p>
+                  <p>Walungu, République Démocratique du Congo</p>
                 </div>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">📞</span>
-                <p>+216 71 123 456</p>
+                <p>+243 97 123 4567</p>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">✉️</span>
-                <p>info@iseav-aru.tn</p>
+                <p>info@iseav-walungu.edu.cd</p>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">🌐</span>
-                <p>www.iseav-aru.org</p>
+                <p>www.iseav-walungu.edu.cd</p>
               </div>
             </div>
             
@@ -103,7 +103,7 @@ export default function PublicFooter() {
         <div className="border-t border-blue-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-blue-300">
             <div className="mb-4 md:mb-0">
-              <p>&copy; 2024 ISEAV-ARU. Tous droits réservés.</p>
+              <p>&copy; 2025 ISEAV WALUNGU. Tous droits réservés.</p>
             </div>
             <div className="flex space-x-6">
               <Link href="/privacy" className="hover:text-yellow-300 transition-colors">Politique de confidentialité</Link>

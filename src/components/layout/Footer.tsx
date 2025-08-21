@@ -14,20 +14,20 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <div className="flex items-center mb-6">
                 <img 
-                  src="/images/logos/logo.jpg" 
-                  alt="ISEAV-ARU Logo"
+                  src="/images/logos/logo_extracted.png" 
+                  alt="ISEAV WALUNGU Logo"
                   className="w-12 h-12 rounded-lg mr-3"
                 />
                 <div>
                   <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-amber-400 bg-clip-text text-transparent">
-                    ISEAV-ARU
+                    ISEAV WALUNGU
                   </h3>
                   <p className="text-sm text-gray-400">Excellence Académique</p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Institut Supérieur d'Enseignement Appliqué et de Valorisation d'Ariana - 
-                Formant les leaders de demain dans l'agriculture et les sciences appliquées.
+                Institut Supérieur d'Études Agronomiques et Vétérinaires de Walungu - 
+                Formant les leaders de demain dans l'agriculture et les sciences vétérinaires.
               </p>
               
               {/* Social Media Links */}
@@ -110,8 +110,8 @@ export default function Footer() {
                   </svg>
                   <div>
                     <p className="text-gray-300 leading-relaxed">
-                      Campus Universitaire, Ariana<br />
-                      Tunisie, 2080
+                      Campus Universitaire, Walungu<br />
+                      République Démocratique du Congo
                     </p>
                   </div>
                 </div>
@@ -120,8 +120,8 @@ export default function Footer() {
                   <svg className="w-5 h-5 text-cyan-400 mr-3 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                   </svg>
-                  <a href="tel:+21671234567" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300">
-                    +216 71 234 567
+                  <a href="tel:+243971234567" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+                    +243 97 123 4567
                   </a>
                 </div>
                 
@@ -130,8 +130,8 @@ export default function Footer() {
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                   </svg>
-                  <a href="mailto:contact@iseav-aru.edu.tn" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300">
-                    contact@iseav-aru.edu.tn
+                  <a href="mailto:contact@iseav-walungu.edu.cd" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+                    contact@iseav-walungu.edu.cd
                   </a>
                 </div>
               </div>
@@ -177,7 +177,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2025 ISEAV-ARU. Tous droits réservés. | Institut Supérieur d'Enseignement Appliqué et de Valorisation d'Ariana
+              © 2025 ISEAV WALUNGU. Tous droits réservés. | Institut Supérieur d'Études Agronomiques et Vétérinaires
             </div>
             <div className="flex space-x-6 text-sm">
               <Link href="/privacy" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300">

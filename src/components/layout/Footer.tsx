@@ -10,30 +10,30 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
             
-            {/* Institution Info */}
+            {/* Company Info */}
             <div className="lg:col-span-1">
               <div className="flex items-center mb-6">
                 <img 
-                  src="/images/logos/logo_extracted.png" 
-                  alt="ISEAV WALUNGU Logo"
+                  src="/images/logos/infonet-logo.png" 
+                  alt="INFONET Logo"
                   className="w-12 h-12 rounded-lg mr-3"
                 />
                 <div>
-                  <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-amber-400 bg-clip-text text-transparent">
-                    ISEAV WALUNGU
+                  <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
+                    INFONET
                   </h3>
-                  <p className="text-sm text-gray-400">Excellence Académique</p>
+                  <p className="text-sm text-gray-400">Solutions IT & Technologies</p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Institut Supérieur d'Études Agronomiques et Vétérinaires de Walungu - 
-                Formant les leaders de demain dans l'agriculture et les sciences vétérinaires.
+                INFONET - Votre partenaire technologique de confiance au Burundi. 
+                Spécialisés en développement web, solutions cloud et infrastructure IT.
               </p>
               
               {/* Social Media Links */}
               <div className="flex space-x-4">
                 <a href="#" className="group">
-                  <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-cyan-600 transition-all duration-300 group-hover:scale-110">
+                  <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-blue-600 transition-all duration-300 group-hover:scale-110">
                     <svg className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
                     </svg>
@@ -65,35 +65,35 @@ export default function Footer() {
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold mb-6 text-white">Liens Rapides</h4>
+              <h4 className="text-lg font-semibold mb-6 text-white">Nos Services</h4>
               <ul className="space-y-3">
                 <li>
-                  <Link href="/academics" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 flex items-center group">
-                    <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                    Programmes Académiques
+                  <Link href="/services" className="text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center group">
+                    <span className="w-1 h-1 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    Développement Web
                   </Link>
                 </li>
                 <li>
-                  <Link href="/admissions" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 flex items-center group">
-                    <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                    Admissions
+                  <Link href="/services" className="text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center group">
+                    <span className="w-1 h-1 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    Connectivité Internet
                   </Link>
                 </li>
                 <li>
-                  <Link href="/research" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 flex items-center group">
-                    <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                    Recherche & Innovation
+                  <Link href="/services" className="text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center group">
+                    <span className="w-1 h-1 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    Applications Mobiles
                   </Link>
                 </li>
                 <li>
-                  <Link href="/student-life" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 flex items-center group">
-                    <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                    Vie Étudiante
+                  <Link href="/services" className="text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center group">
+                    <span className="w-1 h-1 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    Sécurité IT
                   </Link>
                 </li>
                 <li>
-                  <Link href="/about" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 flex items-center group">
-                    <span className="w-1 h-1 bg-cyan-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  <Link href="/about" className="text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center group">
+                    <span className="w-1 h-1 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                     À Propos
                   </Link>
                 </li>
@@ -105,33 +105,33 @@ export default function Footer() {
               <h4 className="text-lg font-semibold mb-6 text-white">Contact</h4>
               <div className="space-y-4">
                 <div className="flex items-start group">
-                  <svg className="w-5 h-5 text-cyan-400 mr-3 mt-1 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-blue-400 mr-3 mt-1 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
                   </svg>
                   <div>
                     <p className="text-gray-300 leading-relaxed">
-                      Campus Universitaire, Walungu<br />
-                      République Démocratique du Congo
+                      Boulevard de l'Uprona<br />
+                      Bujumbura, Burundi
                     </p>
                   </div>
                 </div>
                 
                 <div className="flex items-center group">
-                  <svg className="w-5 h-5 text-cyan-400 mr-3 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-blue-400 mr-3 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                   </svg>
-                  <a href="tel:+243971234567" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300">
-                    +243 97 123 4567
+                  <a href="tel:+25769080800" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">
+                    +257 69 08 08 00
                   </a>
                 </div>
                 
                 <div className="flex items-center group">
-                  <svg className="w-5 h-5 text-cyan-400 mr-3 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-blue-400 mr-3 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                   </svg>
-                  <a href="mailto:contact@iseav-walungu.edu.cd" className="text-gray-300 hover:text-cyan-400 transition-colors duration-300">
-                    contact@iseav-walungu.edu.cd
+                  <a href="mailto:info@infonet.bi" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">
+                    info@infonet.bi
                   </a>
                 </div>
               </div>
@@ -139,32 +139,32 @@ export default function Footer() {
 
             {/* Newsletter */}
             <div>
-              <h4 className="text-lg font-semibold mb-6 text-white">Newsletter</h4>
+              <h4 className="text-lg font-semibold mb-6 text-white">Newsletter Tech</h4>
               <p className="text-gray-300 mb-4">
-                Recevez nos actualités et événements directement dans votre boîte mail.
+                Recevez nos insights technologiques et actualités IT directement dans votre boîte mail.
               </p>
               <form className="space-y-3">
                 <div className="relative">
                   <input
                     type="email"
                     placeholder="Votre email"
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all duration-300"
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all duration-300"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-cyan-600 to-amber-500 text-white px-4 py-3 rounded-lg font-semibold hover:from-cyan-700 hover:to-amber-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25"
+                  className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white px-4 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
                 >
                   S'abonner
                 </button>
               </form>
               
               <div className="mt-6 pt-6 border-t border-gray-700">
-                <h5 className="text-sm font-semibold text-white mb-3">Suivez-nous</h5>
+                <h5 className="text-sm font-semibold text-white mb-3">Expertise</h5>
                 <div className="flex space-x-2">
-                  <span className="px-3 py-1 bg-gray-800 rounded-full text-xs text-gray-300">#ISEAV</span>
-                  <span className="px-3 py-1 bg-gray-800 rounded-full text-xs text-gray-300">#Agriculture</span>
-                  <span className="px-3 py-1 bg-gray-800 rounded-full text-xs text-gray-300">#Innovation</span>
+                  <span className="px-3 py-1 bg-gray-800 rounded-full text-xs text-gray-300">#Cloud</span>
+                  <span className="px-3 py-1 bg-gray-800 rounded-full text-xs text-gray-300">#WebDev</span>
+                  <span className="px-3 py-1 bg-gray-800 rounded-full text-xs text-gray-300">#Security</span>
                 </div>
               </div>
             </div>
@@ -177,16 +177,16 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2025 ISEAV WALUNGU. Tous droits réservés. | Institut Supérieur d'Études Agronomiques et Vétérinaires
+              © 2025 INFONET. Tous droits réservés. | Solutions IT & Technologies Numériques - Burundi
             </div>
             <div className="flex space-x-6 text-sm">
-              <Link href="/privacy" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300">
+              <Link href="/privacy" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
                 Politique de Confidentialité
               </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300">
+              <Link href="/terms" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
                 Conditions d'Utilisation
               </Link>
-              <Link href="/sitemap" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300">
+              <Link href="/sitemap" className="text-gray-400 hover:text-blue-400 transition-colors duration-300">
                 Plan du Site
               </Link>
             </div>

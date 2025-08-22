@@ -14,39 +14,39 @@ export default function HomeContent() {
   const slides = [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80",
-      title: "Bienvenue à ISEAV WALUNGU",
-      subtitle: "Institut Supérieur d'Études Agronomiques et Vétérinaires",
-      description: "Formant les leaders de demain dans l'agriculture et les sciences appliquées",
-      primaryAction: { text: "Candidater maintenant", href: "/admissions" },
-      secondaryAction: { text: "Découvrir nos formations", href: "/visit" }
+      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80",
+      title: "Bienvenue chez INFONET",
+      subtitle: "Solutions IT & Technologies Numériques - Burundi",
+      description: "Votre partenaire technologique de confiance pour transformer votre entreprise",
+      primaryAction: { text: "Nos Services", href: "/services" },
+      secondaryAction: { text: "Demander un Devis", href: "/contact" }
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80",
-      title: "Excellence Académique",
-      subtitle: "Innovation dans l'Enseignement Agricole",
-      description: "Des programmes de pointe alliant tradition et technologies modernes pour une formation complète",
-      primaryAction: { text: "Nos Programmes", href: "/academics" },
-      secondaryAction: { text: "Visite Virtuelle", href: "/virtual-tour" }
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80",
+      title: "Développement Web Professionnel",
+      subtitle: "Sites Web Modernes & Performants",
+      description: "Créez votre présence en ligne avec nos solutions web sur mesure et responsive",
+      primaryAction: { text: "Découvrir", href: "/services#web-development" },
+      secondaryAction: { text: "Portfolio", href: "/portfolio" }
     },
     {
       id: 3,
-      image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80",
-      title: "Recherche & Innovation",
-      subtitle: "Laboratoires de Pointe",
-      description: "Découvrez nos installations modernes et participez à des projets de recherche révolutionnaires",
-      primaryAction: { text: "Nos Recherches", href: "/research" },
-      secondaryAction: { text: "Laboratoires", href: "/facilities" }
+      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80",
+      title: "Connectivité Internet Fiable",
+      subtitle: "Solutions de Connectivité Professionnelle",
+      description: "Internet haut débit et réseaux d'entreprise pour une connectivité optimale",
+      primaryAction: { text: "Nos Offres", href: "/services#connectivity" },
+      secondaryAction: { text: "Support 24/7", href: "/contact" }
     },
     {
       id: 4,
-      image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80",
-      title: "Vie Étudiante Dynamique",
-      subtitle: "Campus Moderne & Accueillant",
-      description: "Un environnement stimulant favorisant l'épanouissement personnel et académique",
-      primaryAction: { text: "Vie Campus", href: "/student-life" },
-      secondaryAction: { text: "Activités", href: "/activities" }
+      image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80",
+      title: "Sécurité & Innovation",
+      subtitle: "Systèmes de Sécurité Avancés",
+      description: "Protégez vos biens avec nos solutions de surveillance et sécurité de pointe",
+      primaryAction: { text: "Sécurité", href: "/services#security" },
+      secondaryAction: { text: "Consultation", href: "/contact" }
     }
   ]
 
@@ -164,11 +164,11 @@ export default function HomeContent() {
                   style={{ display: index === currentSlide ? 'block' : 'none' }}
                 >
                   <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in-up">
-                    <span className="bg-gradient-to-r from-cyan-300 to-amber-300 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-blue-300 to-green-300 bg-clip-text text-transparent">
                       {slide.title}
                     </span>
                   </h1>
-                  <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-4 text-cyan-100 animate-fade-in-up delay-200">
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-4 text-blue-100 animate-fade-in-up delay-200">
                     {slide.subtitle}
                   </h2>
                   <p className="text-lg md:text-xl lg:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed text-gray-200 animate-fade-in-up delay-400">
@@ -178,7 +178,7 @@ export default function HomeContent() {
                   <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up delay-600">
                     <Link 
                       href={slide.primaryAction.href}
-                      className="bg-gradient-to-r from-cyan-600 to-amber-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-cyan-700 hover:to-amber-600 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-cyan-500/25 group"
+                      className="bg-gradient-to-r from-blue-600 to-green-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-green-600 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25 group"
                     >
                       <span className="group-hover:scale-105 transition-transform duration-300">
                         {slide.primaryAction.text}
@@ -236,7 +236,7 @@ export default function HomeContent() {
         {/* Progress Bar */}
         <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-20">
           <div 
-            className="h-full bg-gradient-to-r from-cyan-400 to-amber-400 transition-all duration-1000 ease-linear"
+            className="h-full bg-gradient-to-r from-blue-400 to-green-400 transition-all duration-1000 ease-linear"
             style={{ 
               width: isAutoPlaying ? '100%' : '0%',
               animation: isAutoPlaying ? 'progress 5s linear infinite' : 'none'
@@ -319,36 +319,36 @@ export default function HomeContent() {
                 className="text-4xl font-bold text-blue-600 mb-2 animate-bounce"
                 style={{ animationDelay: "0.1s" }}
               >
-                500+
+                200+
               </div>
-              <div className="text-gray-600 font-medium">Étudiants</div>
+              <div className="text-gray-600 font-medium">Projets Réalisés</div>
             </div>
-            <div className="transform hover:scale-105 transition-transform duration-300 bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-lg">
+            <div className="transform hover:scale-105 transition-transform duration-300 bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg">
               <div
-                className="text-4xl font-bold text-yellow-600 mb-2 animate-bounce"
+                className="text-4xl font-bold text-green-600 mb-2 animate-bounce"
                 style={{ animationDelay: "0.1s" }}
               >
-                25+
+                150+
               </div>
-              <div className="text-gray-600 font-medium">Enseignants</div>
+              <div className="text-gray-600 font-medium">Clients Satisfaits</div>
             </div>
             <div className="transform hover:scale-105 transition-transform duration-300 bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg">
               <div
                 className="text-4xl font-bold text-blue-600 mb-2 animate-bounce"
                 style={{ animationDelay: "0.2s" }}
               >
-                12
+                10+
               </div>
-              <div className="text-gray-600 font-medium">Spécialités</div>
+              <div className="text-gray-600 font-medium">Années d'Expérience</div>
             </div>
-            <div className="transform hover:scale-105 transition-transform duration-300 bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-lg">
+            <div className="transform hover:scale-105 transition-transform duration-300 bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg">
               <div
-                className="text-4xl font-bold text-yellow-600 mb-2 animate-bounce"
+                className="text-4xl font-bold text-green-600 mb-2 animate-bounce"
                 style={{ animationDelay: "0.3s" }}
               >
-                95%
+                24/7
               </div>
-              <div className="text-gray-600 font-medium">Taux d'employabilité</div>
+              <div className="text-gray-600 font-medium">Support Technique</div>
             </div>
           </div>
         </div>
@@ -362,29 +362,29 @@ export default function HomeContent() {
               Actualités & Réalisations
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Découvrez les dernières nouvelles de notre institut et nos avancées 
-              dans les domaines de l'agriculture et des technologies appliquées
+              Découvrez nos derniers projets et innovations dans le domaine des 
+              technologies de l'information et solutions numériques
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="h-48 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                <span className="text-white text-6xl">🌱</span>
+                <span className="text-white text-6xl">🌐</span>
               </div>
               <div className="p-6">
-                <div className="text-sm text-yellow-600 mb-2 font-semibold">
+                <div className="text-sm text-green-600 mb-2 font-semibold">
                   15 Janvier 2025
                 </div>
                 <h3 className="text-xl font-bold text-blue-900 mb-3">
-                  Nouveau laboratoire d'agriculture durable
+                  Nouveau Centre de Données INFONET
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  ISEAV WALUNGU inaugure son nouveau laboratoire de recherche en agriculture 
-                  durable, équipé des dernières technologies...
+                  INFONET inaugure son nouveau centre de données haute performance 
+                  pour améliorer ses services d'hébergement...
                 </p>
                 <Link
-                  href="/news/laboratoire-agriculture-durable"
+                  href="/blog/centre-donnees-infonet"
                   className="text-blue-600 font-semibold hover:text-blue-700 inline-flex items-center"
                 >
                   Lire la suite
@@ -406,22 +406,22 @@ export default function HomeContent() {
             </article>
 
             <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="h-48 bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center">
+              <div className="h-48 bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
                 <span className="text-white text-6xl">🤝</span>
               </div>
               <div className="p-6">
-                <div className="text-sm text-yellow-600 mb-2 font-semibold">
+                <div className="text-sm text-green-600 mb-2 font-semibold">
                   10 Janvier 2025
                 </div>
                 <h3 className="text-xl font-bold text-blue-900 mb-3">
-                  Partenariat avec l'industrie agroalimentaire
+                  Partenariat avec Microsoft Burundi
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Signature d'accords avec les leaders de l'industrie agroalimentaire 
-                  congolaise pour des stages et projets...
+                  INFONET devient partenaire certifié Microsoft pour offrir 
+                  des solutions cloud Azure à ses clients...
                 </p>
                 <Link
-                  href="/news/partenariat-agroalimentaire"
+                  href="/blog/partenariat-microsoft"
                   className="text-blue-600 font-semibold hover:text-blue-700 inline-flex items-center"
                 >
                   Lire la suite
@@ -443,22 +443,22 @@ export default function HomeContent() {
             </article>
 
             <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="h-48 bg-gradient-to-br from-blue-500 to-yellow-500 flex items-center justify-center">
+              <div className="h-48 bg-gradient-to-br from-blue-500 to-green-500 flex items-center justify-center">
                 <span className="text-white text-6xl">🏆</span>
               </div>
               <div className="p-6">
-                <div className="text-sm text-yellow-600 mb-2 font-semibold">
+                <div className="text-sm text-green-600 mb-2 font-semibold">
                   5 Janvier 2025
                 </div>
                 <h3 className="text-xl font-bold text-blue-900 mb-3">
-                  Prix d'excellence académique 2024
+                  Prix Meilleure Entreprise IT 2024
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  ISEAV WALUNGU reçoit le prix national d'excellence pour l'innovation 
-                  dans l'enseignement agricole...
+                  INFONET remporte le prix de la meilleure entreprise IT du Burundi 
+                  pour ses innovations technologiques...
                 </p>
                 <Link
-                  href="/news/prix-excellence-2024"
+                  href="/blog/prix-entreprise-it-2024"
                   className="text-blue-600 font-semibold hover:text-blue-700 inline-flex items-center"
                 >
                   Lire la suite
@@ -482,7 +482,7 @@ export default function HomeContent() {
 
           <div className="text-center mt-12">
             <Link
-              href="/news"
+              href="/blog"
               className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 text-lg"
             >
               Voir toutes les actualités
@@ -504,57 +504,57 @@ export default function HomeContent() {
         </div>
       </section>
 
-      {/* Academic Excellence */}
+      {/* IT Excellence */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-bold text-blue-900 mb-6">
-                Excellence Académique
+                Excellence Technologique
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                ISEAV WALUNGU se distingue par son approche innovante de l'enseignement agricole et 
-                des sciences appliquées. Nos programmes académiques sont conçus pour répondre aux 
-                défis contemporains de l'agriculture moderne et du développement durable.
+                INFONET se distingue par son approche innovante des solutions IT et 
+                technologies numériques. Nos services sont conçus pour répondre aux 
+                défis contemporains de la transformation digitale des entreprises au Burundi.
               </p>
               
               <div className="space-y-4 mb-8">
                 <div className="flex items-start">
                   <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-4 mt-1">
-                    <span className="text-blue-600 text-xl">🎓</span>
+                    <span className="text-white text-xl">💻</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-blue-900 mb-1">Formation Pratique</h3>
-                    <p className="text-gray-600">Apprentissage concret dans nos laboratoires et fermes d'application</p>
+                    <h3 className="font-semibold text-blue-900 mb-1">Solutions Sur Mesure</h3>
+                    <p className="text-gray-600">Développement personnalisé adapté aux besoins spécifiques de votre entreprise</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="w-6 h-6 bg-yellow-600 rounded-full flex items-center justify-center mr-4 mt-1">
-                    <span className="text-blue-600 text-xl">🌍</span>
+                  <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mr-4 mt-1">
+                    <span className="text-white text-xl">🌍</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-blue-900 mb-1">Perspective Internationale</h3>
-                    <p className="text-gray-600">Échanges et partenariats avec des institutions mondiales</p>
+                    <h3 className="font-semibold text-blue-900 mb-1">Technologies Modernes</h3>
+                    <p className="text-gray-600">Utilisation des dernières technologies et standards internationaux</p>
                   </div>
                 </div>
               </div>
 
               <div className="mt-8">
                 <Link
-                  href="/academics"
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  href="/services"
+                  className="bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
-                  Découvrir nos programmes
+                  Découvrir nos services
                 </Link>
               </div>
             </div>
 
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-blue-500 to-yellow-500 rounded-3xl p-8">
+              <div className="aspect-square bg-gradient-to-br from-blue-500 to-green-500 rounded-3xl p-8">
                 <div className="h-full bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
                   <div className="text-center text-white">
-                    <span className="text-8xl mb-4 block">📚</span>
-                    <h3 className="text-2xl font-bold">Innovation & Tradition</h3>
+                    <span className="text-8xl mb-4 block">💻</span>
+                    <h3 className="text-2xl font-bold">Innovation & Technologie</h3>
                   </div>
                 </div>
               </div>
@@ -563,15 +563,15 @@ export default function HomeContent() {
         </div>
       </section>
 
-      {/* Professors Section */}
+      {/* Team Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-blue-900 mb-4">
-              Nos Professeurs & Conférenciers
+              Notre Équipe d'Experts IT
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Une équipe d'experts passionnés dédiés à l'excellence académique et à la formation pratique
+              Une équipe de professionnels qualifiés dédiés à l'excellence technologique et à l'innovation
             </p>
           </div>
           
@@ -600,7 +600,7 @@ export default function HomeContent() {
                 transform: `translateX(${professorsOffset}px)`
               }}
             >
-              {/* Professor 1 */}
+              {/* Expert 1 */}
               <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
@@ -608,23 +608,23 @@ export default function HomeContent() {
                   <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
                     <img 
                       src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
-                      alt="Dr. Mwami Furaha"
+                      alt="Jean-Baptiste Niyonzima"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Mwami Furaha</h3>
-                  <p className="text-cyan-600 font-semibold text-center mb-3">Directeur Agronomie</p>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Jean-Baptiste Niyonzima</h3>
+                  <p className="text-blue-600 font-semibold text-center mb-3">Directeur Technique</p>
                   <p className="text-gray-600 text-sm text-center mb-4">
-                    Spécialiste en phytopathologie et protection des cultures avec 20 ans d'expérience
+                    Ingénieur en informatique spécialisé en architecture cloud et sécurité réseau
                   </p>
                   <div className="flex justify-center space-x-2">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Agronomie</span>
-                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Recherche</span>
+                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Cloud</span>
+                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Sécurité</span>
                   </div>
                 </div>
               </div>
 
-              {/* Professor 2 */}
+              {/* Expert 2 */}
               <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
@@ -632,23 +632,23 @@ export default function HomeContent() {
                   <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
                     <img 
                       src="https://images.unsplash.com/photo-1594736797933-d0dadb11fcfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
-                      alt="Dr. Grace Kahindo"
+                      alt="Arlette Uwimana"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Grace Kahindo</h3>
-                  <p className="text-cyan-600 font-semibold text-center mb-3">Professeure Biotechnologies</p>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Arlette Uwimana</h3>
+                  <p className="text-green-600 font-semibold text-center mb-3">Chef Développement Web</p>
                   <p className="text-gray-600 text-sm text-center mb-4">
-                    Experte en biotechnologies végétales et génomique avec formation internationale
+                    Développeuse Full-Stack spécialisée en React, Node.js et applications mobiles
                   </p>
                   <div className="flex justify-center space-x-2">
-                    <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">Biotech</span>
-                    <span className="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-xs">Génomique</span>
+                    <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">React</span>
+                    <span className="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-xs">Mobile</span>
                   </div>
                 </div>
               </div>
 
-              {/* Professor 3 */}
+              {/* Expert 3 */}
               <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
@@ -656,23 +656,23 @@ export default function HomeContent() {
                   <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
                     <img 
                       src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
-                      alt="Pr. Jean-Claude Mukendi"
+                      alt="Marc Ndikumana"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Pr. Jean-Claude Mukendi</h3>
-                  <p className="text-cyan-600 font-semibold text-center mb-3">Professeur Microbiologie</p>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Marc Ndikumana</h3>
+                  <p className="text-blue-600 font-semibold text-center mb-3">Ingénieur Réseau</p>
                   <p className="text-gray-600 text-sm text-center mb-4">
-                    Spécialiste en microbiologie appliquée et fermentation industrielle
+                    Spécialiste en infrastructure réseau et systèmes de télécommunications
                   </p>
                   <div className="flex justify-center space-x-2">
-                    <span className="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-xs">Microbiologie</span>
-                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Innovation</span>
+                    <span className="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-xs">Réseaux</span>
+                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Télécom</span>
                   </div>
                 </div>
               </div>
 
-              {/* Professor 4 */}
+              {/* Expert 4 */}
               <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
@@ -680,23 +680,23 @@ export default function HomeContent() {
                   <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
                     <img 
                       src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
-                      alt="Dr. Esperance Nyota"
+                      alt="Espérance Mukamana"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Esperance Nyota</h3>
-                  <p className="text-cyan-600 font-semibold text-center mb-3">Professeure Technologie Alimentaire</p>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Espérance Mukamana</h3>
+                  <p className="text-green-600 font-semibold text-center mb-3">Responsable Cybersécurité</p>
                   <p className="text-gray-600 text-sm text-center mb-4">
-                    Innovation alimentaire et développement de produits durables
+                    Experte en sécurité informatique et protection des données d'entreprise
                   </p>
                   <div className="flex justify-center space-x-2">
-                    <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Alimentaire</span>
-                    <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">Innovation</span>
+                    <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Sécurité</span>
+                    <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">Protection</span>
                   </div>
                 </div>
               </div>
 
-              {/* Professor 5 */}
+              {/* Expert 5 */}
               <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
@@ -704,23 +704,23 @@ export default function HomeContent() {
                   <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
                     <img 
                       src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
-                      alt="Dr. Claudine Bahati"
+                      alt="Claudine Nibigira"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Claudine Bahati</h3>
-                  <p className="text-cyan-600 font-semibold text-center mb-3">Directrice de Recherche</p>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Claudine Nibigira</h3>
+                  <p className="text-blue-600 font-semibold text-center mb-3">Directrice Innovation</p>
                   <p className="text-gray-600 text-sm text-center mb-4">
-                    Intelligence artificielle appliquée à l'agriculture moderne
+                    Intelligence artificielle et solutions d'automatisation d'entreprise
                   </p>
                   <div className="flex justify-center space-x-2">
                     <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs">IA</span>
-                    <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">AgriTech</span>
+                    <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">Innovation</span>
                   </div>
                 </div>
               </div>
 
-              {/* Duplicate first few for seamless loop */}
+              {/* Duplicate first expert for seamless loop */}
               <div className="flex-shrink-0 w-80 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
@@ -728,18 +728,18 @@ export default function HomeContent() {
                   <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
                     <img 
                       src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
-                      alt="Dr. Mwami Furaha"
+                      alt="Jean-Baptiste Niyonzima"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Dr. Mwami Furaha</h3>
-                  <p className="text-cyan-600 font-semibold text-center mb-3">Directeur Agronomie</p>
+                  <h3 className="text-xl font-bold text-blue-900 mb-2 text-center">Jean-Baptiste Niyonzima</h3>
+                  <p className="text-blue-600 font-semibold text-center mb-3">Directeur Technique</p>
                   <p className="text-gray-600 text-sm text-center mb-4">
-                    Spécialiste en phytopathologie et protection des cultures avec 20 ans d'expérience
+                    Ingénieur en informatique spécialisé en architecture cloud et sécurité réseau
                   </p>
                   <div className="flex justify-center space-x-2">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Agronomie</span>
-                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Recherche</span>
+                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Cloud</span>
+                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Sécurité</span>
                   </div>
                 </div>
               </div>
@@ -753,10 +753,10 @@ export default function HomeContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-blue-900 mb-4">
-              Nos Partenaires Stratégiques
+              Nos Partenaires Technologiques
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Collaborations d'excellence avec des institutions de renommée internationale
+              Collaborations d'excellence avec les leaders mondiaux de la technologie
             </p>
           </div>
           
@@ -784,124 +784,124 @@ export default function HomeContent() {
               style={{ 
                 transform: `translateX(${partnersOffset}px)`
               }}>
-              {/* Partner 1 - Université de Kinshasa */}
+              {/* Partner 1 - Microsoft */}
               <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
                 <div className="w-16 h-16 mb-3 flex items-center justify-center">
                   <img 
-                    src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
-                    alt="Université de Kinshasa"
+                    src="https://images.unsplash.com/photo-1633419461186-7d40a38105ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Microsoft"
                     className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
-                <h3 className="text-sm font-bold text-gray-800 text-center">Université de Kinshasa</h3>
-                <p className="text-xs text-gray-600 text-center mt-1">Enseignement Supérieur</p>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Microsoft</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Cloud Solutions</p>
               </div>
 
-              {/* Partner 2 - Ministère Agriculture */}
+              {/* Partner 2 - Google */}
               <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
                 <div className="w-16 h-16 mb-3 flex items-center justify-center">
                   <img 
-                    src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
-                    alt="Ministère Agriculture RDC"
+                    src="https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Google Cloud"
                     className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
-                <h3 className="text-sm font-bold text-gray-800 text-center">Ministère Agriculture</h3>
-                <p className="text-xs text-gray-600 text-center mt-1">République Démocratique du Congo</p>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Google Cloud</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Infrastructure Cloud</p>
               </div>
 
-              {/* Partner 3 - CGIAR */}
+              {/* Partner 3 - AWS */}
               <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
                 <div className="w-16 h-16 mb-3 flex items-center justify-center">
                   <img 
-                    src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
-                    alt="CGIAR Research"
+                    src="https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Amazon AWS"
                     className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
-                <h3 className="text-sm font-bold text-gray-800 text-center">CGIAR</h3>
-                <p className="text-xs text-gray-600 text-center mt-1">Recherche Agricole Mondiale</p>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Amazon AWS</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Services Cloud</p>
               </div>
 
-              {/* Partner 4 - FAO */}
+              {/* Partner 4 - Cisco */}
               <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
                 <div className="w-16 h-16 mb-3 flex items-center justify-center">
                   <img 
-                    src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
-                    alt="FAO Congo"
+                    src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Cisco"
                     className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
-                <h3 className="text-sm font-bold text-gray-800 text-center">FAO Congo</h3>
-                <p className="text-xs text-gray-600 text-center mt-1">Organisation des Nations Unies</p>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Cisco</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Réseaux & Sécurité</p>
               </div>
 
-              {/* Partner 5 - Union Européenne */}
+              {/* Partner 5 - Oracle */}
               <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
                 <div className="w-16 h-16 mb-3 flex items-center justify-center">
                   <img 
-                    src="https://images.unsplash.com/photo-1464207687429-7505649dae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
-                    alt="Union Européenne"
+                    src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Oracle"
                     className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
-                <h3 className="text-sm font-bold text-gray-800 text-center">Union Européenne</h3>
-                <p className="text-xs text-gray-600 text-center mt-1">Coopération Internationale</p>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Oracle</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Bases de Données</p>
               </div>
 
-              {/* Partner 6 - Banque Mondiale */}
+              {/* Partner 6 - HP Enterprise */}
               <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
                 <div className="w-16 h-16 mb-3 flex items-center justify-center">
                   <img 
-                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
-                    alt="Banque Mondiale"
+                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="HP Enterprise"
                     className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
-                <h3 className="text-sm font-bold text-gray-800 text-center">Banque Mondiale</h3>
-                <p className="text-xs text-gray-600 text-center mt-1">Financement & Développement</p>
+                <h3 className="text-sm font-bold text-gray-800 text-center">HP Enterprise</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Serveurs & Infrastructure</p>
               </div>
 
-              {/* Partner 7 - ONU */}
+              {/* Partner 7 - IBM */}
               <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
                 <div className="w-16 h-16 mb-3 flex items-center justify-center">
                   <img 
-                    src="https://images.unsplash.com/photo-1515847049296-a281d6401047?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
-                    alt="ONU Développement"
+                    src="https://images.unsplash.com/photo-1606868306217-dbf5046868d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="IBM"
                     className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
-                <h3 className="text-sm font-bold text-gray-800 text-center">PNUD</h3>
-                <p className="text-xs text-gray-600 text-center mt-1">Programme des Nations Unies</p>
+                <h3 className="text-sm font-bold text-gray-800 text-center">IBM</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Solutions d'Entreprise</p>
               </div>
 
-              {/* Duplicate first few for seamless loop */}
+              {/* Duplicate first partner for seamless loop */}
               <div className="flex-shrink-0 w-64 h-40 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center p-6 cursor-pointer border border-gray-200"
                    onMouseEnter={(e) => e.currentTarget.closest('.group')?.classList.add('paused')}
                    onMouseLeave={(e) => e.currentTarget.closest('.group')?.classList.remove('paused')}>
                 <div className="w-16 h-16 mb-3 flex items-center justify-center">
                   <img 
-                    src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
-                    alt="Université de Kinshasa"
+                    src="https://images.unsplash.com/photo-1633419461186-7d40a38105ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                    alt="Microsoft"
                     className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
-                <h3 className="text-sm font-bold text-gray-800 text-center">Université de Kinshasa</h3>
-                <p className="text-xs text-gray-600 text-center mt-1">Enseignement Supérieur</p>
+                <h3 className="text-sm font-bold text-gray-800 text-center">Microsoft</h3>
+                <p className="text-xs text-gray-600 text-center mt-1">Cloud Solutions</p>
               </div>
             </div>
           </div>
@@ -909,40 +909,40 @@ export default function HomeContent() {
           {/* Partnership Stats */}
           <div className="mt-16 grid md:grid-cols-3 gap-8 text-center">
             <div className="bg-white rounded-lg p-6 shadow-md">
-              <div className="text-3xl font-bold text-blue-600 mb-2">15+</div>
-              <div className="text-gray-600">Partenaires Internationaux</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">10+</div>
+              <div className="text-gray-600">Partenaires Technologiques</div>
             </div>
             <div className="bg-white rounded-lg p-6 shadow-md">
-              <div className="text-3xl font-bold text-green-600 mb-2">50+</div>
-              <div className="text-gray-600">Projets Collaboratifs</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">100+</div>
+              <div className="text-gray-600">Solutions Déployées</div>
             </div>
             <div className="bg-white rounded-lg p-6 shadow-md">
-              <div className="text-3xl font-bold text-amber-600 mb-2">8</div>
-              <div className="text-gray-600">Pays Partenaires</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">5</div>
+              <div className="text-gray-600">Pays d'Afrique de l'Est</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-blue-900 text-white">
+      <section className="py-20 bg-gradient-to-r from-blue-900 via-blue-800 to-green-800 text-white">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6">Rejoignez l'Excellence</h2>
+          <h2 className="text-4xl font-bold mb-6">Transformez Votre Entreprise Aujourd'hui</h2>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Découvrez comment ISEAV WALUNGU peut transformer votre avenir académique et professionnel dans l'agriculture et les sciences appliquées
+            Découvrez comment INFONET peut révolutionner votre infrastructure IT et accélérer votre transformation digitale au Burundi
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              href="/admissions" 
-              className="bg-yellow-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              href="/contact" 
+              className="bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-green-700 hover:to-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              Candidater maintenant
+              Demander un Devis Gratuit
             </Link>
             <Link 
-              href="/contact" 
-              className="border-2 border-yellow-400 text-yellow-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-400 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              href="/services" 
+              className="border-2 border-green-400 text-green-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-400 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              Nous contacter
+              Découvrir nos Services
             </Link>
           </div>
         </div>

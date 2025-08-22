@@ -11,9 +11,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title:
-    "ISEAV WALUNGU | Institut Supérieur d'Études Agronomiques et Vétérinaires - Walungu",
+    "INFONET | Solutions IT et Technologies Numériques - Burundi",
   description:
-    "Institut Supérieur d'Études Agronomiques et Vétérinaires - Université de Walungu",
+    "INFONET - Entreprise leader en solutions informatiques et technologies numériques au Burundi. Services IT, développement web, connectivité internet et solutions technologiques innovantes.",
 };
 
 export default function RootLayout({

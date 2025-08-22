@@ -24,98 +24,98 @@ export default function ContactContent() {
   const departments = [
     {
       name: 'Direction Générale',
-      email: 'direction@iseav-aru.tn',
-      phone: '+216 71 123 000',
-      description: 'Administration générale et direction exécutive',
-      head: 'Prof. Dr. Rachid Ben Mansour',
+      email: 'direction@infonet.bi',
+      phone: '+257 69 08 08 00',
+      description: 'Administration générale et stratégie d\'entreprise',
+      head: 'Jean-Baptiste Niyonzima',
       color: 'from-blue-500 to-indigo-600',
-      icon: '🏛️'
+      icon: '🏢'
     },
     {
-      name: 'Admissions & Scolarité',
-      email: 'admissions@iseav-aru.tn',
-      phone: '+216 71 123 456',
-      description: 'Candidatures, inscriptions et services étudiants',
-      head: 'Dr. Leila Gharbi',
+      name: 'Développement Web',
+      email: 'web@infonet.bi',
+      phone: '+257 69 08 08 01',
+      description: 'Conception et développement de sites web et applications',
+      head: 'Arlette Uwimana',
       color: 'from-green-500 to-emerald-600',
-      icon: '🎓'
+      icon: '💻'
     },
     {
-      name: 'Recherche & Innovation',
-      email: 'recherche@iseav-aru.tn',
-      phone: '+216 71 789 012',
-      description: 'Projets de recherche et partenariats scientifiques',
-      head: 'Prof. Mahmoud Sellami',
+      name: 'Infrastructure & Réseaux',
+      email: 'network@infonet.bi',
+      phone: '+257 69 08 08 02',
+      description: 'Solutions réseau, connectivité et infrastructure IT',
+      head: 'Marc Ndikumana',
       color: 'from-purple-500 to-violet-600',
-      icon: '🔬'
+      icon: '🌐'
     },
     {
-      name: 'Relations Internationales',
-      email: 'international@iseav-aru.tn',
-      phone: '+216 71 456 789',
-      description: 'Mobilité étudiante et coopération internationale',
-      head: 'Dr. Sonia Bouaziz',
+      name: 'Cybersécurité',
+      email: 'security@infonet.bi',
+      phone: '+257 69 08 08 03',
+      description: 'Sécurité informatique et protection des données',
+      head: 'Espérance Mukamana',
       color: 'from-teal-500 to-cyan-600',
-      icon: '🌍'
+      icon: '🔒'
     },
     {
-      name: 'Vie Étudiante',
-      email: 'vie-etudiante@iseav-aru.tn',
-      phone: '+216 71 654 321',
-      description: 'Activités, clubs et services aux étudiants',
-      head: 'Mme Fatma Ben Ali',
+      name: 'Support Technique',
+      email: 'support@infonet.bi',
+      phone: '+257 69 08 08 04',
+      description: 'Assistance technique et maintenance informatique',
+      head: 'Claude Ntiranyibagira',
       color: 'from-orange-500 to-red-600',
-      icon: '🎪'
+      icon: '🛠️'
     },
     {
-      name: 'Bibliothèque & Documentation',
-      email: 'bibliotheque@iseav-aru.tn',
-      phone: '+216 71 987 654',
-      description: 'Ressources documentaires et services numériques',
-      head: 'M. Ahmed Trabelsi',
+      name: 'Innovation & Cloud',
+      email: 'cloud@infonet.bi',
+      phone: '+257 69 08 08 05',
+      description: 'Solutions cloud et technologies émergentes',
+      head: 'Claudine Nibigira',
       color: 'from-pink-500 to-rose-600',
-      icon: '📚'
+      icon: '☁️'
     }
   ]
 
   const contactInfo = [
     {
       type: 'Adresse Principal',
-      value: 'Avenue de la République, 2080 Ariana, Tunisie',
+      value: 'Boulevard de l\'Uprona, Bujumbura, Burundi',
       icon: '📍',
       color: 'from-blue-500 to-indigo-600'
     },
     {
       type: 'Téléphone Général',
-      value: '+216 71 123 456',
+      value: '+257 69 08 08 00',
       icon: '📞',
       color: 'from-green-500 to-emerald-600'
     },
     {
       type: 'Email Principal',
-      value: 'info@iseav-aru.tn',
+      value: 'info@infonet.bi',
       icon: '✉️',
       color: 'from-purple-500 to-violet-600'
     },
     {
-      type: 'Fax',
-      value: '+216 71 123 457',
-      icon: '📠',
+      type: 'Support 24/7',
+      value: '+257 69 08 08 99',
+      icon: '🆘',
       color: 'from-teal-500 to-cyan-600'
     }
   ]
 
   const officeHours = [
-    { day: 'Lundi - Vendredi', hours: '8h00 - 17h00', type: 'Administration' },
-    { day: 'Samedi', hours: '8h00 - 12h00', type: 'Services essentiels' },
-    { day: 'Dimanche', hours: 'Fermé', type: 'Repos hebdomadaire' }
+    { day: 'Lundi - Vendredi', hours: '8h00 - 18h00', type: 'Services complets' },
+    { day: 'Samedi', hours: '9h00 - 13h00', type: 'Support technique' },
+    { day: 'Dimanche', hours: 'Support d\'urgence', type: 'Ligne d\'urgence uniquement' }
   ]
 
   const socialLinks = [
-    { name: 'Facebook', url: 'https://facebook.com/iseav.aru', icon: '📘', followers: '12K+' },
-    { name: 'LinkedIn', url: 'https://linkedin.com/school/iseav-aru', icon: '💼', followers: '8K+' },
-    { name: 'YouTube', url: 'https://youtube.com/@iseav-aru', icon: '📺', followers: '5K+' },
-    { name: 'Instagram', url: 'https://instagram.com/iseav_aru', icon: '📸', followers: '15K+' }
+    { name: 'Facebook', url: 'https://facebook.com/infonet.bi', icon: '📘', followers: '5K+' },
+    { name: 'LinkedIn', url: 'https://linkedin.com/company/infonet-bi', icon: '💼', followers: '3K+' },
+    { name: 'YouTube', url: 'https://youtube.com/@infonet-bi', icon: '📺', followers: '2K+' },
+    { name: 'Instagram', url: 'https://instagram.com/infonet.bi', icon: '📸', followers: '4K+' }
   ]
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -148,10 +148,10 @@ export default function ContactContent() {
   }
 
   const stats = [
-    { label: 'Étudiants Accompagnés', value: '1,200+', icon: '🎓', description: 'Chaque année' },
-    { label: 'Temps de Réponse', value: '< 24h', icon: '⚡', description: 'Réponse garantie' },
+    { label: 'Clients Accompagnés', value: '150+', icon: '🏢', description: 'Entreprises satisfaites' },
+    { label: 'Temps de Réponse', value: '< 2h', icon: '⚡', description: 'Support technique' },
     { label: 'Satisfaction', value: '98%', icon: '😊', description: 'Clients satisfaits' },
-    { label: 'Langues Parlées', value: '5', icon: '🌐', description: 'Support multilingue' }
+    { label: 'Disponibilité', value: '24/7', icon: '🌐', description: 'Support continu' }
   ]
 
   return (
@@ -164,35 +164,35 @@ export default function ContactContent() {
             backgroundImage: `url(https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80)` 
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-900/85 via-blue-800/75 to-cyan-700/85" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/75 to-green-700/85" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
         
         <div className="relative z-10 h-full flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
             <div className={`text-center text-white transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 animate-fade-in-up">
-                <span className="bg-gradient-to-r from-cyan-300 via-white to-blue-300 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-300 via-white to-green-300 bg-clip-text text-transparent">
                   Contactez-Nous
                 </span>
               </h1>
-              <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold mb-6 text-cyan-100 animate-fade-in-up delay-200">
-                Nous Sommes Là Pour Vous
+              <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold mb-6 text-blue-100 animate-fade-in-up delay-200">
+                Votre Partenaire Technologique
               </h2>
               <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-4xl mx-auto leading-relaxed text-gray-200 animate-fade-in-up delay-400">
-                Contactez notre équipe dédiée pour toutes vos questions concernant ISEAV-ARU, 
-                nos programmes et services.
+                Contactez notre équipe d'experts pour tous vos besoins en solutions IT, 
+                développement web et infrastructure technologique.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up delay-600">
                 <a 
                   href="#contact-form"
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-10 py-5 rounded-full text-xl font-bold hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-110 shadow-2xl hover:shadow-cyan-500/25"
+                  className="bg-gradient-to-r from-blue-500 to-green-500 text-white px-10 py-5 rounded-full text-xl font-bold hover:from-blue-600 hover:to-green-600 transition-all duration-300 transform hover:scale-110 shadow-2xl hover:shadow-blue-500/25"
                 >
-                  Nous Écrire
+                  Demander un Devis
                 </a>
                 <a 
-                  href="tel:+21671123456"
-                  className="border-3 border-white text-white px-10 py-5 rounded-full text-xl font-bold hover:bg-white hover:text-cyan-900 transition-all duration-300 transform hover:scale-110 shadow-2xl"
+                  href="tel:+25769080800"
+                  className="border-3 border-white text-white px-10 py-5 rounded-full text-xl font-bold hover:bg-white hover:text-blue-900 transition-all duration-300 transform hover:scale-110 shadow-2xl"
                 >
                   📞 Nous Appeler
                 </a>
@@ -287,10 +287,10 @@ export default function ContactContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Informations de <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Contact</span>
+              Informations de <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Contact</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Toutes les coordonnées pour nous joindre facilement
+              Toutes les coordonnées pour nous joindre et démarrer votre projet IT
             </p>
           </div>
 
@@ -338,10 +338,10 @@ export default function ContactContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Contacts par <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Département</span>
+              Nos <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Expertises</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Contactez directement le département concerné par votre demande
+              Contactez directement l'expert spécialisé dans votre domaine IT
             </p>
           </div>
 
@@ -410,10 +410,10 @@ export default function ContactContent() {
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Envoyez-nous un <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Message</span>
+              Démarrez votre <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Projet</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Notre équipe vous répondra dans les plus brefs délais
+              Décrivez vos besoins IT et recevez un devis personnalisé sous 24h
             </p>
           </div>
 
@@ -509,12 +509,12 @@ export default function ContactContent() {
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-cyan-500 focus:outline-none transition-colors duration-300 bg-white"
                 >
                   <option value="">Sélectionnez un sujet</option>
-                  <option value="admissions">Admissions & Inscriptions</option>
-                  <option value="programs">Programmes de Formation</option>
-                  <option value="research">Recherche & Partenariats</option>
-                  <option value="international">Relations Internationales</option>
-                  <option value="student-life">Vie Étudiante</option>
-                  <option value="employment">Emploi & Carrières</option>
+                  <option value="web-development">Développement Web</option>
+                  <option value="mobile-apps">Applications Mobiles</option>
+                  <option value="infrastructure">Infrastructure & Réseaux</option>
+                  <option value="security">Cybersécurité</option>
+                  <option value="cloud">Solutions Cloud</option>
+                  <option value="support">Support Technique</option>
                   <option value="other">Autre demande</option>
                 </select>
               </div>
@@ -582,7 +582,7 @@ export default function ContactContent() {
             {/* Office Hours */}
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center lg:text-left">
-                Heures d'<span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Ouverture</span>
+                Heures d'<span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Ouverture</span>
               </h2>
               
               <div className="space-y-4">
@@ -607,18 +607,18 @@ export default function ContactContent() {
               </div>
 
               <div className="mt-8 p-6 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl border border-cyan-100">
-                <h3 className="text-xl font-bold text-cyan-800 mb-3 flex items-center">
-                  <span className="text-2xl mr-3">🚨</span>
-                  Urgences
+                <h3 className="text-xl font-bold text-blue-800 mb-3 flex items-center">
+                  <span className="text-2xl mr-3">🆘</span>
+                  Support Urgence
                 </h3>
-                <p className="text-cyan-700 mb-3">
-                  Pour les urgences académiques ou administratives en dehors des heures d'ouverture
+                <p className="text-blue-700 mb-3">
+                  Pour les urgences techniques ou pannes système en dehors des heures d'ouverture
                 </p>
                 <a 
-                  href="tel:+21671123000"
-                  className="inline-block bg-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-cyan-700 transition-colors duration-300"
+                  href="tel:+25769080899"
+                  className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300"
                 >
-                  📞 Ligne d'urgence: +216 71 123 000
+                  📞 Support 24/7: +257 69 08 08 99
                 </a>
               </div>
             </div>
@@ -626,7 +626,7 @@ export default function ContactContent() {
             {/* Social Media & Additional Info */}
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center lg:text-left">
-                Suivez-<span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Nous</span>
+                Suivez-<span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Nous</span>
               </h2>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
@@ -652,32 +652,32 @@ export default function ContactContent() {
               <div className="space-y-6">
                 <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
                   <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                    <span className="text-2xl mr-3">🎯</span>
-                    Rendez-vous Personnalisé
+                    <span className="text-2xl mr-3">💼</span>
+                    Consultation IT Gratuite
                   </h3>
                   <p className="text-gray-700 mb-4">
-                    Planifiez un entretien avec nos conseillers pour une orientation personnalisée
+                    Planifiez un audit IT gratuit avec nos experts pour optimiser votre infrastructure
                   </p>
                   <Link 
-                    href="/visit"
-                    className="inline-block bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105"
+                    href="/contact"
+                    className="inline-block bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-green-700 transition-all duration-300 transform hover:scale-105"
                   >
-                    Planifier une Visite →
+                    Réserver un Audit →
                   </Link>
                 </div>
 
                 <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
                   <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                    <span className="text-2xl mr-3">🚌</span>
+                    <span className="text-2xl mr-3">📍</span>
                     Comment Nous Trouver
                   </h3>
                   <p className="text-gray-700 mb-3">
-                    Facilement accessible en transport public
+                    Facilement accessible dans le centre de Bujumbura
                   </p>
                   <div className="text-sm text-gray-600">
-                    <div>• Bus lignes 15, 28, 42 - Arrêt "ISEAV-ARU"</div>
-                    <div>• Métro ligne 2 - Station "Ariana Centre" (10min à pied)</div>
-                    <div>• Parking gratuit disponible sur le campus</div>
+                    <div>• Boulevard de l'Uprona, proche Banque Centrale</div>
+                    <div>• Parking client disponible</div>
+                    <div>• Accès transport public - Arrêt "Uprona"</div>
                   </div>
                 </div>
               </div>
@@ -691,10 +691,10 @@ export default function ContactContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Notre <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Localisation</span>
+              Notre <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Localisation</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Campus principal situé au cœur d'Ariana, facilement accessible
+              Bureaux situés au cœur de Bujumbura, facilement accessible pour nos clients
             </p>
           </div>
 
@@ -704,13 +704,13 @@ export default function ContactContent() {
                 <div className="text-6xl mb-4">🗺️</div>
                 <h3 className="text-2xl font-bold text-gray-800 mb-2">Carte Interactive</h3>
                 <p className="text-gray-600 mb-4">
-                  Avenue de la République, 2080 Ariana, Tunisie
+                  Boulevard de l'Uprona, Bujumbura, Burundi
                 </p>
                 <a
-                  href="https://maps.google.com/?q=ISEAV-ARU+Ariana+Tunisie"
+                  href="https://maps.google.com/?q=Boulevard+Uprona+Bujumbura+Burundi"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105"
+                  className="inline-block bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-green-700 transition-all duration-300 transform hover:scale-105"
                 >
                   Ouvrir dans Google Maps →
                 </a>
@@ -721,27 +721,27 @@ export default function ContactContent() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-cyan-600 via-blue-600 to-teal-600">
+      <section className="py-20 bg-gradient-to-r from-blue-600 via-blue-600 to-green-600">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
-            Prêt à Nous Rejoindre ?
+            Prêt à Transformer votre IT ?
           </h2>
           <p className="text-xl text-white/90 mb-10 max-w-4xl mx-auto leading-relaxed">
-            Découvrez toutes les opportunités qu'offre ISEAV-ARU pour votre formation 
-            et votre développement professionnel.
+            Découvrez comment INFONET peut révolutionner votre infrastructure technologique 
+            et accélérer votre transformation digitale.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link 
-              href="/admissions" 
-              className="bg-white text-cyan-600 px-10 py-5 rounded-full text-lg font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-110 shadow-2xl"
+              href="/services" 
+              className="bg-white text-blue-600 px-10 py-5 rounded-full text-lg font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-110 shadow-2xl"
             >
-              Candidater Maintenant
+              Voir nos Services
             </Link>
             <Link 
-              href="/programs" 
-              className="border-3 border-white text-white px-10 py-5 rounded-full text-lg font-bold hover:bg-white hover:text-cyan-600 transition-all duration-300 transform hover:scale-110 shadow-2xl"
+              href="/portfolio" 
+              className="border-3 border-white text-white px-10 py-5 rounded-full text-lg font-bold hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-110 shadow-2xl"
             >
-              Découvrir nos Programmes
+              Nos Réalisations
             </Link>
           </div>
         </div>

@@ -1,11 +1,12 @@
 import BlogEditor from '@/components/admin/BlogEditor'
 
 interface EditBlogPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-export default function EditBlogPage({ params }: EditBlogPageProps) {
-  return <BlogEditor mode="edit" id={params.id} />
+export default async function EditBlogPage({ params }: EditBlogPageProps) {
+  const { id } = await params
+  return <BlogEditor mode="edit" id={id} />
 }

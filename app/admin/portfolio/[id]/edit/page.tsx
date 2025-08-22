@@ -1,9 +1,10 @@
 import PortfolioEditor from '@/components/admin/PortfolioEditor'
 
 interface EditPortfolioPageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
-export default function EditPortfolioPage({ params }: EditPortfolioPageProps) {
-  return <PortfolioEditor mode="edit" id={params.id} />
+export default async function EditPortfolioPage({ params }: EditPortfolioPageProps) {
+  const { id } = await params
+  return <PortfolioEditor mode="edit" id={id} />
 }

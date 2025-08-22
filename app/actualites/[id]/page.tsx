@@ -1,11 +1,12 @@
 import ActualiteDetailContent from '@/components/pages/ActualiteDetailContent'
 
 interface ActualiteDetailPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-export default function ActualiteDetailPage({ params }: ActualiteDetailPageProps) {
-  return <ActualiteDetailContent id={params.id} />
+export default async function ActualiteDetailPage({ params }: ActualiteDetailPageProps) {
+  const { id } = await params
+  return <ActualiteDetailContent id={id} />
 }

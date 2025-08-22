@@ -1,9 +1,14 @@
-import AdminLayout from '@/components/admin/AdminLayout'
+import ConditionalAdminLayout from "@/components/admin/ConditionalAdminLayout";
+import AuthProvider from "@/components/auth/AuthProvider";
 
 export default function AdminRootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return <AdminLayout>{children}</AdminLayout>
+  return (
+    <AuthProvider>
+      <ConditionalAdminLayout>{children}</ConditionalAdminLayout>
+    </AuthProvider>
+  );
 }

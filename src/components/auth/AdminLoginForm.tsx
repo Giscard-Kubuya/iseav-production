@@ -28,15 +28,22 @@ export default function AdminLoginForm() {
     setError('')
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
       // Check demo accounts
       const account = demoAccounts.find(
         acc => acc.email === formData.email && acc.password === formData.password
       )
 
       if (account) {
+        // Verify API connection
+        const { websiteApi } = await import('@/lib/api-services')
+        try {
+          await websiteApi.getCurrent()
+        } catch (apiError) {
+          console.error('API connection failed:', apiError)
+          setError('Unable to connect to API. Please ensure the backend is running.')
+          return
+        }
+
         // Store auth info in localStorage (in production, use secure HTTP-only cookies)
         const authData = {
           user: {
@@ -46,7 +53,7 @@ export default function AdminLoginForm() {
             role: account.role,
             avatar: `https://images.unsplash.com/photo-${account.role === 'admin' ? '1472099645785-5658abf4ff4e' : account.role === 'editor' ? '1494790108755-2616b612b786' : '1438761681033-6461ffad8d80'}?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`
           },
-          token: `demo_token_${Date.now()}`,
+          token: process.env.NEXT_PUBLIC_API_TOKEN || `demo_token_${Date.now()}`,
           expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
         }
         

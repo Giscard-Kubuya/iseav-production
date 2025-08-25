@@ -1,86 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
+import { useGalleryItems, useGalleryItemMutations } from '@/hooks/useGalleryItems'
+import { useDebounce } from '@/hooks/useApi'
+import { GalleryItem } from '@/lib/api'
+import GalleryEditor from './GalleryEditor'
 
-interface GalleryItem {
-  id: number
-  title: string
-  description: string
-  category: 'events' | 'office' | 'team' | 'projects' | 'awards' | 'training'
-  imageUrl: string
-  uploadDate: string
-  uploader: string
-  tags: string[]
-  featured: boolean
-  published: boolean
-  views: number
-  downloads: number
-}
 
 export default function GalleryManagement() {
-  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([
-    {
-      id: 1,
-      title: 'Cérémonie Prix Innovation IT 2025',
-      description: 'INFONET reçoit le prestigieux Prix Innovation IT Burundi 2025',
-      category: 'awards',
-      imageUrl: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      uploadDate: '2025-01-20',
-      uploader: 'Direction INFONET',
-      tags: ['prix', 'innovation', 'reconnaissance'],
-      featured: true,
-      published: true,
-      views: 456,
-      downloads: 23
-    },
-    {
-      id: 2,
-      title: 'Équipe INFONET 2025',
-      description: 'Photo officielle de l\'équipe INFONET pour l\'année 2025',
-      category: 'team',
-      imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      uploadDate: '2025-01-15',
-      uploader: 'RH Department',
-      tags: ['équipe', 'photo officielle', '2025'],
-      featured: true,
-      published: true,
-      views: 234,
-      downloads: 12
-    },
-    {
-      id: 3,
-      title: 'Formation Cloud Computing',
-      description: 'Session de formation sur les technologies cloud organisée pour nos clients',
-      category: 'training',
-      imageUrl: 'https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      uploadDate: '2025-01-10',
-      uploader: 'Équipe Formation',
-      tags: ['formation', 'cloud', 'clients'],
-      featured: false,
-      published: true,
-      views: 189,
-      downloads: 8
-    },
-    {
-      id: 4,
-      title: 'Nouveaux Bureaux INFONET',
-      description: 'Inauguration de nos nouveaux bureaux modernes à Bujumbura',
-      category: 'office',
-      imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      uploadDate: '2024-12-15',
-      uploader: 'Direction INFONET',
-      tags: ['bureaux', 'inauguration', 'moderne'],
-      featured: false,
-      published: true,
-      views: 312,
-      downloads: 15
-    }
-  ])
-
   const [filter, setFilter] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedItems, setSelectedItems] = useState<number[]>([])
+  const [showEditor, setShowEditor] = useState(false)
+  const [editingItem, setEditingItem] = useState<GalleryItem | null>(null)
+  const debouncedSearch = useDebounce(searchTerm, 500)
+
+  const { data: galleryItems, loading, error, updateParams, refetch } = useGalleryItems()
+  const mutations = useGalleryItemMutations()
+
+  // Filter gallery items locally to avoid API loop issues
+  const filteredGalleryItems = useMemo(() => {
+    if (!galleryItems) return []
+    
+    return galleryItems.filter(item => {
+      // Filter by category
+      if (filter !== 'all' && ['events', 'office', 'team', 'projects', 'awards', 'training'].includes(filter)) {
+        if (item.category !== filter) return false
+      }
+      
+      // Filter by special flags
+      if (filter === 'featured' && !item.featured) return false
+      if (filter === 'published' && !item.published) return false
+      
+      // Filter by search term
+      if (debouncedSearch) {
+        const searchLower = debouncedSearch.toLowerCase()
+        return item.title.toLowerCase().includes(searchLower) || 
+               item.description?.toLowerCase().includes(searchLower)
+      }
+      
+      return true
+    })
+  }, [galleryItems, filter, debouncedSearch])
 
   const categories = {
     events: 'Événements',
@@ -91,40 +53,56 @@ export default function GalleryManagement() {
     training: 'Formations'
   }
 
-  const filteredItems = galleryItems.filter(item => {
-    const matchesFilter = filter === 'all' || item.category === filter || 
-                         (filter === 'featured' && item.featured) ||
-                         (filter === 'published' && item.published)
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-    return matchesFilter && matchesSearch
-  })
-
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
-      setGalleryItems(galleryItems.filter(item => item.id !== id))
+      try {
+        await mutations.deleteItem(id, {
+          onSuccess: () => {
+            refetch()
+            setSelectedItems(prev => prev.filter(itemId => itemId !== id))
+          }
+        })
+      } catch (error) {
+        console.error('Error deleting gallery item:', error)
+      }
     }
   }
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = async () => {
     if (selectedItems.length === 0) return
     if (confirm(`Êtes-vous sûr de vouloir supprimer ${selectedItems.length} image(s) ?`)) {
-      setGalleryItems(galleryItems.filter(item => !selectedItems.includes(item.id)))
-      setSelectedItems([])
+      try {
+        await Promise.all(selectedItems.map(id => mutations.deleteItem(id)))
+        refetch()
+        setSelectedItems([])
+      } catch (error) {
+        console.error('Error bulk deleting gallery items:', error)
+      }
     }
   }
 
-  const handleToggleFeatured = (id: number) => {
-    setGalleryItems(galleryItems.map(item => 
-      item.id === id ? { ...item, featured: !item.featured } : item
-    ))
+  const handleToggleFeatured = async (id: number) => {
+    try {
+      await mutations.toggleFeatured(id, {
+        onSuccess: () => {
+          refetch()
+        }
+      })
+    } catch (error) {
+      console.error('Error toggling featured:', error)
+    }
   }
 
-  const handleTogglePublished = (id: number) => {
-    setGalleryItems(galleryItems.map(item => 
-      item.id === id ? { ...item, published: !item.published } : item
-    ))
+  const handleTogglePublished = async (id: number) => {
+    try {
+      await mutations.togglePublished(id, {
+        onSuccess: () => {
+          refetch()
+        }
+      })
+    } catch (error) {
+      console.error('Error toggling published:', error)
+    }
   }
 
   const handleSelectItem = (id: number) => {
@@ -136,16 +114,32 @@ export default function GalleryManagement() {
   }
 
   const handleSelectAll = () => {
-    if (selectedItems.length === filteredItems.length) {
+    if (selectedItems.length === (galleryItems?.length || 0)) {
       setSelectedItems([])
     } else {
-      setSelectedItems(filteredItems.map(item => item.id))
+      setSelectedItems(galleryItems?.map(item => item.id) || [])
     }
   }
 
-  const totalSize = galleryItems.length * 2.5 // Estimation en MB
-  const totalViews = galleryItems.reduce((sum, item) => sum + item.views, 0)
-  const totalDownloads = galleryItems.reduce((sum, item) => sum + item.downloads, 0)
+  const totalSize = (galleryItems?.length || 0) * 2.5 // Estimation en MB
+  const totalViews = galleryItems?.reduce((sum, item) => sum + item.views, 0) || 0
+  const totalDownloads = galleryItems?.reduce((sum, item) => sum + item.downloads, 0) || 0
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+        Erreur lors du chargement de la galerie: {error}
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -164,8 +158,11 @@ export default function GalleryManagement() {
               Supprimer ({selectedItems.length})
             </button>
           )}
-          <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
-            Uploader des Images
+          <button 
+            onClick={() => setShowEditor(true)}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+          >
+            Ajouter une Image
           </button>
         </div>
       </div>
@@ -200,17 +197,17 @@ export default function GalleryManagement() {
           </select>
         </div>
         
-        {filteredItems.length > 0 && (
+        {galleryItems && galleryItems.length > 0 && (
           <div className="flex items-center space-x-4">
             <label className="flex items-center">
               <input
                 type="checkbox"
-                checked={selectedItems.length === filteredItems.length}
+                checked={selectedItems.length === galleryItems.length}
                 onChange={handleSelectAll}
                 className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
               />
               <span className="ml-2 text-sm text-gray-700">
-                Sélectionner tout ({filteredItems.length})
+                Sélectionner tout ({galleryItems.length})
               </span>
             </label>
             {selectedItems.length > 0 && (
@@ -228,7 +225,7 @@ export default function GalleryManagement() {
           <div className="flex items-center">
             <div className="text-3xl mr-4">🖼️</div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{galleryItems.length}</p>
+              <p className="text-2xl font-bold text-gray-900">{galleryItems?.length || 0}</p>
               <p className="text-gray-600">Total Images</p>
             </div>
           </div>
@@ -237,7 +234,7 @@ export default function GalleryManagement() {
           <div className="flex items-center">
             <div className="text-3xl mr-4">⭐</div>
             <div>
-              <p className="text-2xl font-bold text-purple-600">{galleryItems.filter(item => item.featured).length}</p>
+              <p className="text-2xl font-bold text-purple-600">{galleryItems?.filter(item => item.featured).length || 0}</p>
               <p className="text-gray-600">En vedette</p>
             </div>
           </div>
@@ -264,9 +261,9 @@ export default function GalleryManagement() {
 
       {/* Gallery grid */}
       <div className="bg-white rounded-lg shadow p-6">
-        {filteredItems.length > 0 ? (
+        {filteredGalleryItems && filteredGalleryItems.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredItems.map((item) => (
+            {filteredGalleryItems.map((item) => (
               <div key={item.id} className="group relative bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
                 {/* Selection checkbox */}
                 <div className="absolute top-3 left-3 z-10">
@@ -295,10 +292,10 @@ export default function GalleryManagement() {
                 {/* Image */}
                 <div className="aspect-square">
                   <img
-                    src={item.imageUrl}
+                    src={item.image_url}
                     alt={item.title}
                     className="w-full h-full object-cover cursor-pointer"
-                    onClick={() => window.open(item.imageUrl, '_blank')}
+                    onClick={() => window.open(item.image_url, '_blank')}
                   />
                 </div>
 
@@ -306,26 +303,40 @@ export default function GalleryManagement() {
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => window.open(item.imageUrl, '_blank')}
+                      onClick={() => window.open(item.image_url, '_blank')}
                       className="p-2 bg-white text-gray-800 rounded-full hover:bg-gray-100 transition-colors"
+                      title="Voir l'image"
                     >
                       👁️
                     </button>
                     <button
+                      onClick={() => {
+                        setEditingItem(item)
+                        setShowEditor(true)
+                      }}
+                      className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                      title="Modifier"
+                    >
+                      ✏️
+                    </button>
+                    <button
                       onClick={() => handleToggleFeatured(item.id)}
                       className="p-2 bg-white text-gray-800 rounded-full hover:bg-gray-100 transition-colors"
+                      title="Basculer en vedette"
                     >
                       ⭐
                     </button>
                     <button
                       onClick={() => handleTogglePublished(item.id)}
                       className="p-2 bg-white text-gray-800 rounded-full hover:bg-gray-100 transition-colors"
+                      title={item.published ? 'Rendre privé' : 'Publier'}
                     >
                       {item.published ? '🔒' : '🌐'}
                     </button>
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                      title="Supprimer"
                     >
                       🗑️
                     </button>
@@ -345,7 +356,7 @@ export default function GalleryManagement() {
                     <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded">
                       {categories[item.category]}
                     </span>
-                    <span>{item.uploadDate}</span>
+                    <span>{new Date(item.created_at).toLocaleDateString()}</span>
                   </div>
                   
                   <div className="flex justify-between text-xs text-gray-400">
@@ -353,20 +364,23 @@ export default function GalleryManagement() {
                     <span>📥 {item.downloads}</span>
                   </div>
                   
-                  {item.tags.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      {item.tags.slice(0, 2).map((tag, index) => (
-                        <span key={index} className="px-1 py-0.5 text-xs bg-gray-200 text-gray-700 rounded">
-                          #{tag}
-                        </span>
-                      ))}
-                      {item.tags.length > 2 && (
-                        <span className="px-1 py-0.5 text-xs bg-gray-200 text-gray-700 rounded">
-                          +{item.tags.length - 2}
-                        </span>
-                      )}
-                    </div>
-                  )}
+                  {(() => {
+                    const tags = item.tags || []
+                    return tags.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {tags.slice(0, 2).map((tag, index) => (
+                          <span key={index} className="px-1 py-0.5 text-xs bg-gray-200 text-gray-700 rounded">
+                            #{tag}
+                          </span>
+                        ))}
+                        {tags.length > 2 && (
+                          <span className="px-1 py-0.5 text-xs bg-gray-200 text-gray-700 rounded">
+                            +{tags.length - 2}
+                          </span>
+                        )}
+                      </div>
+                    )
+                  })()}
                 </div>
               </div>
             ))}
@@ -381,7 +395,19 @@ export default function GalleryManagement() {
         )}
       </div>
 
-      {/* Upload modal would go here in a real implementation */}
+      {/* Gallery Editor Modal */}
+      {showEditor && (
+        <GalleryEditor
+          item={editingItem || undefined}
+          onClose={() => {
+            setShowEditor(false)
+            setEditingItem(null)
+          }}
+          onSuccess={() => {
+            refetch()
+          }}
+        />
+      )}
     </div>
   )
 }

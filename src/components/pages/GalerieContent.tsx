@@ -1,11 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { galleryItemsApi } from '@/lib/api-services'
+import { GalleryItem } from '@/lib/api'
 
 export default function GalerieContent() {
   const [activeCategory, setActiveCategory] = useState('all')
-  const [selectedImage, setSelectedImage] = useState<any>(null)
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
+  const [gallery, setGallery] = useState<GalleryItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const categories = [
     { id: 'all', name: 'Tous', icon: '🖼️' },
@@ -13,136 +18,53 @@ export default function GalerieContent() {
     { id: 'projects', name: 'Projets', icon: '💻' },
     { id: 'team', name: 'Équipe', icon: '👥' },
     { id: 'events', name: 'Événements', icon: '🎉' },
-    { id: 'infrastructure', name: 'Infrastructure', icon: '🌐' }
+    { id: 'training', name: 'Formation', icon: '🎓' },
+    { id: 'awards', name: 'Récompenses', icon: '🏆' }
   ]
 
-  const gallery = [
-    // Office Images
-    {
-      id: 1,
-      category: 'office',
-      title: 'Bureau Principal INFONET',
-      description: 'Notre bureau moderne au cœur de Bujumbura',
-      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: true
-    },
-    {
-      id: 2,
-      category: 'office',
-      title: 'Espace de Travail Collaboratif',
-      description: 'Zone de développement et de collaboration d\'équipe',
-      image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: false
-    },
-    {
-      id: 3,
-      category: 'office',
-      title: 'Salle de Réunion Moderne',
-      description: 'Espace de réunion équipé de technologies avancées',
-      image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: false
-    },
-    
-    // Project Images
-    {
-      id: 4,
-      category: 'projects',
-      title: 'Datacenter INFONET',
-      description: 'Notre centre de données haute performance',
-      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: true
-    },
-    {
-      id: 5,
-      category: 'projects',
-      title: 'Installation Réseau Entreprise',
-      description: 'Déploiement d\'infrastructure réseau pour client',
-      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: false
-    },
-    {
-      id: 6,
-      category: 'projects',
-      title: 'Développement Application Mobile',
-      description: 'Processus de développement d\'une app mobile',
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: true
-    },
-    
-    // Team Images  
-    {
-      id: 7,
-      category: 'team',
-      title: 'Équipe Développement',
-      description: 'Notre équipe de développeurs au travail',
-      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: false
-    },
-    {
-      id: 8,
-      category: 'team',
-      title: 'Formation Technique',
-      description: 'Session de formation sur les nouvelles technologies',
-      image: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: false
-    },
-    
-    // Events Images
-    {
-      id: 9,
-      category: 'events',
-      title: 'Lancement Nouveau Service',
-      description: 'Événement de lancement de nos services cloud',
-      image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: true
-    },
-    {
-      id: 10,
-      category: 'events',
-      title: 'Conférence Tech Burundi',
-      description: 'Participation à la conférence technologique nationale',
-      image: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: false
-    },
-    
-    // Infrastructure Images
-    {
-      id: 11,
-      category: 'infrastructure',
-      title: 'Installation Fibre Optique',
-      description: 'Déploiement de réseau fibre optique haute vitesse',
-      image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: false
-    },
-    {
-      id: 12,
-      category: 'infrastructure',
-      title: 'Système de Sécurité',
-      description: 'Installation de caméras de surveillance IP',
-      image: 'https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      date: '2024',
-      featured: false
+  useEffect(() => {
+    const fetchGalleryItems = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        
+        // Fetch all published gallery items
+        const response = await galleryItemsApi.getAll({
+          published: true,
+          per_page: 50
+        })
+        
+        setGallery(response.data.data || [])
+        
+      } catch (err) {
+        console.error('Error fetching gallery items:', err)
+        setError('Impossible de charger la galerie')
+      } finally {
+        setLoading(false)
+      }
     }
-  ]
+    
+    fetchGalleryItems()
+  }, [])
 
   const filteredGallery = activeCategory === 'all' 
     ? gallery 
     : gallery.filter(item => item.category === activeCategory)
 
-  const openLightbox = (image: any) => {
+  const openLightbox = async (image: GalleryItem) => {
     setSelectedImage(image)
     document.body.style.overflow = 'hidden'
+    
+    // Increment view count
+    try {
+      await galleryItemsApi.incrementViews(image.id)
+      // Update local state to reflect the view increment
+      setGallery(gallery.map(item => 
+        item.id === image.id ? { ...item, views: item.views + 1 } : item
+      ))
+    } catch (err) {
+      console.error('Error incrementing views:', err)
+    }
   }
 
   const closeLightbox = () => {
@@ -151,15 +73,46 @@ export default function GalerieContent() {
   }
 
   const nextImage = () => {
-    const currentIndex = filteredGallery.findIndex(img => img.id === selectedImage.id)
-    const nextIndex = (currentIndex + 1) % filteredGallery.length
-    setSelectedImage(filteredGallery[nextIndex])
+    if (selectedImage) {
+      const currentIndex = filteredGallery.findIndex(img => img.id === selectedImage.id)
+      const nextIndex = (currentIndex + 1) % filteredGallery.length
+      setSelectedImage(filteredGallery[nextIndex])
+    }
   }
 
   const previousImage = () => {
-    const currentIndex = filteredGallery.findIndex(img => img.id === selectedImage.id)
-    const prevIndex = (currentIndex - 1 + filteredGallery.length) % filteredGallery.length
-    setSelectedImage(filteredGallery[prevIndex])
+    if (selectedImage) {
+      const currentIndex = filteredGallery.findIndex(img => img.id === selectedImage.id)
+      const prevIndex = (currentIndex - 1 + filteredGallery.length) % filteredGallery.length
+      setSelectedImage(filteredGallery[prevIndex])
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-xl text-gray-600">Chargement de la galerie...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">{error}</h2>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Réessayer
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -235,8 +188,8 @@ export default function GalerieContent() {
               >
                 <div className={`relative ${item.featured ? 'h-96' : 'h-64'} overflow-hidden`}>
                   <img
-                    src={item.image}
-                    alt={item.title}
+                    src={item.image_url}
+                    alt={item.alt_text || item.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   {item.featured && (
@@ -250,7 +203,7 @@ export default function GalerieContent() {
                     <h3 className="text-lg font-bold mb-2">{item.title}</h3>
                     <p className="text-sm text-gray-200">{item.description}</p>
                     <div className="flex items-center justify-between mt-3">
-                      <span className="text-xs bg-white/20 px-2 py-1 rounded">{item.date}</span>
+                      <span className="text-xs bg-white/20 px-2 py-1 rounded">{new Date(item.created_at).getFullYear()}</span>
                       <div className="flex items-center text-sm">
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -280,20 +233,20 @@ export default function GalerieContent() {
 
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="text-4xl font-bold text-blue-600 mb-2">200+</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">{gallery.length}</div>
               <div className="text-gray-600 font-medium">Photos</div>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="text-4xl font-bold text-green-600 mb-2">50+</div>
+              <div className="text-4xl font-bold text-green-600 mb-2">{gallery.filter(item => item.category === 'projects').length}</div>
               <div className="text-gray-600 font-medium">Projets Documentés</div>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="text-4xl font-bold text-blue-600 mb-2">15+</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">{gallery.filter(item => item.category === 'events').length}</div>
               <div className="text-gray-600 font-medium">Événements</div>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="text-4xl font-bold text-green-600 mb-2">3</div>
-              <div className="text-gray-600 font-medium">Années d'Archives</div>
+              <div className="text-4xl font-bold text-green-600 mb-2">{gallery.reduce((sum, item) => sum + item.views, 0).toLocaleString()}</div>
+              <div className="text-gray-600 font-medium">Vues Total</div>
             </div>
           </div>
         </div>
@@ -330,8 +283,8 @@ export default function GalerieContent() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90" onClick={closeLightbox}>
           <div className="relative max-w-4xl max-h-[90vh] mx-4" onClick={(e) => e.stopPropagation()}>
             <img
-              src={selectedImage.image}
-              alt={selectedImage.title}
+              src={selectedImage.image_url}
+              alt={selectedImage.alt_text || selectedImage.title}
               className="max-w-full max-h-full object-contain rounded-lg"
             />
             

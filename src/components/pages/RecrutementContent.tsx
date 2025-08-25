@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useJobOffersFront } from '@/hooks/useJobOffersFront'
+import { useCompanyValuesFront } from '@/hooks/useCompanyValuesFront'
 
 interface JobListing {
   id: number
@@ -16,103 +18,12 @@ interface JobListing {
   featured: boolean
 }
 
-const jobListings: JobListing[] = [
-  {
-    id: 1,
-    title: "Développeur Full Stack Senior",
-    department: "Développement Web",
-    location: "Bujumbura, Burundi",
-    type: "Temps plein",
-    salary: "Négociable",
-    experience: "3+ ans",
-    description: "Nous recherchons un développeur full stack expérimenté pour rejoindre notre équipe dynamique et travailler sur des projets innovants.",
-    requirements: [
-      "Maîtrise de React, Node.js, et bases de données",
-      "Expérience avec les APIs REST et GraphQL",
-      "Connaissance des outils DevOps (Docker, CI/CD)",
-      "Excellent niveau en français et anglais"
-    ],
-    benefits: [
-      "Salaire compétitif",
-      "Formation continue",
-      "Environnement de travail moderne",
-      "Projets internationaux"
-    ],
-    featured: true
-  },
-  {
-    id: 2,
-    title: "Administrateur Systèmes et Réseaux",
-    department: "Infrastructure IT",
-    location: "Bujumbura, Burundi",
-    type: "Temps plein",
-    salary: "À définir",
-    experience: "2+ ans",
-    description: "Rejoignez notre équipe infrastructure pour gérer et optimiser nos systèmes et réseaux informatiques.",
-    requirements: [
-      "Certification en administration système (Linux/Windows)",
-      "Expérience avec les réseaux et la sécurité",
-      "Maîtrise des outils de monitoring",
-      "Esprit d'équipe et autonomie"
-    ],
-    benefits: [
-      "Évolution de carrière",
-      "Formations certifiantes",
-      "Équipement moderne",
-      "Horaires flexibles"
-    ],
-    featured: false
-  },
-  {
-    id: 3,
-    title: "Consultant en Transformation Digitale",
-    department: "Conseil",
-    location: "Bujumbura, Burundi",
-    type: "Temps plein",
-    salary: "Selon expérience",
-    experience: "5+ ans",
-    description: "Accompagnez nos clients dans leur transformation digitale et proposez des solutions innovantes adaptées à leurs besoins.",
-    requirements: [
-      "Master en informatique ou équivalent",
-      "Expérience en conseil et gestion de projet",
-      "Connaissance des technologies émergentes",
-      "Excellent relationnel client"
-    ],
-    benefits: [
-      "Missions variées",
-      "Voyage et mobilité",
-      "Prime de performance",
-      "Développement professionnel"
-    ],
-    featured: true
-  }
-]
-
-const companyValues = [
-  {
-    icon: "🏆",
-    title: "Excellence",
-    description: "Nous visons l'excellence dans tout ce que nous faisons"
-  },
-  {
-    icon: "👥",
-    title: "Collaboration",
-    description: "Le travail d'équipe est au cœur de notre succès"
-  },
-  {
-    icon: "✨",
-    title: "Innovation",
-    description: "Nous encourageons la créativité et l'innovation"
-  },
-  {
-    icon: "🌍",
-    title: "Impact Global",
-    description: "Nos solutions ont un impact positif sur la société"
-  }
-]
-
 export default function RecrutementContent() {
-  const [selectedJob, setSelectedJob] = useState<JobListing | null>(null)
+  const [selectedJob, setSelectedJob] = useState<any | null>(null)
+  
+  // Fetch job offers and company values from API
+  const { jobOffers, loading: jobsLoading, error: jobsError } = useJobOffersFront()
+  const { companyValues, loading: valuesLoading, error: valuesError } = useCompanyValuesFront()
   const [applicationForm, setApplicationForm] = useState({
     name: '',
     email: '',
@@ -123,7 +34,7 @@ export default function RecrutementContent() {
     cv: null as File | null
   })
 
-  const handleJobSelect = (job: JobListing) => {
+  const handleJobSelect = (job: any) => {
     setSelectedJob(job)
     setApplicationForm(prev => ({ ...prev, position: job.title }))
   }
@@ -179,24 +90,39 @@ export default function RecrutementContent() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {companyValues.map((value, index) => (
-              <div
-                key={index}
-                className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
-              >
-                <div className="text-blue-600 mb-4 flex justify-center text-4xl">
-                  {value.icon}
+          {valuesLoading ? (
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <p className="mt-4 text-xl text-gray-600">Chargement des valeurs...</p>
+            </div>
+          ) : valuesError ? (
+            <div className="text-center text-red-600">
+              <p className="text-xl">Erreur lors du chargement des valeurs</p>
+            </div>
+          ) : companyValues.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {companyValues.map((value, index) => (
+                <div
+                  key={value.id}
+                  className="text-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                >
+                  <div className="text-blue-600 mb-4 flex justify-center text-4xl">
+                    {value.icon || '🏆'}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                    {value.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {value.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                  {value.title}
-                </h3>
-                <p className="text-gray-600">
-                  {value.description}
-                </p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-gray-600">
+              <p className="text-xl">Aucune valeur d'entreprise disponible.</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -212,53 +138,68 @@ export default function RecrutementContent() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-            {jobListings.map((job, index) => (
-              <div
-                key={job.id}
-                className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 cursor-pointer border-2 hover:scale-105 transform ${
-                  job.featured ? 'border-green-500' : 'border-transparent'
-                }`}
-                onClick={() => handleJobSelect(job)}
-              >
-                {job.featured && (
-                  <div className="inline-block bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4">
-                    Offre en vedette
+          {jobsLoading ? (
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <p className="mt-4 text-xl text-gray-600">Chargement des offres d'emploi...</p>
+            </div>
+          ) : jobsError ? (
+            <div className="text-center text-red-600">
+              <p className="text-xl">Erreur lors du chargement des offres</p>
+            </div>
+          ) : jobOffers.length > 0 ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+              {jobOffers.map((job, index) => (
+                <div
+                  key={job.id}
+                  className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 cursor-pointer border-2 hover:scale-105 transform ${
+                    job.featured ? 'border-green-500' : 'border-transparent'
+                  }`}
+                  onClick={() => handleJobSelect(job)}
+                >
+                  {job.featured && (
+                    <div className="inline-block bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                      Offre en vedette
+                    </div>
+                  )}
+                  
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{job.title}</h3>
+                  <p className="text-blue-600 font-semibold mb-4">{job.department}</p>
+                  
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-gray-600">
+                      <span className="mr-2">📍</span>
+                      <span className="text-sm">{job.location || 'Bujumbura, Burundi'}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <span className="mr-2">⏰</span>
+                      <span className="text-sm">{job.type === 'fulltime' ? 'Temps plein' : job.type === 'parttime' ? 'Temps partiel' : job.type === 'contract' ? 'Contrat' : job.type === 'internship' ? 'Stage' : 'Temps plein'}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <span className="mr-2">💼</span>
+                      <span className="text-sm">{job.level === 'junior' ? 'Junior' : job.level === 'middle' ? 'Intermédiaire' : job.level === 'senior' ? 'Senior' : job.level === 'lead' ? 'Lead' : 'Selon expérience'}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <span className="mr-2">💰</span>
+                      <span className="text-sm">{job.salary_min && job.salary_max ? `${job.salary_min}-${job.salary_max} ${job.salary_currency}` : 'Négociable'}</span>
+                    </div>
                   </div>
-                )}
-                
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{job.title}</h3>
-                <p className="text-blue-600 font-semibold mb-4">{job.department}</p>
-                
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-gray-600">
-                    <span className="mr-2">📍</span>
-                    <span className="text-sm">{job.location}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <span className="mr-2">⏰</span>
-                    <span className="text-sm">{job.type}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <span className="mr-2">💼</span>
-                    <span className="text-sm">{job.experience}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <span className="mr-2">💰</span>
-                    <span className="text-sm">{job.salary}</span>
-                  </div>
+                  
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                    {job.description}
+                  </p>
+                  
+                  <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 hover:scale-105 transform">
+                    Postuler maintenant
+                  </button>
                 </div>
-                
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                  {job.description}
-                </p>
-                
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 hover:scale-105 transform">
-                  Postuler maintenant
-                </button>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-gray-600">
+              <p className="text-xl">Aucune offre d'emploi disponible pour le moment.</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -290,22 +231,42 @@ export default function RecrutementContent() {
 
                   <h3 className="text-lg font-semibold mb-4">Exigences</h3>
                   <ul className="space-y-2 mb-6">
-                    {selectedJob.requirements.map((req, index) => (
+                    {selectedJob.requirements && selectedJob.requirements.length > 0 ? selectedJob.requirements.map((req: string, index: number) => (
                       <li key={index} className="flex items-start">
                         <span className="text-green-500 mr-2">•</span>
                         <span className="text-gray-600">{req}</span>
                       </li>
-                    ))}
+                    )) : (
+                      <li className="flex items-start">
+                        <span className="text-green-500 mr-2">•</span>
+                        <span className="text-gray-600">Formation et expérience requises selon le poste</span>
+                      </li>
+                    )}
                   </ul>
 
                   <h3 className="text-lg font-semibold mb-4">Avantages</h3>
                   <ul className="space-y-2">
-                    {selectedJob.benefits.map((benefit, index) => (
+                    {selectedJob.benefits && selectedJob.benefits.length > 0 ? selectedJob.benefits.map((benefit: string, index: number) => (
                       <li key={index} className="flex items-start">
                         <span className="text-red-500 mr-2">❤️</span>
                         <span className="text-gray-600">{benefit}</span>
                       </li>
-                    ))}
+                    )) : (
+                      <>
+                        <li className="flex items-start">
+                          <span className="text-red-500 mr-2">❤️</span>
+                          <span className="text-gray-600">Environnement de travail stimulant</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-red-500 mr-2">❤️</span>
+                          <span className="text-gray-600">Formation continue</span>
+                        </li>
+                        <li className="flex items-start">
+                          <span className="text-red-500 mr-2">❤️</span>
+                          <span className="text-gray-600">Évolution de carrière</span>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </div>
 

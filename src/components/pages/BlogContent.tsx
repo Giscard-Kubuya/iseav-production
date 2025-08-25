@@ -2,9 +2,13 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useBlogPostsFront } from '@/hooks/useBlogPostsFront'
 
 export default function BlogContent() {
   const [activeCategory, setActiveCategory] = useState('all')
+
+  // Fetch blog posts from API
+  const { blogPosts, loading, error } = useBlogPostsFront({ category: activeCategory })
 
   const categories = [
     { id: 'all', name: 'Tous les Articles' },
@@ -14,86 +18,8 @@ export default function BlogContent() {
     { id: 'business', name: 'Business' }
   ]
 
-  const articles = [
-    {
-      id: 1,
-      title: 'Les Tendances Technologiques 2025 au Burundi',
-      category: 'technology',
-      excerpt: 'Découvrez les innovations qui vont transformer le paysage technologique burundais en 2025.',
-      author: 'Jean-Baptiste Niyonzima',
-      date: '15 Janvier 2025',
-      readTime: '8 min',
-      image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      featured: true,
-      tags: ['Innovation', 'Burundi', 'Tech 2025']
-    },
-    {
-      id: 2,
-      title: 'Comment Sécuriser votre Infrastructure IT',
-      category: 'security',
-      excerpt: 'Guide complet pour protéger votre entreprise contre les cybermenaces modernes.',
-      author: 'Espérance Mukamana',
-      date: '10 Janvier 2025',
-      readTime: '12 min',
-      image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      featured: false,
-      tags: ['Cybersécurité', 'Protection', 'Enterprise']
-    },
-    {
-      id: 3,
-      title: 'Développement d\'Applications Mobiles : Best Practices',
-      category: 'development',
-      excerpt: 'Les meilleures pratiques pour créer des applications mobiles performantes et user-friendly.',
-      author: 'Arlette Uwimana',
-      date: '8 Janvier 2025',
-      readTime: '10 min',
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      featured: true,
-      tags: ['Mobile App', 'Development', 'UX/UI']
-    },
-    {
-      id: 4,
-      title: 'Transformation Digitale : Guide pour PME',
-      category: 'business',
-      excerpt: 'Comment les petites et moyennes entreprises peuvent réussir leur transformation digitale.',
-      author: 'Claudine Nibigira',
-      date: '5 Janvier 2025',
-      readTime: '15 min',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      featured: false,
-      tags: ['Digital Transformation', 'PME', 'Strategy']
-    },
-    {
-      id: 5,
-      title: 'Cloud Computing : Avantages pour les Entreprises',
-      category: 'technology',
-      excerpt: 'Pourquoi migrer vers le cloud et comment choisir la meilleure solution pour votre entreprise.',
-      author: 'Marc Ndikumana',
-      date: '3 Janvier 2025',
-      readTime: '7 min',
-      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      featured: false,
-      tags: ['Cloud', 'AWS', 'Microsoft Azure']
-    },
-    {
-      id: 6,
-      title: 'Intelligence Artificielle dans les Entreprises',
-      category: 'technology',
-      excerpt: 'Comment l\'IA révolutionne les processus métier et améliore la productivité.',
-      author: 'Claudine Nibigira',
-      date: '1 Janvier 2025',
-      readTime: '11 min',
-      image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      featured: true,
-      tags: ['AI', 'Machine Learning', 'Automation']
-    }
-  ]
-
-  const filteredArticles = activeCategory === 'all' 
-    ? articles 
-    : articles.filter(article => article.category === activeCategory)
-
-  const featuredArticles = articles.filter(article => article.featured)
+  const filteredArticles = blogPosts || []
+  const featuredArticles = blogPosts.filter(article => article.featured) || []
 
   return (
     <>
@@ -138,59 +64,80 @@ export default function BlogContent() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {featuredArticles.slice(0, 3).map((article, index) => (
-              <Link key={article.id} href={`/blog/${article.id}`}>
-                <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100 cursor-pointer">
-                <div className="relative overflow-hidden">
-                  <img
-                    src={article.image}
-                    alt={article.title}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-gradient-to-r from-blue-600 to-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                      À la Une
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center text-sm text-gray-500 mb-3">
-                    <span>{article.date}</span>
-                    <span className="mx-2">•</span>
-                    <span>{article.readTime} de lecture</span>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
-                    {article.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {article.excerpt}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {article.tags.map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs"
-                      >
-                        {tag}
+          {loading ? (
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <p className="mt-4 text-xl text-gray-600">Chargement des articles...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-600">
+              <p className="text-xl">Erreur lors du chargement des articles</p>
+              <p className="mt-2">{error}</p>
+            </div>
+          ) : featuredArticles.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-8">
+              {featuredArticles.slice(0, 3).map((article, index) => (
+                <Link key={article.id} href={`/blog/${article.id}`}>
+                  <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100 cursor-pointer">
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={article.featured_image || 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}
+                      alt={article.title}
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-gradient-to-r from-blue-600 to-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        À la Une
                       </span>
-                    ))}
+                    </div>
                   </div>
                   
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Par {article.author}</span>
-                    <span className="text-blue-600 font-semibold text-sm">
-                      Lire la suite →
-                    </span>
+                  <div className="p-6">
+                    <div className="flex items-center text-sm text-gray-500 mb-3">
+                      <span>{new Date(article.publish_date || article.created_at).toLocaleDateString('fr-FR')}</span>
+                      <span className="mx-2">•</span>
+                      <span>5 min de lecture</span>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+                      {article.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 leading-relaxed">
+                      {article.excerpt || article.content?.substring(0, 150) + '...'}
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {article.tags && article.tags.map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {article.category && (
+                        <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
+                          {article.category}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-600">Par {article.author || 'INFONET'}</span>
+                      <span className="text-blue-600 font-semibold text-sm">
+                        Lire la suite →
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-gray-600">
+              <p className="text-xl">Aucun article en vedette disponible.</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -218,67 +165,86 @@ export default function BlogContent() {
       {/* All Articles */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredArticles.map((article, index) => (
-              <Link key={article.id} href={`/blog/${article.id}`}>
-                <article className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden cursor-pointer">
-                <div className="relative">
-                  <img
-                    src={article.image}
-                    alt={article.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  {article.featured && (
-                    <div className="absolute top-3 left-3">
-                      <span className="bg-gradient-to-r from-blue-600 to-green-500 text-white px-2 py-1 rounded text-xs font-semibold">
-                        Populaire
+          {loading ? (
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <p className="mt-4 text-xl text-gray-600">Chargement des articles...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-600">
+              <p className="text-xl">Erreur lors du chargement des articles</p>
+              <p className="mt-2">{error}</p>
+            </div>
+          ) : filteredArticles.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredArticles.map((article, index) => (
+                <Link key={article.id} href={`/blog/${article.id}`}>
+                  <article className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden cursor-pointer">
+                  <div className="relative">
+                    <img
+                      src={article.featured_image || 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}
+                      alt={article.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    {article.featured && (
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-gradient-to-r from-blue-600 to-green-500 text-white px-2 py-1 rounded text-xs font-semibold">
+                          Populaire
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="p-6">
+                    <div className="flex items-center text-xs text-gray-500 mb-3">
+                      <time>{new Date(article.publish_date || article.created_at).toLocaleDateString('fr-FR')}</time>
+                      <span className="mx-2">•</span>
+                      <span>5 min de lecture</span>
+                    </div>
+                    
+                    <h3 className="text-lg font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-300">
+                      {article.title}
+                    </h3>
+                    
+                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                      {article.excerpt || article.content?.substring(0, 120) + '...'}
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {article.tags && article.tags.slice(0, 2).map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {article.category && (
+                        <span className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs">
+                          {article.category}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">{article.author || 'INFONET'}</span>
+                      <span className="text-blue-600 font-semibold flex items-center">
+                        Lire l'article
+                        <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       </span>
                     </div>
-                  )}
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center text-xs text-gray-500 mb-3">
-                    <time>{article.date}</time>
-                    <span className="mx-2">•</span>
-                    <span>{article.readTime} de lecture</span>
                   </div>
-                  
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-300">
-                    <Link href={`/blog/${article.id}`}>
-                      {article.title}
-                    </Link>
-                  </h3>
-                  
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                    {article.excerpt}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {article.tags.slice(0, 2).map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">{article.author}</span>
-                    <span className="text-blue-600 font-semibold flex items-center">
-                      Lire l'article
-                      <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </article>
-              </Link>
-            ))}
-          </div>
+                </article>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-gray-600">
+              <p className="text-xl">Aucun article disponible dans cette catégorie.</p>
+            </div>
+          )}
         </div>
       </section>
 

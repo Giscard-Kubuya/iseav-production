@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useActualiteMutations } from '@/hooks/useActualites'
+import { actualitesApi } from '@/lib/api-services'
+import ImageUpload from './ImageUpload'
 
 interface ActualiteEditorProps {
   mode: 'create' | 'edit'
@@ -11,15 +14,18 @@ interface ActualiteEditorProps {
 
 export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
   const router = useRouter()
+  const mutations = useActualiteMutations()
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
     content: '',
+    excerpt: '',
     author: 'Direction INFONET',
     category: 'company' as 'company' | 'projects' | 'partnerships' | 'events' | 'awards',
     urgent: false,
     featured: false,
     status: 'draft' as 'draft' | 'published',
-    publishDate: '',
+    publishDate: new Date().toISOString().split('T')[0], // Set current date as default
     metaTitle: '',
     metaDescription: '',
     image: ''
@@ -37,23 +43,36 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
   ]
 
   useEffect(() => {
-    if (mode === 'edit' && id) {
-      // En production, ceci ferait appel à une API pour récupérer l'actualité
-      const mockData = {
-        title: 'INFONET remporte le Prix Innovation IT Burundi 2025',
-        content: '<p>INFONET, leader en solutions informatiques au Burundi, vient de remporter le prestigieux Prix Innovation IT Burundi 2025...</p>',
-        author: 'Direction INFONET',
-        category: 'awards' as const,
-        urgent: true,
-        featured: true,
-        status: 'published' as const,
-        publishDate: '2025-01-20',
-        metaTitle: 'INFONET Prix Innovation IT 2025 | Actualités',
-        metaDescription: 'INFONET remporte le Prix Innovation IT Burundi 2025 pour ses solutions innovantes.',
-        image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    const loadData = async () => {
+      if (mode === 'edit' && id) {
+        try {
+          setLoading(true)
+          const response = await actualitesApi.getById(parseInt(id))
+          const actualite = response.data.data
+          setFormData({
+            title: actualite.title || '',
+            content: actualite.content || '',
+            excerpt: actualite.excerpt || '',
+            author: actualite.author || '',
+            category: actualite.category || 'company',
+            urgent: actualite.urgent || false,
+            featured: actualite.featured || false,
+            status: actualite.status || 'draft',
+            publishDate: actualite.publish_date ? actualite.publish_date.split('T')[0] : new Date().toISOString().split('T')[0],
+            metaTitle: '',
+            metaDescription: '',
+            image: actualite.featured_image || ''
+          })
+        } catch (error) {
+          console.error('Error loading actualite:', error)
+          alert('Erreur lors du chargement de l\'actualité')
+        } finally {
+          setLoading(false)
+        }
       }
-      setFormData(mockData)
     }
+
+    loadData()
   }, [mode, id])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,28 +80,66 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
     setSaving(true)
 
     try {
-      // En production, ceci ferait appel à une API
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const submitData = {
+        title: formData.title,
+        content: formData.content,
+        excerpt: formData.excerpt,
+        author: formData.author,
+        category: formData.category,
+        urgent: formData.urgent,
+        featured: formData.featured,
+        status: formData.status,
+        publish_date: formData.publishDate || new Date().toISOString().split('T')[0],
+        featured_image: formData.image || undefined
+      }
+
+      if (mode === 'create') {
+        await mutations.createActualite(submitData)
+      } else if (mode === 'edit' && id) {
+        await mutations.updateActualite(parseInt(id), submitData)
+      }
 
       alert(mode === 'create' ? 'Actualité créée avec succès!' : 'Actualité mise à jour avec succès!')
       router.push('/admin/actualites')
     } catch (error) {
-      alert('Erreur lors de la sauvegarde')
+      console.error('Error saving actualite:', error)
+      alert('Erreur lors de la sauvegarde: ' + (error instanceof Error ? error.message : String(error)))
     } finally {
       setSaving(false)
     }
   }
 
   const handleSaveDraft = async () => {
-    const updatedData = { ...formData, status: 'draft' as const }
-    setFormData(updatedData)
     setSaving(true)
-
+    
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const updatedData = { ...formData, status: 'draft' as const }
+      setFormData(updatedData)
+      
+      const submitData = {
+        title: updatedData.title,
+        content: updatedData.content,
+        excerpt: updatedData.excerpt,
+        author: updatedData.author,
+        category: updatedData.category,
+        urgent: updatedData.urgent,
+        featured: updatedData.featured,
+        status: 'draft' as const,
+        publish_date: updatedData.publishDate || new Date().toISOString().split('T')[0],
+        featured_image: updatedData.image || undefined
+      }
+
+      if (mode === 'create') {
+        await mutations.createActualite(submitData)
+        router.push('/admin/actualites')
+      } else if (mode === 'edit' && id) {
+        await mutations.updateActualite(parseInt(id), submitData)
+      }
+      
       alert('Brouillon sauvegardé!')
     } catch (error) {
-      alert('Erreur lors de la sauvegarde')
+      console.error('Error saving draft:', error)
+      alert('Erreur lors de la sauvegarde du brouillon')
     } finally {
       setSaving(false)
     }
@@ -142,6 +199,22 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Entrez le titre de votre actualité"
                 />
+              </div>
+
+              {/* Excerpt */}
+              <div className="bg-white rounded-lg shadow p-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Résumé de l'actualité *
+                </label>
+                <textarea
+                  required
+                  value={formData.excerpt}
+                  onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Écrivez un résumé court de votre actualité"
+                />
+                <p className="text-xs text-gray-500 mt-1">Ce résumé sera affiché dans la liste des actualités</p>
               </div>
 
               {/* Content */}
@@ -288,14 +361,15 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Image de couverture</h3>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL de l'image
+                    Image de couverture
                   </label>
-                  <input
-                    type="url"
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="https://example.com/image.jpg"
+                  <ImageUpload
+                    module="actualites"
+                    onImageUploaded={(imageData) => {
+                      setFormData({ ...formData, image: imageData.url });
+                    }}
+                    currentImageUrl={formData.image}
+                    altText={formData.title}
                   />
                   {formData.image && (
                     <div className="mt-3">

@@ -3,16 +3,41 @@ import Link from 'next/link'
 export default function AdminSidebar() {
   const menuItems = [
     { href: '/admin', label: 'Tableau de bord', icon: '📊' },
-    { href: '/admin/users', label: 'Utilisateurs', icon: '👥' },
-    { href: '/admin/admissions', label: 'Candidatures', icon: '📝' },
-    { href: '/admin/academic', label: 'Académique', icon: '🎓' },
-    { href: '/admin/content', label: 'Contenu', icon: '📄' },
-    { href: '/admin/finances', label: 'Finances', icon: '💰' },
-    { href: '/admin/communications', label: 'Communications', icon: '💬' },
-    { href: '/admin/library', label: 'Bibliothèque', icon: '📚' },
-    { href: '/admin/facilities', label: 'Installations', icon: '🏢' },
-    { href: '/admin/reports', label: 'Rapports', icon: '📈' },
-    { href: '/admin/settings', label: 'Paramètres', icon: '⚙️' },
+    
+    // Content Management
+    { href: '/admin/hero-slides', label: 'Diapositives Hero', icon: '🖼️' },
+    { href: '/admin/services', label: 'Services', icon: '⚙️' },
+    { href: '/admin/actualites', label: 'Actualités', icon: '📰' },
+    { href: '/admin/blog', label: 'Blog', icon: '📝' },
+    { href: '/admin/portfolio', label: 'Portfolio', icon: '💼' },
+    { href: '/admin/galerie', label: 'Galerie', icon: '📸' },
+
+    // Team & Partners
+    { href: '/admin/team-experts', label: 'Équipe d\'Experts IT', icon: '👨‍💻' },
+    { href: '/admin/leadership', label: 'Équipe Dirigeante', icon: '👔' },
+    { href: '/admin/technology-partners', label: 'Partenaires Technologiques', icon: '🤝' },
+
+    // Company Information
+    { href: '/admin/company-statistics', label: 'Statistiques Entreprise', icon: '📈' },
+    { href: '/admin/company-values', label: 'Nos Valeurs', icon: '💎' },
+    { href: '/admin/company-journey', label: 'Notre Parcours', icon: '🛣️' },
+    { href: '/admin/why-choose-us', label: 'Pourquoi Nous Choisir', icon: '⭐' },
+    { href: '/admin/testimonials', label: 'Témoignages Clients', icon: '💬' },
+
+    // Contact & Communication
+    { href: '/admin/contact-info', label: 'Informations de Contact', icon: '📞' },
+    { href: '/admin/business-hours', label: 'Heures d\'Ouverture', icon: '🕒' },
+    { href: '/admin/location', label: 'Notre Localisation', icon: '📍' },
+    { href: '/admin/social-media', label: 'Réseaux Sociaux', icon: '📱' },
+    { href: '/admin/newsletter', label: 'Newsletter', icon: '📧' },
+
+    // Users & Recruitment
+    { href: '/admin/utilisateurs', label: 'Utilisateurs', icon: '👥' },
+    { href: '/admin/recrutement', label: 'Recrutement', icon: '🎯' },
+    { href: '/admin/commentaires', label: 'Commentaires', icon: '💭' },
+
+    // System
+    { href: '/admin/parametres', label: 'Paramètres', icon: '⚙️' }
   ]
 
   return (

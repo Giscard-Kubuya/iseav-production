@@ -1,6 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useApiData } from '@/hooks/useApi'
+import { websiteApi } from '@/lib/api-services'
+import ImageUpload from './ImageUpload'
 
 interface SiteSettings {
   general: {
@@ -30,13 +33,9 @@ interface SiteSettings {
     facebookPixel: string
     googleVerification: string
   }
-  email: {
-    smtpHost: string
-    smtpPort: string
-    smtpUser: string
-    smtpPassword: string
-    fromEmail: string
-    fromName: string
+  legal: {
+    privacyPolicy: string
+    termsOfService: string
   }
   security: {
     enableRegistration: boolean
@@ -49,8 +48,8 @@ interface SiteSettings {
     maxLoginAttempts: number
   }
   appearance: {
-    logo: string
-    favicon: string
+    logo: string | null
+    favicon: string | null
     primaryColor: string
     secondaryColor: string
     fontFamily: string
@@ -62,68 +61,115 @@ interface SiteSettings {
 export default function SettingsManagement() {
   const [activeTab, setActiveTab] = useState('general')
   const [saving, setSaving] = useState(false)
-  const [settings, setSettings] = useState<SiteSettings>({
-    general: {
-      siteName: 'INFONET',
-      siteDescription: 'Solutions informatiques innovantes au Burundi',
-      siteUrl: 'https://infonet.bi',
-      adminEmail: 'admin@infonet.bi',
-      contactEmail: 'contact@infonet.bi',
-      phone: '+257 22 123 456',
-      address: 'Avenue de l\'Indépendance, Bujumbura, Burundi',
-      timezone: 'Africa/Bujumbura',
-      language: 'fr'
-    },
-    social: {
-      facebook: 'https://facebook.com/infonetbi',
-      twitter: 'https://twitter.com/infonetbi',
-      linkedin: 'https://linkedin.com/company/infonet-burundi',
-      instagram: 'https://instagram.com/infonetbi',
-      youtube: 'https://youtube.com/@infonetbi',
-      github: 'https://github.com/infonet-bi'
-    },
-    seo: {
-      metaTitle: 'INFONET - Solutions informatiques au Burundi',
-      metaDescription: 'INFONET offre des solutions informatiques innovantes au Burundi. Développement web, mobile, sécurité IT et plus encore.',
-      metaKeywords: 'informatique, burundi, développement web, mobile, sécurité IT',
-      googleAnalytics: 'G-XXXXXXXXXX',
-      facebookPixel: '',
-      googleVerification: ''
-    },
-    email: {
-      smtpHost: 'smtp.gmail.com',
-      smtpPort: '587',
-      smtpUser: 'noreply@infonet.bi',
-      smtpPassword: '••••••••',
-      fromEmail: 'noreply@infonet.bi',
-      fromName: 'INFONET'
-    },
-    security: {
-      enableRegistration: true,
-      requireEmailVerification: true,
-      enableCommentModeration: true,
-      enableRecaptcha: false,
-      recaptchaSiteKey: '',
-      recaptchaSecretKey: '',
-      sessionTimeout: 30,
-      maxLoginAttempts: 5
-    },
-    appearance: {
-      logo: '/images/infonet-logo.png',
-      favicon: '/favicon.ico',
-      primaryColor: '#059669',
-      secondaryColor: '#1f2937',
-      fontFamily: 'Inter',
-      headerStyle: 'modern',
-      footerText: '© 2025 INFONET. Tous droits réservés.'
+  
+  // Fetch current website settings
+  const { data: websiteData, loading } = useApiData(
+    () => websiteApi.getCurrent(),
+    []
+  )
+
+  const getDefaultSettings = (): SiteSettings => ({
+      general: {
+        siteName: 'INFONET',
+        siteDescription: 'Solutions informatiques innovantes au Burundi',
+        siteUrl: 'https://infonet.bi',
+        adminEmail: 'admin@infonet.bi',
+        contactEmail: 'contact@infonet.bi',
+        phone: '+257 22 123 456',
+        address: 'Avenue de l\'Indépendance, Bujumbura, Burundi',
+        timezone: 'Africa/Bujumbura',
+        language: 'fr'
+      },
+      social: {
+        facebook: 'https://facebook.com/infonetbi',
+        twitter: 'https://twitter.com/infonetbi',
+        linkedin: 'https://linkedin.com/company/infonet-burundi',
+        instagram: 'https://instagram.com/infonetbi',
+        youtube: 'https://youtube.com/@infonetbi',
+        github: 'https://github.com/infonet-bi'
+      },
+      seo: {
+        metaTitle: 'INFONET - Solutions informatiques au Burundi',
+        metaDescription: 'INFONET offre des solutions informatiques innovantes au Burundi. Développement web, mobile, sécurité IT et plus encore.',
+        metaKeywords: 'informatique, burundi, développement web, mobile, sécurité IT',
+        googleAnalytics: 'G-XXXXXXXXXX',
+        facebookPixel: '',
+        googleVerification: ''
+      },
+      legal: {
+        privacyPolicy: 'Notre politique de confidentialité protège vos données personnelles selon les normes internationales.',
+        termsOfService: 'Nos conditions d\'utilisation définissent les règles d\'usage de nos services.'
+      },
+      security: {
+        enableRegistration: true,
+        requireEmailVerification: true,
+        enableCommentModeration: true,
+        enableRecaptcha: false,
+        recaptchaSiteKey: '',
+        recaptchaSecretKey: '',
+        sessionTimeout: 30,
+        maxLoginAttempts: 5
+      },
+      appearance: {
+        logo: '/images/logos/infonet-logo.png',
+        favicon: '/favicon.ico',
+        primaryColor: '#059669',
+        secondaryColor: '#1f2937',
+        fontFamily: 'Inter',
+        headerStyle: 'modern',
+        footerText: '© 2025 INFONET. Tous droits réservés.'
+      }
+    })
+
+  // Merge API data with defaults
+  const [settings, setSettings] = useState<SiteSettings>(getDefaultSettings())
+
+  // Update settings when API data is loaded
+  useEffect(() => {
+    if (websiteData?.data) {
+      const apiData = websiteData.data
+      const apiSettings = apiData.settings || {}
+      
+      setSettings({
+        general: {
+          siteName: apiData.name || 'INFONET',
+          siteDescription: apiData.description || 'Solutions informatiques innovantes au Burundi',
+          siteUrl: apiSettings.general?.siteUrl || 'https://infonet.bi',
+          adminEmail: apiSettings.general?.adminEmail || 'admin@infonet.bi',
+          contactEmail: apiSettings.general?.contactEmail || 'contact@infonet.bi',
+          phone: apiSettings.general?.phone || '+257 22 123 456',
+          address: apiSettings.general?.address || 'Avenue de l\'Indépendance, Bujumbura, Burundi',
+          timezone: apiSettings.general?.timezone || 'Africa/Bujumbura',
+          language: apiSettings.general?.language || 'fr'
+        },
+        social: {
+          facebook: apiSettings.social?.facebook || '',
+          twitter: apiSettings.social?.twitter || '',
+          linkedin: apiSettings.social?.linkedin || '',
+          instagram: apiSettings.social?.instagram || '',
+          youtube: apiSettings.social?.youtube || '',
+          github: apiSettings.social?.github || ''
+        },
+        seo: {
+          metaTitle: apiSettings.seo?.metaTitle || `${apiData.name} - Solutions informatiques`,
+          metaDescription: apiSettings.seo?.metaDescription || apiData.description || '',
+          metaKeywords: apiSettings.seo?.metaKeywords || '',
+          googleAnalytics: apiSettings.seo?.googleAnalytics || '',
+          facebookPixel: apiSettings.seo?.facebookPixel || '',
+          googleVerification: apiSettings.seo?.googleVerification || ''
+        },
+        legal: apiSettings.legal || getDefaultSettings().legal,
+        security: apiSettings.security || getDefaultSettings().security,
+        appearance: apiSettings.appearance || getDefaultSettings().appearance
+      })
     }
-  })
+  }, [websiteData])
 
   const tabs = [
     { id: 'general', label: 'Général', icon: '⚙️' },
     { id: 'social', label: 'Réseaux sociaux', icon: '🌐' },
     { id: 'seo', label: 'SEO', icon: '🔍' },
-    { id: 'email', label: 'Email', icon: '📧' },
+    { id: 'legal', label: 'Légal', icon: '📋' },
     { id: 'security', label: 'Sécurité', icon: '🔒' },
     { id: 'appearance', label: 'Apparence', icon: '🎨' }
   ]
@@ -131,10 +177,14 @@ export default function SettingsManagement() {
   const handleSave = async () => {
     setSaving(true)
     try {
-      // En production, ceci ferait appel à une API
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await websiteApi.update({
+        name: settings.general.siteName,
+        description: settings.general.siteDescription,
+        settings: settings
+      })
       alert('Paramètres sauvegardés avec succès!')
     } catch (error) {
+      console.error('Error saving settings:', error)
       alert('Erreur lors de la sauvegarde')
     } finally {
       setSaving(false)
@@ -149,6 +199,15 @@ export default function SettingsManagement() {
         [field]: value
       }
     }))
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <span className="ml-2">Chargement des paramètres...</span>
+      </div>
+    )
   }
 
   return (
@@ -392,6 +451,46 @@ export default function SettingsManagement() {
             </div>
           )}
 
+          {activeTab === 'legal' && (
+            <div className="space-y-6">
+              <h3 className="text-lg font-medium text-gray-900">Documents légaux</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Politique de Confidentialité
+                  </label>
+                  <textarea
+                    value={settings.legal.privacyPolicy}
+                    onChange={(e) => handleInputChange('legal', 'privacyPolicy', e.target.value)}
+                    rows={8}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Rédigez votre politique de confidentialité..."
+                  />
+                  <p className="mt-1 text-sm text-gray-500">
+                    Décrivez comment vous collectez, utilisez et protégez les données personnelles des utilisateurs.
+                  </p>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Conditions d'Utilisation
+                  </label>
+                  <textarea
+                    value={settings.legal.termsOfService}
+                    onChange={(e) => handleInputChange('legal', 'termsOfService', e.target.value)}
+                    rows={8}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Rédigez vos conditions d'utilisation..."
+                  />
+                  <p className="mt-1 text-sm text-gray-500">
+                    Définissez les règles et conditions d'utilisation de vos services.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'security' && (
             <div className="space-y-6">
               <h3 className="text-lg font-medium text-gray-900">Paramètres de sécurité</h3>
@@ -474,26 +573,37 @@ export default function SettingsManagement() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Logo du site (URL)
+                    Logo du site
                   </label>
-                  <input
-                    type="url"
-                    value={settings.appearance.logo}
-                    onChange={(e) => handleInputChange('appearance', 'logo', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  <ImageUpload
+                    module="settings"
+                    currentImageUrl={settings.appearance.logo || undefined}
+                    onImageUploaded={(imageData) => {
+                      handleInputChange('appearance', 'logo', imageData.url)
+                    }}
+                    acceptedFormats={['jpg', 'jpeg', 'png', 'webp', 'svg']}
+                    maxSizeMB={2}
+                    altText="Site logo"
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Favicon (URL)
+                    Favicon
                   </label>
-                  <input
-                    type="url"
-                    value={settings.appearance.favicon}
-                    onChange={(e) => handleInputChange('appearance', 'favicon', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  <ImageUpload
+                    module="settings"
+                    currentImageUrl={settings.appearance.favicon || undefined}
+                    onImageUploaded={(imageData) => {
+                      handleInputChange('appearance', 'favicon', imageData.url)
+                    }}
+                    acceptedFormats={['ico', 'png', 'jpg', 'jpeg']}
+                    maxSizeMB={1}
+                    altText="Site favicon"
                   />
+                  <p className="mt-2 text-sm text-gray-500">
+                    Formats recommandés: ICO, PNG (16x16 ou 32x32 pixels)
+                  </p>
                 </div>
                 
                 <div>

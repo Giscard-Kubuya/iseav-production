@@ -1,10 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { actualitesApi } from '@/lib/api-services'
+import { Actualite } from '@/lib/api'
 
 export default function ActualitesContent() {
   const [activeCategory, setActiveCategory] = useState('all')
+  const [actualites, setActualites] = useState<Actualite[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const categories = [
     { id: 'all', name: 'Toutes les Actualités' },
@@ -15,86 +20,30 @@ export default function ActualitesContent() {
     { id: 'awards', name: 'Récompenses' }
   ]
 
-  const actualites = [
-    {
-      id: 1,
-      title: 'INFONET remporte le Prix Innovation IT Burundi 2025',
-      category: 'awards',
-      excerpt: 'Notre entreprise a été récompensée pour son excellence en transformation digitale au Burundi.',
-      content: 'Contenu complet de l\'actualité...',
-      author: 'Direction INFONET',
-      date: '20 Janvier 2025',
-      image: 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      urgent: true,
-      featured: true,
-      tags: ['Récompense', 'Innovation', 'Excellence']
-    },
-    {
-      id: 2,
-      title: 'Nouveau Partenariat avec Microsoft pour le Cloud Computing',
-      category: 'partnerships',
-      excerpt: 'INFONET devient partenaire officiel Microsoft pour les solutions cloud au Burundi.',
-      content: 'Contenu complet du partenariat...',
-      author: 'Équipe Partenariats',
-      date: '18 Janvier 2025',
-      image: 'https://images.unsplash.com/photo-1553484771-371a605b060b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      urgent: false,
-      featured: true,
-      tags: ['Microsoft', 'Cloud', 'Partenariat']
-    },
-    {
-      id: 3,
-      title: 'Lancement du Système de Gestion Hospitalière pour CHU Kamenge',
-      category: 'projects',
-      excerpt: 'Mise en service du nouveau système informatique pour améliorer la gestion des patients.',
-      content: 'Détails du projet hospitalier...',
-      author: 'Équipe Projets',
-      date: '15 Janvier 2025',
-      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      urgent: false,
-      featured: false,
-      tags: ['Santé', 'Système', 'CHU Kamenge']
-    },
-    {
-      id: 4,
-      title: 'Formation Gratuite en Cybersécurité pour 100 Étudiants',
-      category: 'events',
-      excerpt: 'INFONET organise une formation intensive en cybersécurité pour les étudiants burundais.',
-      content: 'Programme de formation...',
-      author: 'Équipe Formation',
-      date: '12 Janvier 2025',
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      urgent: false,
-      featured: false,
-      tags: ['Formation', 'Cybersécurité', 'Étudiants']
-    },
-    {
-      id: 5,
-      title: 'Ouverture du Nouveau Centre de Données INFONET',
-      category: 'company',
-      excerpt: 'Inauguration de notre centre de données de nouvelle génération à Bujumbura.',
-      content: 'Détails du centre de données...',
-      author: 'Direction Technique',
-      date: '10 Janvier 2025',
-      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      urgent: true,
-      featured: true,
-      tags: ['Infrastructure', 'Data Center', 'Innovation']
-    },
-    {
-      id: 6,
-      title: 'Signature d\'un Accord avec l\'Université du Burundi',
-      category: 'partnerships',
-      excerpt: 'Partenariat stratégique pour la recherche et l\'innovation technologique.',
-      content: 'Accord université...',
-      author: 'Équipe Académique',
-      date: '8 Janvier 2025',
-      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      urgent: false,
-      featured: false,
-      tags: ['Université', 'Recherche', 'Innovation']
+  useEffect(() => {
+    const fetchActualites = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        
+        // Fetch all published actualites
+        const response = await actualitesApi.getAll({
+          status: 'published',
+          per_page: 50 // Get a reasonable number of articles
+        })
+        
+        setActualites(response.data.data || [])
+        
+      } catch (err) {
+        console.error('Error fetching actualites:', err)
+        setError('Impossible de charger les actualités')
+      } finally {
+        setLoading(false)
+      }
     }
-  ]
+    
+    fetchActualites()
+  }, [])
 
   const filteredActualites = activeCategory === 'all' 
     ? actualites 
@@ -102,6 +51,33 @@ export default function ActualitesContent() {
 
   const urgentNews = actualites.filter(actualite => actualite.urgent)
   const featuredNews = actualites.filter(actualite => actualite.featured)
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-xl text-gray-600">Chargement des actualités...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">{error}</h2>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Réessayer
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
@@ -167,7 +143,7 @@ export default function ActualitesContent() {
                 <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100 cursor-pointer">
                   <div className="relative overflow-hidden">
                     <img
-                      src={actualite.image}
+                      src={actualite.featured_image || 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}
                       alt={actualite.title}
                       className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
@@ -190,7 +166,7 @@ export default function ActualitesContent() {
                       <span className="text-xs text-blue-600 font-semibold uppercase tracking-wide">
                         {categories.find(cat => cat.id === actualite.category)?.name}
                       </span>
-                      <span className="text-xs text-gray-500">{actualite.date}</span>
+                      <span className="text-xs text-gray-500">{new Date(actualite.publish_date).toLocaleDateString('fr-FR')}</span>
                     </div>
                     
                     <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
@@ -200,17 +176,6 @@ export default function ActualitesContent() {
                     <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
                       {actualite.excerpt}
                     </p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {actualite.tags.slice(0, 2).map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
                     
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600">Par {actualite.author}</span>
@@ -256,7 +221,7 @@ export default function ActualitesContent() {
                 <article className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden cursor-pointer">
                   <div className="relative">
                     <img
-                      src={actualite.image}
+                      src={actualite.featured_image || 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}
                       alt={actualite.title}
                       className="w-full h-48 object-cover"
                     />
@@ -283,7 +248,7 @@ export default function ActualitesContent() {
                   
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-3 text-sm text-gray-500">
-                      <span>{actualite.date}</span>
+                      <span>{new Date(actualite.publish_date).toLocaleDateString('fr-FR')}</span>
                       <span>{actualite.author}</span>
                     </div>
                     
@@ -294,17 +259,6 @@ export default function ActualitesContent() {
                     <p className="text-gray-600 mb-4 line-clamp-3">
                       {actualite.excerpt}
                     </p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {actualite.tags.slice(0, 2).map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
                     
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-600">{actualite.author}</span>

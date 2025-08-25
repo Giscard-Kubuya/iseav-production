@@ -1,75 +1,31 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePortfolioProjects, usePortfolioProjectMutations } from '@/hooks/usePortfolioProjects'
+import { useDebounce } from '@/hooks/useApi'
+import { PortfolioProject } from '@/lib/api'
 
-interface PortfolioProject {
-  id: number
-  title: string
-  client: string
-  category: 'web' | 'mobile' | 'desktop' | 'cloud' | 'security' | 'network'
-  status: 'completed' | 'in_progress' | 'planned'
-  startDate: string
-  endDate: string
-  budget: number
-  team: string[]
-  technologies: string[]
-  featured: boolean
-  description: string
-  image: string
-}
 
 export default function PortfolioManagement() {
-  const [projects, setProjects] = useState<PortfolioProject[]>([
-    {
-      id: 1,
-      title: 'Système de Gestion Hospitalière CHU Kamenge',
-      client: 'CHU Kamenge',
-      category: 'web',
-      status: 'completed',
-      startDate: '2024-03-15',
-      endDate: '2024-12-20',
-      budget: 85000,
-      team: ['Jean-Baptiste Niyonzima', 'Espérance Mukamana', 'Arlette Uwimana'],
-      technologies: ['React', 'Node.js', 'PostgreSQL', 'Docker'],
-      featured: true,
-      description: 'Développement complet d\'un système de gestion hospitalière intégré',
-      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-    },
-    {
-      id: 2,
-      title: 'Application Mobile E-Banking BRB',
-      client: 'Banque de la République du Burundi',
-      category: 'mobile',
-      status: 'completed',
-      startDate: '2024-01-10',
-      endDate: '2024-08-30',
-      budget: 120000,
-      team: ['Jean-Baptiste Niyonzima', 'Patrick Ndayizeye'],
-      technologies: ['React Native', 'Node.js', 'MongoDB', 'Firebase'],
-      featured: true,
-      description: 'Application mobile sécurisée pour les services bancaires en ligne',
-      image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-    },
-    {
-      id: 3,
-      title: 'Plateforme E-Commerce Burundi Market',
-      client: 'Burundi Market Ltd',
-      category: 'web',
-      status: 'in_progress',
-      startDate: '2024-11-01',
-      endDate: '2025-04-15',
-      budget: 95000,
-      team: ['Arlette Uwimana', 'Espérance Mukamana'],
-      technologies: ['Next.js', 'Stripe', 'PostgreSQL', 'AWS'],
-      featured: false,
-      description: 'Marketplace en ligne pour les produits locaux burundais',
-      image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-    }
-  ])
-
   const [filter, setFilter] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
+  const debouncedSearch = useDebounce(searchTerm, 500)
+
+  // Prepare filters for API call
+  const apiFilters = {
+    category: filter !== 'all' && ['web', 'mobile', 'desktop', 'cloud', 'security', 'network'].includes(filter) ? filter : undefined,
+    status: filter !== 'all' && ['completed', 'in_progress', 'planned'].includes(filter) ? filter : undefined,
+    search: debouncedSearch || undefined,
+  }
+
+  const { data: projects, loading, error, updateParams, refetch } = usePortfolioProjects(apiFilters)
+  const mutations = usePortfolioProjectMutations()
+
+  // Update API params when filters change
+  useEffect(() => {
+    updateParams(apiFilters)
+  }, [filter, debouncedSearch])
 
   const categories = {
     web: 'Applications Web',
@@ -86,29 +42,30 @@ export default function PortfolioManagement() {
     planned: 'Planifié'
   }
 
-  const filteredProjects = projects.filter(project => {
-    const matchesFilter = filter === 'all' || project.category === filter || project.status === filter
-    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.client.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesFilter && matchesSearch
-  })
-
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) {
-      setProjects(projects.filter(project => project.id !== id))
+      try {
+        await mutations.deleteProject(id, {
+          onSuccess: () => {
+            refetch()
+          }
+        })
+      } catch (error) {
+        console.error('Error deleting project:', error)
+      }
     }
   }
 
-  const handleToggleFeatured = (id: number) => {
-    setProjects(projects.map(project => 
-      project.id === id ? { ...project, featured: !project.featured } : project
-    ))
-  }
-
-  const handleStatusChange = (id: number, newStatus: 'completed' | 'in_progress' | 'planned') => {
-    setProjects(projects.map(project => 
-      project.id === id ? { ...project, status: newStatus } : project
-    ))
+  const handleToggleFeatured = async (id: number) => {
+    try {
+      await mutations.toggleFeatured(id, {
+        onSuccess: () => {
+          refetch()
+        }
+      })
+    } catch (error) {
+      console.error('Error toggling featured:', error)
+    }
   }
 
   const getStatusBadge = (status: string) => {
@@ -124,9 +81,25 @@ export default function PortfolioManagement() {
     }
   }
 
-  const totalBudget = projects.reduce((sum, project) => sum + project.budget, 0)
-  const completedProjects = projects.filter(p => p.status === 'completed').length
-  const inProgressProjects = projects.filter(p => p.status === 'in_progress').length
+  const totalBudget = projects?.reduce((sum, project) => sum + (project.budget || 0), 0) || 0
+  const completedProjects = projects?.filter(p => p.status === 'completed').length || 0
+  const inProgressProjects = projects?.filter(p => p.status === 'in_progress').length || 0
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+        Erreur lors du chargement des projets: {error}
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -182,7 +155,7 @@ export default function PortfolioManagement() {
           <div className="flex items-center">
             <div className="text-3xl mr-4">💼</div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{projects.length}</p>
+              <p className="text-2xl font-bold text-gray-900">{projects?.length || 0}</p>
               <p className="text-gray-600">Total Projets</p>
             </div>
           </div>
@@ -218,11 +191,11 @@ export default function PortfolioManagement() {
 
       {/* Projects grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        {filteredProjects.map((project) => (
+        {projects && projects.map((project) => (
           <div key={project.id} className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
             <div className="relative">
               <img
-                src={project.image}
+                src={project.featured_image}
                 alt={project.title}
                 className="w-full h-48 object-cover"
               />
@@ -249,33 +222,40 @@ export default function PortfolioManagement() {
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Budget:</span>
-                  <span className="font-medium">${project.budget.toLocaleString()}</span>
+                  <span className="font-medium">${project.budget?.toLocaleString() || 'Non spécifié'}</span>
                 </div>
                 
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Période:</span>
-                  <span className="font-medium">{project.startDate} - {project.endDate}</span>
+                  <span className="font-medium">{project.start_date} - {project.end_date || 'En cours'}</span>
                 </div>
                 
                 <div>
                   <span className="text-sm text-gray-500">Technologies:</span>
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {project.technologies.slice(0, 3).map((tech, index) => (
-                      <span key={index} className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <span className="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded">
-                        +{project.technologies.length - 3}
-                      </span>
-                    )}
+                    {(() => {
+                      const technologies = project.technologies || []
+                      return (
+                        <>
+                          {technologies.slice(0, 3).map((tech, index) => (
+                            <span key={index} className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
+                              {tech}
+                            </span>
+                          ))}
+                          {technologies.length > 3 && (
+                            <span className="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded">
+                              +{technologies.length - 3}
+                            </span>
+                          )}
+                        </>
+                      )
+                    })()}
                   </div>
                 </div>
                 
                 <div>
                   <span className="text-sm text-gray-500">Équipe:</span>
-                  <p className="text-sm font-medium">{project.team.length} membre(s)</p>
+                  <p className="text-sm font-medium">{project.team?.length || 0} membre(s)</p>
                 </div>
               </div>
               
@@ -311,7 +291,7 @@ export default function PortfolioManagement() {
         ))}
       </div>
 
-      {filteredProjects.length === 0 && (
+      {(!projects || projects.length === 0) && (
         <div className="text-center py-12">
           <div className="text-gray-500 text-lg">Aucun projet trouvé</div>
           <p className="text-gray-400 mt-2">

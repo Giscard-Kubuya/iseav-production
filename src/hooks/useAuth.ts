@@ -50,7 +50,7 @@ export function useAuthState() {
     checkAuthState()
   }, [])
 
-  const checkAuthState = () => {
+  const checkAuthState = async () => {
     try {
       const stored = localStorage.getItem('admin_auth')
       if (stored) {
@@ -60,7 +60,15 @@ export function useAuthState() {
         if (data.expiresAt && Date.now() > data.expiresAt) {
           logout()
         } else {
-          setAuthData(data)
+          // Verify token with API
+          try {
+            const { websiteApi } = await import('@/lib/api-services')
+            await websiteApi.getCurrent()
+            setAuthData(data)
+          } catch (error) {
+            console.error('Token verification failed:', error)
+            logout()
+          }
         }
       }
     } catch (error) {

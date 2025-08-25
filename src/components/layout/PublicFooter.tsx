@@ -10,17 +10,17 @@ export default function PublicFooter() {
               <div className="w-12 h-12 mr-3">
                 <img 
                   src="/images/logos/logo_extracted.png" 
-                  alt="ISEAV WALUNGU Logo"
+                  alt="INFONET Logo"
                   className="w-full h-full object-contain rounded-lg"
                 />
               </div>
               <div>
-                <div className="font-bold text-lg">ISEAV WALUNGU</div>
+                <div className="font-bold text-lg">INFONET</div>
               </div>
             </div>
             <p className="text-blue-200 text-sm mb-6 leading-relaxed">
-              Institut Supérieur d'Études Agronomiques et Vétérinaires - Walungu. 
-              Excellence en éducation, innovation en recherche.
+              Solutions IT innovantes pour votre entreprise. 
+              Excellence en développement, innovation en technologie.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors">
@@ -103,7 +103,7 @@ export default function PublicFooter() {
         <div className="border-t border-blue-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-blue-300">
             <div className="mb-4 md:mb-0">
-              <p>&copy; 2025 ISEAV WALUNGU. Tous droits réservés.</p>
+              <p>&copy; 2025 INFONET. Tous droits réservés.</p>
             </div>
             <div className="flex space-x-6">
               <Link href="/privacy" className="hover:text-yellow-300 transition-colors">Politique de confidentialité</Link>

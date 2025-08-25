@@ -1,29 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
-
-interface JobOffer {
-  id: number
-  title: string
-  department: string
-  type: 'fulltime' | 'parttime' | 'contract' | 'internship'
-  level: 'junior' | 'middle' | 'senior' | 'lead'
-  location: 'bujumbura' | 'gitega' | 'remote' | 'hybrid'
-  salary: {
-    min: number
-    max: number
-    currency: 'BIF' | 'USD'
-  }
-  status: 'active' | 'paused' | 'closed' | 'draft'
-  publishDate: string
-  deadline: string
-  applicationsCount: number
-  viewsCount: number
-  featured: boolean
-  urgent: boolean
-  description: string
-}
+import { useJobOffers, useJobOfferMutations } from '@/hooks/useJobOffers'
+import { useDebounce } from '@/hooks/useApi'
+import { JobOffer } from '@/lib/api'
 
 interface JobApplication {
   id: number
@@ -40,60 +21,40 @@ interface JobApplication {
 
 export default function RecruitmentManagement() {
   const [activeTab, setActiveTab] = useState<'jobs' | 'applications'>('jobs')
-  
-  const [jobOffers, setJobOffers] = useState<JobOffer[]>([
-    {
-      id: 1,
-      title: 'Développeur Full Stack Senior',
-      department: 'Développement',
-      type: 'fulltime',
-      level: 'senior',
-      location: 'bujumbura',
-      salary: { min: 1200, max: 1800, currency: 'USD' },
-      status: 'active',
-      publishDate: '2025-01-15',
-      deadline: '2025-02-15',
-      applicationsCount: 23,
-      viewsCount: 456,
-      featured: true,
-      urgent: false,
-      description: 'Nous recherchons un développeur full stack expérimenté pour rejoindre notre équipe dynamique.'
-    },
-    {
-      id: 2,
-      title: 'Analyste Cybersécurité',
-      department: 'Sécurité IT',
-      type: 'fulltime',
-      level: 'middle',
-      location: 'hybrid',
-      salary: { min: 800, max: 1200, currency: 'USD' },
-      status: 'active',
-      publishDate: '2025-01-10',
-      deadline: '2025-02-10',
-      applicationsCount: 15,
-      viewsCount: 234,
-      featured: false,
-      urgent: true,
-      description: 'Poste d\'analyste en cybersécurité pour protéger nos infrastructures critiques.'
-    },
-    {
-      id: 3,
-      title: 'Stagiaire Développement Mobile',
-      department: 'Développement',
-      type: 'internship',
-      level: 'junior',
-      location: 'bujumbura',
-      salary: { min: 200000, max: 300000, currency: 'BIF' },
-      status: 'active',
-      publishDate: '2025-01-08',
-      deadline: '2025-01-28',
-      applicationsCount: 45,
-      viewsCount: 789,
-      featured: false,
-      urgent: false,
-      description: 'Stage de 6 mois en développement d\'applications mobiles.'
-    }
-  ])
+  const [filter, setFilter] = useState('all')
+  const [searchTerm, setSearchTerm] = useState('')
+  const debouncedSearch = useDebounce(searchTerm, 500)
+
+  const { data: jobOffers, loading, error, updateParams, refetch } = useJobOffers()
+  const mutations = useJobOfferMutations()
+
+  // Filter job offers locally to avoid API loop issues
+  const filteredJobOffers = useMemo(() => {
+    if (!jobOffers) return []
+    
+    return jobOffers.filter(job => {
+      // Filter by department
+      if (filter !== 'all' && ['Développement', 'Sécurité IT', 'Infrastructure', 'Support', 'Management'].includes(filter)) {
+        if (job.department !== filter) return false
+      }
+      
+      // Filter by status
+      if (filter !== 'all' && ['draft', 'active', 'closed', 'filled'].includes(filter)) {
+        if (job.status !== filter) return false
+      }
+      
+      // Filter by search term
+      if (debouncedSearch) {
+        const searchLower = debouncedSearch.toLowerCase()
+        return job.title.toLowerCase().includes(searchLower) || 
+               job.description?.toLowerCase().includes(searchLower)
+      }
+      
+      return true
+    })
+  }, [jobOffers, filter, debouncedSearch])
+
+  // Filters are now applied locally to avoid API loops
 
   const [applications, setApplications] = useState<JobApplication[]>([
     {
@@ -122,9 +83,6 @@ export default function RecruitmentManagement() {
     }
   ])
 
-  const [filter, setFilter] = useState('all')
-  const [searchTerm, setSearchTerm] = useState('')
-
   const departments = ['Développement', 'Sécurité IT', 'Infrastructure', 'Support', 'Management']
   const jobTypes = {
     fulltime: 'Temps plein',
@@ -145,44 +103,61 @@ export default function RecruitmentManagement() {
     hybrid: 'Hybride'
   }
   const statusLabels = {
-    active: 'Actif',
-    paused: 'En pause',
+    published: 'Publié',
+    draft: 'Brouillon',
     closed: 'Fermé',
-    draft: 'Brouillon'
+    filled: 'Pourvu'
   }
 
-  const filteredJobs = jobOffers.filter(job => {
-    const matchesFilter = filter === 'all' || 
-                         job.status === filter || 
-                         job.department === filter ||
-                         job.type === filter
-    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.department.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesFilter && matchesSearch
-  })
 
-  const handleDeleteJob = (id: number) => {
+  const handleDeleteJob = async (id: number) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette offre d\'emploi ?')) {
-      setJobOffers(jobOffers.filter(job => job.id !== id))
+      try {
+        await mutations.deleteJob(id, {
+          onSuccess: () => {
+            refetch()
+          }
+        })
+      } catch (error) {
+        console.error('Error deleting job offer:', error)
+      }
     }
   }
 
-  const handleToggleFeatured = (id: number) => {
-    setJobOffers(jobOffers.map(job => 
-      job.id === id ? { ...job, featured: !job.featured } : job
-    ))
+  const handleToggleFeatured = async (id: number) => {
+    try {
+      await mutations.toggleFeatured(id, {
+        onSuccess: () => {
+          refetch()
+        }
+      })
+    } catch (error) {
+      console.error('Error toggling featured:', error)
+    }
   }
 
-  const handleToggleUrgent = (id: number) => {
-    setJobOffers(jobOffers.map(job => 
-      job.id === id ? { ...job, urgent: !job.urgent } : job
-    ))
+  const handleToggleUrgent = async (id: number) => {
+    try {
+      await mutations.toggleUrgent(id, {
+        onSuccess: () => {
+          refetch()
+        }
+      })
+    } catch (error) {
+      console.error('Error toggling urgent:', error)
+    }
   }
 
-  const handleStatusChange = (id: number, newStatus: 'active' | 'paused' | 'closed') => {
-    setJobOffers(jobOffers.map(job => 
-      job.id === id ? { ...job, status: newStatus } : job
-    ))
+  const handleStatusChange = async (id: number, newStatus: string) => {
+    try {
+      await mutations.updateStatus(id, newStatus, {
+        onSuccess: () => {
+          refetch()
+        }
+      })
+    } catch (error) {
+      console.error('Error updating status:', error)
+    }
   }
 
   const handleApplicationStatusChange = (id: number, newStatus: JobApplication['status']) => {
@@ -193,10 +168,10 @@ export default function RecruitmentManagement() {
 
   const getStatusBadge = (status: string) => {
     const statusClasses = {
-      active: 'bg-green-100 text-green-800',
-      paused: 'bg-yellow-100 text-yellow-800',
+      published: 'bg-green-100 text-green-800',
+      draft: 'bg-gray-100 text-gray-800',
       closed: 'bg-red-100 text-red-800',
-      draft: 'bg-gray-100 text-gray-800'
+      filled: 'bg-blue-100 text-blue-800'
     }
     return (
       <span className={`px-2 py-1 text-xs rounded-full ${statusClasses[status as keyof typeof statusClasses]}`}>
@@ -231,6 +206,22 @@ export default function RecruitmentManagement() {
   const pendingApplications = applications.filter(app => app.status === 'pending').length
   const interviewApplications = applications.filter(app => app.status === 'interview').length
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+        Erreur lors du chargement des offres d'emploi: {error}
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -259,7 +250,7 @@ export default function RecruitmentManagement() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Offres d'Emploi ({jobOffers.length})
+              Offres d'Emploi ({jobOffers?.length || 0})
             </button>
             <button
               onClick={() => setActiveTab('applications')}
@@ -295,10 +286,10 @@ export default function RecruitmentManagement() {
                 >
                   <option value="all">Tous les emplois</option>
                   <optgroup label="Par statut">
-                    <option value="active">Actifs</option>
-                    <option value="paused">En pause</option>
-                    <option value="closed">Fermés</option>
+                    <option value="published">Publiés</option>
                     <option value="draft">Brouillons</option>
+                    <option value="closed">Fermés</option>
+                    <option value="filled">Pourvus</option>
                   </optgroup>
                   <optgroup label="Par département">
                     {departments.map(dept => (
@@ -319,7 +310,7 @@ export default function RecruitmentManagement() {
                   <div className="flex items-center">
                     <div className="text-2xl mr-3">💼</div>
                     <div>
-                      <p className="text-xl font-bold text-gray-900">{jobOffers.length}</p>
+                      <p className="text-xl font-bold text-gray-900">{jobOffers?.length || 0}</p>
                       <p className="text-gray-600 text-sm">Total Offres</p>
                     </div>
                   </div>
@@ -328,7 +319,7 @@ export default function RecruitmentManagement() {
                   <div className="flex items-center">
                     <div className="text-2xl mr-3">✅</div>
                     <div>
-                      <p className="text-xl font-bold text-green-600">{jobOffers.filter(j => j.status === 'active').length}</p>
+                      <p className="text-xl font-bold text-green-600">{jobOffers?.filter(j => j.status === 'active').length || 0}</p>
                       <p className="text-gray-600 text-sm">Actives</p>
                     </div>
                   </div>
@@ -346,7 +337,7 @@ export default function RecruitmentManagement() {
                   <div className="flex items-center">
                     <div className="text-2xl mr-3">⭐</div>
                     <div>
-                      <p className="text-xl font-bold text-purple-600">{jobOffers.filter(j => j.featured).length}</p>
+                      <p className="text-xl font-bold text-purple-600">{jobOffers?.filter(j => j.featured).length || 0}</p>
                       <p className="text-gray-600 text-sm">En vedette</p>
                     </div>
                   </div>
@@ -355,7 +346,7 @@ export default function RecruitmentManagement() {
 
               {/* Jobs list */}
               <div className="space-y-4">
-                {filteredJobs.map((job) => (
+                {jobOffers && jobOffers.map((job) => (
                   <div key={job.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
@@ -390,16 +381,16 @@ export default function RecruitmentManagement() {
                             <span className="font-medium">Localisation:</span> {locations[job.location]}
                           </div>
                           <div>
-                            <span className="font-medium">Salaire:</span> {job.salary.min}-{job.salary.max} {job.salary.currency}
+                            <span className="font-medium">Salaire:</span> {job.salary_min}-{job.salary_max} {job.salary_currency}
                           </div>
                           <div>
-                            <span className="font-medium">Deadline:</span> {job.deadline}
+                            <span className="font-medium">Deadline:</span> {job.deadline ? new Date(job.deadline).toLocaleDateString() : 'Non définie'}
                           </div>
                           <div>
-                            <span className="font-medium">Candidatures:</span> {job.applicationsCount}
+                            <span className="font-medium">Candidatures:</span> {job.applications_count}
                           </div>
                           <div>
-                            <span className="font-medium">Vues:</span> {job.viewsCount}
+                            <span className="font-medium">Vues:</span> {job.views_count}
                           </div>
                         </div>
                         
@@ -561,7 +552,7 @@ export default function RecruitmentManagement() {
         </div>
       </div>
 
-      {filteredJobs.length === 0 && activeTab === 'jobs' && (
+      {(!jobOffers || jobOffers.length === 0) && activeTab === 'jobs' && (
         <div className="text-center py-12">
           <div className="text-gray-500 text-lg">Aucune offre d'emploi trouvée</div>
           <p className="text-gray-400 mt-2">

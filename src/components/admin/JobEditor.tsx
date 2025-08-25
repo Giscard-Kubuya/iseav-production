@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useJobOfferMutations } from '@/hooks/useJobOffers'
+import { jobOffersApi } from '@/lib/api-services'
 
 interface JobEditorProps {
   mode: 'create' | 'edit'
@@ -11,18 +13,21 @@ interface JobEditorProps {
 
 export default function JobEditor({ mode, id }: JobEditorProps) {
   const router = useRouter()
+  const mutations = useJobOfferMutations()
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
     department: '',
-    type: 'fulltime' as 'fulltime' | 'parttime' | 'contract' | 'internship',
-    level: 'middle' as 'junior' | 'middle' | 'senior' | 'lead',
-    location: 'bujumbura' as 'bujumbura' | 'gitega' | 'remote' | 'hybrid',
-    salary: {
-      min: '',
-      max: '',
-      currency: 'USD' as 'BIF' | 'USD'
-    },
-    status: 'draft' as 'active' | 'paused' | 'closed' | 'draft',
+    contract_type: 'cdi' as 'cdi' | 'cdd' | 'stage' | 'freelance' | 'temps_partiel',
+    location: '',
+    salary_min: '',
+    salary_max: '',
+    level: 'junior' as 'junior' | 'middle' | 'senior',
+    experience_required: '',
+    education_required: '',
+    status: 'draft' as 'draft' | 'published' | 'closed' | 'filled',
+    application_deadline: '',
+    publish_date: new Date().toISOString().split('T')[0],
     deadline: '',
     featured: false,
     urgent: false,
@@ -56,10 +61,11 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
   ]
 
   const jobTypes = [
-    { value: 'fulltime', label: 'Temps plein' },
-    { value: 'parttime', label: 'Temps partiel' },
-    { value: 'contract', label: 'Contrat' },
-    { value: 'internship', label: 'Stage' }
+    { value: 'cdi', label: 'CDI (Contrat à durée indéterminée)' },
+    { value: 'cdd', label: 'CDD (Contrat à durée déterminée)' },
+    { value: 'stage', label: 'Stage' },
+    { value: 'freelance', label: 'Freelance' },
+    { value: 'temps_partiel', label: 'Temps partiel' }
   ]
 
   const levels = [
@@ -76,60 +82,70 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
     { value: 'hybrid', label: 'Hybride' }
   ]
 
-  const currencies = [
-    { value: 'USD', label: 'USD (Dollar américain)' },
-    { value: 'BIF', label: 'BIF (Franc burundais)' }
-  ]
 
   useEffect(() => {
-    if (mode === 'edit' && id) {
-      // En production, ceci ferait appel à une API pour récupérer l'offre d'emploi
-      const mockData = {
-        title: 'Développeur Full Stack Senior',
-        department: 'Développement',
-        type: 'fulltime' as const,
-        level: 'senior' as const,
-        location: 'bujumbura' as const,
-        salary: {
-          min: '1200',
-          max: '1800',
-          currency: 'USD' as const
-        },
-        status: 'active' as const,
-        deadline: '2025-02-15',
-        featured: true,
-        urgent: false,
-        description: 'Nous recherchons un développeur full stack expérimenté pour rejoindre notre équipe dynamique et contribuer au développement de solutions innovantes.',
-        requirements: `• Diplôme en informatique ou équivalent
-• 5+ années d'expérience en développement web
-• Maîtrise de React, Node.js, et bases de données
-• Expérience avec Docker et CI/CD
-• Bonnes compétences en communication
-• Autonomie et esprit d'équipe`,
-        responsibilities: `• Développer et maintenir des applications web
-• Participer à la conception d'architectures logicielles
-• Collaborer avec l'équipe produit et design
-• Mentorer les développeurs junior
-• Assurer la qualité du code et les tests
-• Participer aux code reviews`,
-        benefits: `• Salaire compétitif
-• Assurance maladie complète
-• Formation continue
-• Environnement de travail moderne
-• Équipe jeune et dynamique
-• Possibilités d'évolution`,
-        applicationProcess: 'Envoyez votre CV et lettre de motivation à recrutement@infonet.bi. Les candidats présélectionnés seront contactés pour un entretien technique.',
-        contactEmail: 'recrutement@infonet.bi',
-        contactPhone: '+257 22 123 456',
-        workSchedule: 'Lundi à Vendredi, 8h-17h avec flexibilité',
-        contract: {
-          duration: 'CDI',
-          renewable: false,
-          probationPeriod: '3 mois'
+    const loadJobData = async () => {
+      if (mode === 'edit' && id) {
+        setLoading(true)
+        try {
+          const response = await jobOffersApi.getById(parseInt(id))
+          const job = response.data.data || response.data
+          
+          
+          setFormData({
+            title: job.title || '',
+            department: job.department || '',
+            contract_type: (() => {
+              switch (job.type) {
+                case 'fulltime': return 'cdi';
+                case 'parttime': return 'temps_partiel';
+                case 'contract': return 'cdd';
+                case 'internship': return 'stage';
+                default: return 'cdi';
+              }
+            })(),
+            location: job.location || '',
+            salary_min: job.salary_min?.toString() || '',
+            salary_max: job.salary_max?.toString() || '',
+            level: job.level === 'lead' ? 'senior' : (job.level || 'junior'),
+            experience_required: '',
+            education_required: '',
+            status: (() => {
+              switch (job.status) {
+                case 'active': return 'published';
+                case 'closed': return 'closed';
+                case 'paused': return 'draft';
+                default: return 'draft';
+              }
+            })(),
+            application_deadline: job.deadline || '',
+            publish_date: job.publish_date || new Date().toISOString().split('T')[0],
+            deadline: job.deadline || '',
+            featured: job.featured || false,
+            urgent: job.urgent || false,
+            description: job.description || '',
+            requirements: job.requirements || '',
+            responsibilities: job.responsibilities || '',
+            benefits: job.benefits || '',
+            applicationProcess: '',
+            contactEmail: '',
+            contactPhone: '',
+            workSchedule: '',
+            contract: {
+              duration: '',
+              renewable: false,
+              probationPeriod: ''
+            }
+          })
+        } catch (error) {
+          console.error('Error loading job data:', error)
+        } finally {
+          setLoading(false)
         }
       }
-      setFormData(mockData)
     }
+
+    loadJobData()
   }, [mode, id])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -137,13 +153,61 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
     setSaving(true)
 
     try {
-      // En production, ceci ferait appel à une API
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const submitData = {
+        title: formData.title,
+        description: formData.description,
+        requirements: formData.requirements,
+        responsibilities: formData.responsibilities,
+        benefits: formData.benefits,
+        department: formData.department,
+        type: (() => {
+          switch (formData.contract_type) {
+            case 'cdi': return 'fulltime' as const;
+            case 'temps_partiel': return 'parttime' as const;
+            case 'cdd': return 'contract' as const;
+            case 'stage': return 'internship' as const;
+            case 'freelance': return 'contract' as const;
+            default: return 'fulltime' as const;
+          }
+        })(),
+        level: formData.level as "junior" | "middle" | "senior",
+        location: (() => {
+          const loc = formData.location.toLowerCase();
+          if (loc.includes('bujumbura')) return 'bujumbura' as const;
+          if (loc.includes('gitega')) return 'gitega' as const;
+          if (loc.includes('remote')) return 'remote' as const;
+          if (loc.includes('hybrid')) return 'hybrid' as const;
+          return 'bujumbura' as const;
+        })(),
+        salary_min: formData.salary_min ? parseFloat(formData.salary_min) : undefined,
+        salary_max: formData.salary_max ? parseFloat(formData.salary_max) : undefined,
+        salary_currency: 'BIF' as const,
+        publish_date: formData.publish_date,
+        deadline: formData.deadline || formData.application_deadline || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        status: (() => {
+          switch (formData.status) {
+            case 'published': return 'active' as const;
+            case 'closed': return 'closed' as const;
+            case 'filled': return 'closed' as const;
+            default: return 'draft' as const;
+          }
+        })(),
+        urgent: formData.urgent,
+        featured: formData.featured
+      }
+      
+
+      if (mode === 'create') {
+        await mutations.createJob(submitData)
+      } else if (mode === 'edit' && id) {
+        await mutations.updateJob(parseInt(id), submitData)
+      }
 
       alert(mode === 'create' ? 'Offre d\'emploi créée avec succès!' : 'Offre d\'emploi mise à jour avec succès!')
       router.push('/admin/recrutement')
     } catch (error) {
-      alert('Erreur lors de la sauvegarde')
+      console.error('Error saving job offer:', error)
+      alert('Erreur lors de la sauvegarde: ' + (error instanceof Error ? error.message : String(error)))
     } finally {
       setSaving(false)
     }
@@ -162,6 +226,14 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
     } finally {
       setSaving(false)
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
   }
 
   return (
@@ -245,8 +317,8 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
                         Type de contrat *
                       </label>
                       <select
-                        value={formData.type}
-                        onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+                        value={formData.contract_type}
+                        onChange={(e) => setFormData({ ...formData, contract_type: e.target.value as any })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         {jobTypes.map(type => (
@@ -284,16 +356,42 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Date limite de candidature
-                    </label>
-                    <input
-                      type="date"
-                      value={formData.deadline}
-                      onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Date de publication *
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.publish_date}
+                        onChange={(e) => setFormData({ ...formData, publish_date: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Date limite générale *
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.deadline || ''}
+                        onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Date limite de candidature
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.application_deadline || ''}
+                        onChange={(e) => setFormData({ ...formData, application_deadline: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -377,55 +475,36 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
               {/* Salary */}
               <div className="bg-white rounded-lg shadow p-6">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Rémunération</h3>
-                <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Devise
+                      Salaire minimum
                     </label>
-                    <select
-                      value={formData.salary.currency}
+                    <input
+                      type="number"
+                      value={formData.salary_min}
                       onChange={(e) => setFormData({ 
                         ...formData, 
-                        salary: { ...formData.salary, currency: e.target.value as any }
+                        salary_min: e.target.value
                       })}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      {currencies.map(currency => (
-                        <option key={currency.value} value={currency.value}>{currency.label}</option>
-                      ))}
-                    </select>
+                      placeholder="45000"
+                    />
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Salaire min
-                      </label>
-                      <input
-                        type="number"
-                        value={formData.salary.min}
-                        onChange={(e) => setFormData({ 
-                          ...formData, 
-                          salary: { ...formData.salary, min: e.target.value }
-                        })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="1000"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Salaire max
-                      </label>
-                      <input
-                        type="number"
-                        value={formData.salary.max}
-                        onChange={(e) => setFormData({ 
-                          ...formData, 
-                          salary: { ...formData.salary, max: e.target.value }
-                        })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="1500"
-                      />
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Salaire maximum
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.salary_max}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        salary_max: e.target.value
+                      })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="60000"
+                    />
                   </div>
                 </div>
               </div>
@@ -444,9 +523,9 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="draft">Brouillon</option>
-                      <option value="active">Actif</option>
-                      <option value="paused">En pause</option>
+                      <option value="published">Publié</option>
                       <option value="closed">Fermé</option>
+                      <option value="filled">Pourvu</option>
                     </select>
                   </div>
                   <div className="flex items-center">
@@ -580,7 +659,7 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
                     {formData.department}
                   </span>
                   <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">
-                    {jobTypes.find(t => t.value === formData.type)?.label}
+                    {jobTypes.find(t => t.value === formData.contract_type)?.label}
                   </span>
                   <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
                     {locations.find(l => l.value === formData.location)?.label}
@@ -596,9 +675,9 @@ export default function JobEditor({ mode, id }: JobEditorProps) {
                     </span>
                   )}
                 </div>
-                {formData.salary.min && formData.salary.max && (
+                {formData.salary_min && formData.salary_max && (
                   <span className="text-lg font-bold text-green-600">
-                    {formData.salary.min}-{formData.salary.max} {formData.salary.currency}
+                    {formData.salary_min}-{formData.salary_max} BIF
                   </span>
                 )}
               </div>

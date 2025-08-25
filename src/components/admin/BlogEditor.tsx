@@ -1,95 +1,172 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useBlogPostMutations } from "@/hooks/useBlogPosts";
+import { blogPostsApi } from "@/lib/api-services";
+import ImageUpload from "./ImageUpload";
 
 interface BlogEditorProps {
-  mode: 'create' | 'edit'
-  id?: string
+  mode: "create" | "edit";
+  id?: string;
 }
 
 export default function BlogEditor({ mode, id }: BlogEditorProps) {
-  const router = useRouter()
+  const router = useRouter();
+  const mutations = useBlogPostMutations();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    title: '',
-    excerpt: '',
-    content: '',
-    author: 'Jean-Baptiste Niyonzima',
-    category: 'technology',
-    tags: '',
+    title: "",
+    excerpt: "",
+    content: "",
+    author: "Jean-Baptiste Niyonzima",
+    category: "technology",
+    tags: "",
     featured: false,
-    status: 'draft' as 'draft' | 'published' | 'scheduled',
-    publishDate: '',
-    metaTitle: '',
-    metaDescription: '',
-    image: ''
-  })
+    status: "draft" as "draft" | "published" | "scheduled",
+    publishDate: "",
+    metaTitle: "",
+    metaDescription: "",
+    image: "",
+  });
 
-  const [saving, setSaving] = useState(false)
-  const [preview, setPreview] = useState(false)
+  const [saving, setSaving] = useState(false);
+  const [preview, setPreview] = useState(false);
 
   const categories = [
-    { value: 'technology', label: 'Technologie' },
-    { value: 'security', label: 'Sécurité IT' },
-    { value: 'development', label: 'Développement' },
-    { value: 'business', label: 'Business' },
-    { value: 'innovation', label: 'Innovation' }
-  ]
+    { value: "technology", label: "Technologie" },
+    { value: "security", label: "Sécurité IT" },
+    { value: "development", label: "Développement" },
+    { value: "business", label: "Business" },
+    { value: "innovation", label: "Innovation" },
+  ];
 
   useEffect(() => {
-    if (mode === 'edit' && id) {
-      // En production, ceci ferait appel à une API pour récupérer l'article
-      // Pour ce template, on utilise des données mockées
-      const mockData = {
-        title: 'Les Tendances Technologiques 2025 au Burundi',
-        excerpt: 'Découvrez les innovations qui vont transformer le paysage technologique burundais en 2025.',
-        content: '<p>Le Burundi se positionne comme un acteur émergent dans l\'écosystème technologique de l\'Afrique de l\'Est...</p>',
-        author: 'Jean-Baptiste Niyonzima',
-        category: 'technology',
-        tags: 'Innovation, Burundi, Tech 2025',
-        featured: true,
-        status: 'published' as const,
-        publishDate: '2025-01-15',
-        metaTitle: 'Tendances Tech 2025 Burundi | INFONET Blog',
-        metaDescription: 'Découvrez les innovations technologiques qui transformeront le Burundi en 2025.',
-        image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    const loadData = async () => {
+      if (mode === "edit" && id) {
+        try {
+          setLoading(true);
+          const response = await blogPostsApi.getById(parseInt(id));
+          const post = response.data.data;
+          setFormData({
+            title: post.title || "",
+            excerpt: post.excerpt || "",
+            content: post.content || "",
+            author: post.author || "",
+            category: post.category || "technology",
+            tags: post.tags
+              ? Array.isArray(post.tags)
+                ? post.tags.join(", ")
+                : post.tags
+              : "",
+            featured: post.featured || false,
+            status: post.status || "draft",
+            publishDate: post.publish_date
+              ? post.publish_date.split("T")[0]
+              : "",
+            metaTitle: post.meta_description || "",
+            metaDescription: post.meta_description || "",
+            image: post.featured_image || "",
+          });
+        } catch (error) {
+          console.error("Error loading post:", error);
+          alert("Erreur lors du chargement de l'article");
+        } finally {
+          setLoading(false);
+        }
       }
-      setFormData(mockData)
-    }
-  }, [mode, id])
+    };
+
+    loadData();
+  }, [mode, id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
+    e.preventDefault();
+    setSaving(true);
 
     try {
-      // En production, ceci ferait appel à une API
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulation
+      const submitData = {
+        title: formData.title,
+        excerpt: formData.excerpt,
+        content: formData.content,
+        author: formData.author,
+        category: formData.category,
+        tags: formData.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag),
+        featured: formData.featured,
+        status: formData.status as "published" | "draft" | "scheduled",
+        publish_date: formData.publishDate || undefined,
+        meta_title: formData.metaTitle || undefined,
+        meta_description: formData.metaDescription || undefined,
+        featured_image: formData.image || undefined,
+      };
 
-      alert(mode === 'create' ? 'Article créé avec succès!' : 'Article mis à jour avec succès!')
-      router.push('/admin/blog')
+      if (mode === "create") {
+        await mutations.createPost(submitData);
+      } else if (mode === "edit" && id) {
+        await mutations.updatePost(parseInt(id), submitData);
+      }
+
+      alert(
+        mode === "create"
+          ? "Article créé avec succès!"
+          : "Article mis à jour avec succès!"
+      );
+      router.push("/admin/blog");
     } catch (error) {
-      alert('Erreur lors de la sauvegarde')
+      console.error("Error saving post:", error);
+      alert(
+        "Erreur lors de la sauvegarde: " +
+          (error instanceof Error ? error.message : String(error))
+      );
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   const handleSaveDraft = async () => {
-    const updatedData = { ...formData, status: 'draft' as const }
-    setFormData(updatedData)
-    setSaving(true)
+    setSaving(true);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      alert('Brouillon sauvegardé!')
+      const updatedData = { ...formData, status: "draft" as const };
+      setFormData(updatedData);
+
+      const submitData = {
+        title: updatedData.title,
+        excerpt: updatedData.excerpt,
+        content: updatedData.content,
+        author: updatedData.author,
+        category: updatedData.category,
+        tags: updatedData.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag),
+        featured: updatedData.featured,
+        status: "draft" as const,
+        publish_date: updatedData.publishDate || undefined,
+        meta_title: updatedData.metaTitle || undefined,
+        meta_description: updatedData.metaDescription || undefined,
+        featured_image: updatedData.image || undefined,
+      };
+
+      if (mode === "create") {
+        await mutations.createPost(submitData);
+        router.push("/admin/blog");
+      } else if (mode === "edit" && id) {
+        await mutations.updatePost(parseInt(id), submitData);
+      }
+
+      alert("Brouillon sauvegardé!");
     } catch (error) {
-      alert('Erreur lors de la sauvegarde')
+      console.error("Error saving draft:", error);
+      alert("Erreur lors de la sauvegarde du brouillon");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -97,10 +174,14 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            {mode === 'create' ? 'Créer un Nouvel Article' : 'Modifier l\'Article'}
+            {mode === "create"
+              ? "Créer un Nouvel Article"
+              : "Modifier l'Article"}
           </h1>
           <p className="text-gray-600">
-            {mode === 'create' ? 'Rédigez un nouvel article pour le blog' : 'Modifiez le contenu de votre article'}
+            {mode === "create"
+              ? "Rédigez un nouvel article pour le blog"
+              : "Modifiez le contenu de votre article"}
           </p>
         </div>
         <div className="flex space-x-3">
@@ -115,13 +196,13 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
             disabled={saving}
             className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50"
           >
-            {saving ? 'Sauvegarde...' : 'Sauvegarder brouillon'}
+            {saving ? "Sauvegarde..." : "Sauvegarder brouillon"}
           </button>
           <button
             onClick={() => setPreview(!preview)}
             className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
           >
-            {preview ? 'Éditer' : 'Aperçu'}
+            {preview ? "Éditer" : "Aperçu"}
           </button>
         </div>
       </div>
@@ -141,7 +222,9 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                   type="text"
                   required
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Entrez le titre de votre article"
                 />
@@ -155,7 +238,9 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                 <textarea
                   required
                   value={formData.excerpt}
-                  onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, excerpt: e.target.value })
+                  }
                   rows={3}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Résumé court de votre article (utilisé dans les listes d'articles)"
@@ -170,19 +255,24 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                 <textarea
                   required
                   value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, content: e.target.value })
+                  }
                   rows={20}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
                   placeholder="Écrivez votre article en HTML. Vous pouvez utiliser des balises comme <h2>, <p>, <ul>, <li>, etc."
                 />
                 <p className="text-xs text-gray-500 mt-2">
-                  Astuce: Utilisez HTML pour le formatage. Exemple: &lt;h2&gt;Titre de section&lt;/h2&gt;
+                  Astuce: Utilisez HTML pour le formatage. Exemple:
+                  &lt;h2&gt;Titre de section&lt;/h2&gt;
                 </p>
               </div>
 
               {/* SEO */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Optimisation SEO</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Optimisation SEO
+                </h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -191,7 +281,9 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                     <input
                       type="text"
                       value={formData.metaTitle}
-                      onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, metaTitle: e.target.value })
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Titre optimisé pour les moteurs de recherche"
                     />
@@ -202,7 +294,12 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                     </label>
                     <textarea
                       value={formData.metaDescription}
-                      onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          metaDescription: e.target.value,
+                        })
+                      }
                       rows={2}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Description pour les moteurs de recherche"
@@ -216,7 +313,9 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
             <div className="space-y-6">
               {/* Publish */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Publication</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Publication
+                </h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -224,7 +323,12 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                     </label>
                     <select
                       value={formData.status}
-                      onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          status: e.target.value as any,
+                        })
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="draft">Brouillon</option>
@@ -232,7 +336,7 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                       <option value="scheduled">Programmé</option>
                     </select>
                   </div>
-                  {formData.status === 'scheduled' && (
+                  {formData.status === "scheduled" && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Date de publication
@@ -240,7 +344,12 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                       <input
                         type="datetime-local"
                         value={formData.publishDate}
-                        onChange={(e) => setFormData({ ...formData, publishDate: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            publishDate: e.target.value,
+                          })
+                        }
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -250,10 +359,15 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                       type="checkbox"
                       id="featured"
                       checked={formData.featured}
-                      onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, featured: e.target.checked })
+                      }
                       className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                     />
-                    <label htmlFor="featured" className="ml-2 block text-sm text-gray-900">
+                    <label
+                      htmlFor="featured"
+                      className="ml-2 block text-sm text-gray-900"
+                    >
                       Article en vedette
                     </label>
                   </div>
@@ -262,7 +376,9 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
 
               {/* Categories and Tags */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Catégorie et Tags</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Catégorie et Tags
+                </h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -271,7 +387,9 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                     <input
                       type="text"
                       value={formData.author}
-                      onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, author: e.target.value })
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
@@ -281,11 +399,15 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                     </label>
                     <select
                       value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, category: e.target.value })
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                      {categories.map(cat => (
-                        <option key={cat.value} value={cat.value}>{cat.label}</option>
+                      {categories.map((cat) => (
+                        <option key={cat.value} value={cat.value}>
+                          {cat.label}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -296,7 +418,9 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                     <input
                       type="text"
                       value={formData.tags}
-                      onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, tags: e.target.value })
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="tech, innovation, burundi"
                     />
@@ -306,17 +430,20 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
 
               {/* Featured Image */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Image de couverture</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Image de couverture
+                </h3>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL de l'image
+                    Image de couverture
                   </label>
-                  <input
-                    type="url"
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="https://example.com/image.jpg"
+                  <ImageUpload
+                    module="blog"
+                    onImageUploaded={(imageData) => {
+                      setFormData({ ...formData, image: imageData.url });
+                    }}
+                    currentImageUrl={formData.image}
+                    altText={formData.title}
                   />
                   {formData.image && (
                     <div className="mt-3">
@@ -337,7 +464,11 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
                   disabled={saving}
                   className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
                 >
-                  {saving ? 'Sauvegarde...' : (mode === 'create' ? 'Publier l\'article' : 'Mettre à jour')}
+                  {saving
+                    ? "Sauvegarde..."
+                    : mode === "create"
+                    ? "Publier l'article"
+                    : "Mettre à jour"}
                 </button>
               </div>
             </div>
@@ -350,31 +481,36 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
             <div className="mb-6">
               <div className="flex items-center text-sm text-gray-500 mb-4">
                 <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full mr-4">
-                  {categories.find(c => c.value === formData.category)?.label}
+                  {categories.find((c) => c.value === formData.category)?.label}
                 </span>
                 <span>Par {formData.author}</span>
               </div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                {formData.title || 'Titre de l\'article'}
+                {formData.title || "Titre de l'article"}
               </h1>
               {formData.image && (
-                <img 
-                  src={formData.image} 
+                <img
+                  src={formData.image}
                   alt={formData.title}
                   className="w-full h-64 md:h-96 object-cover rounded-xl mb-6"
                 />
               )}
             </div>
-            <div 
+            <div
               className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: formData.content || '<p>Contenu de l\'article...</p>' }}
+              dangerouslySetInnerHTML={{
+                __html: formData.content || "<p>Contenu de l'article...</p>",
+              }}
             />
             {formData.tags && (
               <div className="mt-8 pt-6 border-t">
                 <h3 className="text-lg font-semibold mb-4">Tags</h3>
                 <div className="flex flex-wrap gap-2">
-                  {formData.tags.split(',').map((tag, index) => (
-                    <span key={index} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                  {formData.tags.split(",").map((tag, index) => (
+                    <span
+                      key={index}
+                      className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm"
+                    >
                       #{tag.trim()}
                     </span>
                   ))}
@@ -385,5 +521,5 @@ export default function BlogEditor({ mode, id }: BlogEditorProps) {
         </div>
       )}
     </div>
-  )
+  );
 }

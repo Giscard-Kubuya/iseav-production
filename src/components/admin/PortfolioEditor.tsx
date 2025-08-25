@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { usePortfolioProjectMutations } from '@/hooks/usePortfolioProjects'
+import { portfolioProjectsApi } from '@/lib/api-services'
+import ImageUpload from './ImageUpload'
 
 interface PortfolioEditorProps {
   mode: 'create' | 'edit'
@@ -11,6 +14,8 @@ interface PortfolioEditorProps {
 
 export default function PortfolioEditor({ mode, id }: PortfolioEditorProps) {
   const router = useRouter()
+  const mutations = usePortfolioProjectMutations()
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
     client: '',
@@ -88,13 +93,35 @@ export default function PortfolioEditor({ mode, id }: PortfolioEditorProps) {
     setSaving(true)
 
     try {
-      // En production, ceci ferait appel à une API
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const submitData = {
+        title: formData.title,
+        description: formData.description,
+        client: formData.client,
+        category: formData.category,
+        status: formData.status,
+        start_date: formData.startDate,
+        end_date: formData.endDate || undefined,
+        budget: formData.budget ? parseFloat(formData.budget) : undefined,
+        team: formData.team.split(',').map(t => t.trim()).filter(t => t),
+        technologies: formData.technologies.split(',').map(t => t.trim()).filter(t => t),
+        featured: formData.featured,
+        featured_image: formData.image || undefined,
+        gallery_images: formData.gallery ? formData.gallery.split(',').map(g => g.trim()).filter(g => g) : undefined,
+        challenges: formData.challenges || undefined,
+        solutions: formData.solutions || undefined
+      }
+
+      if (mode === 'create') {
+        await mutations.createProject(submitData)
+      } else if (mode === 'edit' && id) {
+        await mutations.updateProject(parseInt(id), submitData)
+      }
 
       alert(mode === 'create' ? 'Projet créé avec succès!' : 'Projet mis à jour avec succès!')
       router.push('/admin/portfolio')
     } catch (error) {
-      alert('Erreur lors de la sauvegarde')
+      console.error('Error saving project:', error)
+      alert('Erreur lors de la sauvegarde: ' + (error instanceof Error ? error.message : String(error)))
     } finally {
       setSaving(false)
     }
@@ -395,22 +422,14 @@ export default function PortfolioEditor({ mode, id }: PortfolioEditorProps) {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Image principale
                     </label>
-                    <input
-                      type="url"
-                      value={formData.image}
-                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="https://example.com/image.jpg"
+                    <ImageUpload
+                      module="portfolio"
+                      onImageUploaded={(imageData) => {
+                        setFormData({ ...formData, image: imageData.url });
+                      }}
+                      currentImageUrl={formData.image}
+                      altText={formData.title}
                     />
-                    {formData.image && (
-                      <div className="mt-3">
-                        <img
-                          src={formData.image}
-                          alt="Aperçu"
-                          className="w-full h-32 object-cover rounded-lg"
-                        />
-                      </div>
-                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">

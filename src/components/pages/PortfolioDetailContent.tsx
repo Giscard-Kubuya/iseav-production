@@ -2,254 +2,119 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { portfolioProjectsApi, commentsApi } from '@/lib/api-services'
+import { PortfolioProject, Comment as ApiComment } from '@/lib/api'
 
-interface Comment {
-  id: number
-  author: string
-  email: string
-  content: string
-  date: string
-  replies?: Comment[]
-}
-
-interface Project {
-  id: number
-  title: string
-  category: string
-  description: string
-  fullDescription: string
-  technologies: string[]
-  images: string[]
-  client: string
-  duration: string
-  budget: string
-  team: string[]
-  challenges: string[]
-  solutions: string[]
-  results: string[]
-  testimonial?: {
-    content: string
-    author: string
-    position: string
-    company: string
-  }
-  date: string
-  status: 'completed' | 'in-progress' | 'maintenance'
-  featured: boolean
-  views: number
-  likes: number
-}
+// Using API types instead of local interfaces
 
 interface PortfolioDetailContentProps {
   id: string
 }
 
 export default function PortfolioDetailContent({ id }: PortfolioDetailContentProps) {
-  const [project, setProject] = useState<Project | null>(null)
-  const [comments, setComments] = useState<Comment[]>([])
+  const [project, setProject] = useState<PortfolioProject | null>(null)
+  const [comments, setComments] = useState<ApiComment[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [newComment, setNewComment] = useState({ author: '', email: '', content: '' })
   const [replyingTo, setReplyingTo] = useState<number | null>(null)
   const [newReply, setNewReply] = useState({ author: '', email: '', content: '' })
   const [liked, setLiked] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-  // Mock projects data
-  const projects: Project[] = [
-    {
-      id: 1,
-      title: 'Système de Gestion Hospitalière CHU Kamenge',
-      category: 'web-development',
-      description: 'Solution complète de gestion hospitalière pour améliorer les soins aux patients.',
-      fullDescription: 'Développement d\'un système intégré de gestion hospitalière pour le Centre Hospitalier Universitaire de Kamenge, incluant la gestion des patients, la pharmacie, les laboratoires et la facturation.',
-      technologies: ['React', 'Node.js', 'PostgreSQL', 'Docker', 'Redis', 'WebSocket'],
-      images: [
-        'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1584515933487-779824d29309?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-      ],
-      client: 'CHU Kamenge',
-      duration: '18 mois',
-      budget: '$250,000',
-      team: ['Jean-Claude Ndayisenga', 'Marie-Claire Nzeyimana', 'Emmanuel Hakizimana', 'Consolée Uwimana'],
-      challenges: [
-        'Intégration avec les systèmes existants',
-        'Formation du personnel médical',
-        'Sécurisation des données patients',
-        'Optimisation des performances'
-      ],
-      solutions: [
-        'APIs RESTful pour l\'intégration',
-        'Programme de formation personnalisé',
-        'Chiffrement end-to-end des données',
-        'Optimisation de la base de données'
-      ],
-      results: [
-        'Réduction de 60% du temps d\'attente',
-        'Diminution de 40% des erreurs médicales',
-        'Amélioration de 80% de la traçabilité',
-        'Satisfaction patient à 95%'
-      ],
-      testimonial: {
-        content: 'Le système développé par INFONET a révolutionné notre façon de travailler. La qualité des soins s\'est considérablement améliorée.',
-        author: 'Dr. Espérance Mukamana',
-        position: 'Directrice Médicale',
-        company: 'CHU Kamenge'
-      },
-      date: 'Décembre 2024',
-      status: 'completed',
-      featured: true,
-      views: 2841,
-      likes: 187
-    },
-    {
-      id: 2,
-      title: 'Plateforme E-commerce Burundi Market',
-      category: 'e-commerce',
-      description: 'Première plateforme de commerce électronique nationale connectant vendeurs et acheteurs.',
-      fullDescription: 'Création de la première marketplace nationale du Burundi, permettant aux commerçants locaux de vendre en ligne et aux consommateurs d\'acheter facilement.',
-      technologies: ['Next.js', 'Stripe', 'MongoDB', 'AWS', 'Redux', 'Tailwind CSS'],
-      images: [
-        'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-      ],
-      client: 'Ministère du Commerce',
-      duration: '12 mois',
-      budget: '$180,000',
-      team: ['Emmanuel Hakizimana', 'Arlette Uwimana', 'Jean-Baptiste Niyonzima'],
-      challenges: [
-        'Éducation des commerçants au digital',
-        'Intégration des paiements mobiles',
-        'Logistique de livraison',
-        'Confiance des consommateurs'
-      ],
-      solutions: [
-        'Formation et accompagnement personnalisé',
-        'Partenariat avec les opérateurs télécoms',
-        'Réseau de points relais',
-        'Système de notation et avis clients'
-      ],
-      results: [
-        '500+ commerçants inscrits',
-        '10,000+ produits référencés',
-        '50,000+ utilisateurs actifs',
-        '$2M de transactions en 6 mois'
-      ],
-      date: 'Octobre 2024',
-      status: 'completed',
-      featured: true,
-      views: 1952,
-      likes: 134
-    },
-    {
-      id: 3,
-      title: 'Application Mobile Banking BIC',
-      category: 'mobile-development',
-      description: 'Application mobile sécurisée pour les services bancaires en ligne.',
-      fullDescription: 'Développement d\'une application mobile complète pour la Banque de l\'Investissement et du Commerce (BIC), offrant tous les services bancaires essentiels.',
-      technologies: ['React Native', 'Node.js', 'MongoDB', 'JWT', 'Biometric Auth', 'Push Notifications'],
-      images: [
-        'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-      ],
-      client: 'BIC Burundi',
-      duration: '10 mois',
-      budget: '$150,000',
-      team: ['Marie-Claire Nzeyimana', 'Emmanuel Hakizimana', 'Claudine Nibigira'],
-      challenges: [
-        'Sécurité bancaire maximale',
-        'Performance en zone de faible connectivité',
-        'Conformité réglementaire',
-        'Expérience utilisateur intuitive'
-      ],
-      solutions: [
-        'Authentification biométrique et 2FA',
-        'Mode hors ligne et synchronisation',
-        'Audit de sécurité externe',
-        'Tests utilisateurs itératifs'
-      ],
-      results: [
-        '80,000+ téléchargements',
-        '95% de satisfaction utilisateur',
-        '40% de réduction des visites en agence',
-        'Certification sécurité bancaire'
-      ],
-      date: 'Septembre 2024',
-      status: 'completed',
-      featured: false,
-      views: 1456,
-      likes: 98
-    }
-  ]
-
-  // Mock comments
-  const mockComments: Comment[] = [
-    {
-      id: 1,
-      author: 'Dr. Pacifique Ntihabose',
-      email: 'pacifique@medical.bi',
-      content: 'Excellent travail ! Le système fonctionne parfaitement dans notre service. Bravo à l\'équipe INFONET.',
-      date: '22 Janvier 2025',
-    },
-    {
-      id: 2,
-      author: 'Sylvie Ndayishimiye',
-      email: 'sylvie@tech.bi',
-      content: 'Très impressionnant ! Pourriez-vous développer une solution similaire pour les cliniques privées ?',
-      date: '21 Janvier 2025'
-    }
-  ]
-
   useEffect(() => {
-    const foundProject = projects.find(p => p.id === parseInt(id))
-    if (foundProject) {
-      setProject(foundProject)
-      setComments(mockComments)
+    const fetchProject = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        
+        // Fetch the portfolio project
+        const projectResponse = await portfolioProjectsApi.getById(parseInt(id))
+        setProject(projectResponse.data.data)
+        
+        // Fetch comments for this project
+        const commentsResponse = await commentsApi.getAll({
+          commentable_type: 'portfolio_project',
+          commentable_id: parseInt(id),
+          status: 'approved'
+        })
+        setComments(commentsResponse.data.data || [])
+        
+      } catch (err) {
+        console.error('Error fetching portfolio project:', err)
+        setError('Impossible de charger le projet')
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    if (id) {
+      fetchProject()
     }
   }, [id])
 
-  const handleCommentSubmit = (e: React.FormEvent) => {
+  const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (newComment.author && newComment.email && newComment.content) {
-      const comment: Comment = {
-        id: Date.now(),
-        ...newComment,
-        date: new Date().toLocaleDateString('fr-FR', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })
+      try {
+        const commentData = {
+          ...newComment,
+          commentable_type: 'portfolio_project',
+          commentable_id: parseInt(id),
+          status: 'pending' as const
+        }
+        
+        const response = await commentsApi.create(commentData)
+        
+        // Only add to local state if the comment was created successfully
+        // In production, you might want to refresh the comments or show a pending message
+        alert('Votre commentaire a été soumis et est en attente de modération.')
+        setNewComment({ author: '', email: '', content: '' })
+        
+      } catch (err) {
+        console.error('Error submitting comment:', err)
+        alert('Erreur lors de l\'envoi du commentaire. Veuillez réessayer.')
       }
-      setComments([...comments, comment])
-      setNewComment({ author: '', email: '', content: '' })
     }
   }
 
   const handleLike = () => {
     if (project) {
-      setProject({ ...project, likes: liked ? project.likes - 1 : project.likes + 1 })
+      // Note: This would need to be implemented in the API to persist likes
       setLiked(!liked)
     }
   }
 
   const nextImage = () => {
-    if (project) {
-      setCurrentImageIndex((prev) => (prev + 1) % project.images.length)
+    if (project && project.gallery_images && project.gallery_images.length > 1) {
+      setCurrentImageIndex((prev) => (prev + 1) % (project.gallery_images?.length || 1))
     }
   }
 
   const prevImage = () => {
-    if (project) {
-      setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
+    if (project && project.gallery_images && project.gallery_images.length > 1) {
+      setCurrentImageIndex((prev) => (prev - 1 + (project.gallery_images?.length || 1)) % (project.gallery_images?.length || 1))
     }
   }
 
-  if (!project) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Projet non trouvé</h2>
+          <div className="w-16 h-16 mx-auto mb-4 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-xl text-gray-600">Chargement du projet...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !project) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            {error || "Projet non trouvé"}
+          </h2>
           <Link href="/portfolio" className="text-blue-600 hover:text-blue-800">
             Retour au portfolio
           </Link>
@@ -271,22 +136,22 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
             <div>
               <div className="flex items-center text-sm text-gray-500 mb-4 flex-wrap gap-2">
                 <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-                  {project.category.replace('-', ' ')}
+                  {project.category?.replace('-', ' ')}
                 </span>
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                   project.status === 'completed' ? 'bg-green-100 text-green-800' :
-                  project.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
+                  project.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800' :
                   'bg-gray-100 text-gray-800'
                 }`}>
                   {project.status === 'completed' ? 'Terminé' :
-                   project.status === 'in-progress' ? 'En cours' : 'Maintenance'}
+                   project.status === 'in_progress' ? 'En cours' : 'Planifié'}
                 </span>
                 {project.featured && (
                   <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
                     ⭐ Projet vedette
                   </span>
                 )}
-                <span className="ml-auto">{project.date}</span>
+                <span className="ml-auto">{project.start_date ? new Date(project.start_date).toLocaleDateString('fr-FR') : ''}</span>
               </div>
               
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -294,7 +159,7 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
               </h1>
               
               <p className="text-xl text-gray-600 mb-6">
-                {project.fullDescription}
+                {project.description}
               </p>
 
               <div className="grid grid-cols-2 gap-4 mb-6">
@@ -304,15 +169,20 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Durée</h3>
-                  <p className="text-gray-600">{project.duration}</p>
+                  <p className="text-gray-600">
+                    {project.start_date && project.end_date 
+                      ? `${Math.ceil((new Date(project.end_date).getTime() - new Date(project.start_date).getTime()) / (1000 * 60 * 60 * 24))} jours`
+                      : 'Non spécifiée'
+                    }
+                  </p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Budget</h3>
-                  <p className="text-gray-600">{project.budget}</p>
+                  <p className="text-gray-600">{project.budget ? `$${project.budget}` : 'Confidentiel'}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Vues</h3>
-                  <p className="text-gray-600">{project.views}</p>
+                  <h3 className="font-semibold text-gray-900 mb-2">Statut</h3>
+                  <p className="text-gray-600">{project.status}</p>
                 </div>
               </div>
 
@@ -326,7 +196,7 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
                   }`}
                 >
                   <span className="mr-2">{liked ? '❤️' : '🤍'}</span>
-                  {project.likes}
+                  J'aime
                 </button>
                 
                 <button className="flex items-center px-4 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors">
@@ -345,12 +215,16 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
             <div className="relative">
               <div className="relative h-64 md:h-96 bg-gray-200 rounded-xl overflow-hidden">
                 <img 
-                  src={project.images[currentImageIndex]} 
+                  src={
+                    project.gallery_images && project.gallery_images.length > 0 
+                      ? project.gallery_images[currentImageIndex]
+                      : project.featured_image || 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                  } 
                   alt={`${project.title} - Image ${currentImageIndex + 1}`}
                   className="w-full h-full object-cover"
                 />
                 
-                {project.images.length > 1 && (
+                {project.gallery_images && project.gallery_images.length > 1 && (
                   <>
                     <button
                       onClick={prevImage}
@@ -368,9 +242,9 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
                 )}
               </div>
               
-              {project.images.length > 1 && (
+              {project.gallery_images && project.gallery_images.length > 1 && (
                 <div className="flex justify-center mt-4 space-x-2">
-                  {project.images.map((_, index) => (
+                  {project.gallery_images.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
@@ -392,79 +266,71 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Technologies */}
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold mb-6">Technologies Utilisées</h2>
-              <div className="flex flex-wrap gap-3">
-                {project.technologies.map(tech => (
-                  <span key={tech} className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-semibold">
-                    {tech}
-                  </span>
-                ))}
+            {project.technologies && project.technologies.length > 0 && (
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <h2 className="text-2xl font-bold mb-6">Technologies Utilisées</h2>
+                <div className="flex flex-wrap gap-3">
+                  {project.technologies.map((tech, index) => (
+                    <span key={index} className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-semibold">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Challenges & Solutions */}
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold mb-6">Défis et Solutions</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-lg font-semibold text-red-600 mb-4">🎯 Défis</h3>
-                  <ul className="space-y-3">
-                    {project.challenges.map((challenge, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="text-red-500 mr-2">•</span>
-                        <span className="text-gray-700">{challenge}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-green-600 mb-4">💡 Solutions</h3>
-                  <ul className="space-y-3">
-                    {project.solutions.map((solution, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="text-green-500 mr-2">•</span>
-                        <span className="text-gray-700">{solution}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* Results */}
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold mb-6">Résultats Obtenus</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {project.results.map((result, index) => (
-                  <div key={index} className="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <div className="flex items-start">
-                      <span className="text-green-600 mr-2">✓</span>
-                      <span className="text-gray-700 font-medium">{result}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Testimonial */}
-            {project.testimonial && (
+            {(project.challenges || project.solutions) && (
               <div className="bg-white rounded-xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold mb-6">Témoignage Client</h2>
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <blockquote className="text-lg italic text-gray-700 mb-4">
-                    "{project.testimonial.content}"
-                  </blockquote>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white font-semibold mr-4">
-                      {project.testimonial.author.split(' ').map(n => n[0]).join('')}
-                    </div>
+                <h2 className="text-2xl font-bold mb-6">Défis et Solutions</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {project.challenges && (
                     <div>
-                      <p className="font-semibold text-gray-900">{project.testimonial.author}</p>
-                      <p className="text-gray-600 text-sm">{project.testimonial.position}</p>
-                      <p className="text-gray-500 text-sm">{project.testimonial.company}</p>
+                      <h3 className="text-lg font-semibold text-red-600 mb-4">🎯 Défis</h3>
+                      <div className="text-gray-700 prose">
+                        <div dangerouslySetInnerHTML={{ __html: project.challenges }} />
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {project.solutions && (
+                    <div>
+                      <h3 className="text-lg font-semibold text-green-600 mb-4">💡 Solutions</h3>
+                      <div className="text-gray-700 prose">
+                        <div dangerouslySetInnerHTML={{ __html: project.solutions }} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Project URLs */}
+            {(project.project_url || project.repository_url) && (
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <h2 className="text-2xl font-bold mb-6">Liens du Projet</h2>
+                <div className="flex flex-wrap gap-4">
+                  {project.project_url && (
+                    <a
+                      href={project.project_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center px-4 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors"
+                    >
+                      <span className="mr-2">🌐</span>
+                      Voir le projet en ligne
+                    </a>
+                  )}
+                  {project.repository_url && (
+                    <a
+                      href={project.repository_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                      <span className="mr-2">📁</span>
+                      Code source
+                    </a>
+                  )}
                 </div>
               </div>
             )}
@@ -473,19 +339,21 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
           {/* Sidebar */}
           <div className="space-y-8">
             {/* Team */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-bold mb-4">Équipe Projet</h3>
-              <div className="space-y-3">
-                {project.team.map((member, index) => (
-                  <div key={index} className="flex items-center">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
-                      {member.split(' ').map(n => n[0]).join('')}
+            {project.team && project.team.length > 0 && (
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-lg font-bold mb-4">Équipe Projet</h3>
+                <div className="space-y-3">
+                  {project.team.map((member, index) => (
+                    <div key={index} className="flex items-center">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
+                        {member.split(' ').map((n: string) => n[0]).join('')}
+                      </div>
+                      <span className="text-gray-700">{member}</span>
                     </div>
-                    <span className="text-gray-700">{member}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Contact CTA */}
             <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-xl p-6">
@@ -556,7 +424,7 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
                       <h5 className="font-semibold">{comment.author}</h5>
-                      <span className="text-gray-500 text-sm">{comment.date}</span>
+                      <span className="text-gray-500 text-sm">{new Date(comment.created_at).toLocaleDateString('fr-FR')}</span>
                     </div>
                     <p className="text-gray-700">{comment.content}</p>
                   </div>
@@ -567,34 +435,16 @@ export default function PortfolioDetailContent({ id }: PortfolioDetailContentPro
         </div>
       </div>
 
-      {/* Related Projects */}
+      {/* Call to Action */}
       <div className="max-w-6xl mx-auto px-4 pb-12">
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <h3 className="text-2xl font-bold mb-6">Projets similaires</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects
-              .filter(p => p.id !== project.id && p.category === project.category)
-              .slice(0, 3)
-              .map(relatedProject => (
-                <Link key={relatedProject.id} href={`/portfolio/${relatedProject.id}`}>
-                  <div className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                    <img 
-                      src={relatedProject.images[0]} 
-                      alt={relatedProject.title}
-                      className="w-full h-32 object-cover"
-                    />
-                    <div className="p-4">
-                      <h4 className="font-semibold mb-2 line-clamp-2">{relatedProject.title}</h4>
-                      <p className="text-gray-600 text-sm line-clamp-2">{relatedProject.description}</p>
-                      <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
-                        <span>{relatedProject.client}</span>
-                        <span>{relatedProject.date}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-          </div>
+        <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-xl p-8 text-center">
+          <h3 className="text-2xl font-bold mb-4">Intéressé par un projet similaire ?</h3>
+          <p className="text-blue-100 mb-6">
+            Contactez-nous pour discuter de vos besoins et obtenir un devis personnalisé.
+          </p>
+          <Link href="/contact" className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+            Demander un devis
+          </Link>
         </div>
       </div>
     </div>

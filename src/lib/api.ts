@@ -21,7 +21,7 @@ api.interceptors.request.use(
     //   config.headers.Authorization = `Bearer ${API_TOKEN}`
     // }
     // Add website ID header for multi-tenant API
-    config.headers["Origin"] = "https://demo.infonet.bi";
+    config.headers["Origin"] = "https://infonet.bi";
     config.headers["Website-ID"] = "1";
     return config;
   },

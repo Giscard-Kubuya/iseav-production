@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-const API_BASE_URL = "https://nic-africa-api.infonet.bi/";
+const API_BASE_URL = "https://nic-africa-api.infonet.bi";
 const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
 
 // Create axios instance with default configuration

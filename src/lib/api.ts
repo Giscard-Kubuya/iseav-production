@@ -1,9 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-// API Configuration - Updated for CodeIgniter 4
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "http://localhost:8080/api"; // CI4 default port
+const API_BASE_URL = "https://nic-africa-api.infonet.bi/";
 const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
 
 // Create axios instance with default configuration
@@ -24,6 +21,7 @@ api.interceptors.request.use(
     //   config.headers.Authorization = `Bearer ${API_TOKEN}`
     // }
     // Add website ID header for multi-tenant API
+    config.headers["Origin"] = "https://infonet-production.vercel.app";
     config.headers["Website-ID"] = "1";
     return config;
   },

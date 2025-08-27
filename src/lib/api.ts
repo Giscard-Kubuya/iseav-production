@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-const API_BASE_URL = "https://nic-africa-api.infonet.bi";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://nic-africa-api-ci.infonet.bi/api";
 const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
 
 // Create axios instance with default configuration
@@ -20,9 +21,12 @@ api.interceptors.request.use(
     // if (API_TOKEN) {
     //   config.headers.Authorization = `Bearer ${API_TOKEN}`
     // }
+
     // Add website ID header for multi-tenant API
-    config.headers["Origin"] = "https://infonet.bi";
-    config.headers["Website-ID"] = "1";
+    // ✅ FIXED: Removed manual Origin header - browsers set this automatically
+    config.headers["Website-ID"] = process.env.NEXT_PUBLIC_WEBSITE_ID || "1";
+    // config.headers["Origin"] = "http://localhost:3000";
+
     return config;
   },
   (error) => {

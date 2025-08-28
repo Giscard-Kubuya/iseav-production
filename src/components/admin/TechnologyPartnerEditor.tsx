@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useApiData } from "@/hooks/useApi";
 import { apiRequest } from "@/lib/api";
+import ImageUpload from "./ImageUpload";
 
 interface TechnologyPartnerEditorProps {
   mode: "create" | "edit";
@@ -15,10 +16,7 @@ interface TechnologyPartnerForm {
   description: string;
   partnership_type: string;
   website_url: string;
-  logo_url: string;
-  contact_email: string;
-  contact_phone: string;
-  contact_person: string;
+  logo: string;
   is_active: boolean;
   is_featured: boolean;
 }
@@ -30,10 +28,7 @@ export default function TechnologyPartnerEditor({ mode, id }: TechnologyPartnerE
     description: "",
     partnership_type: "",
     website_url: "",
-    logo_url: "",
-    contact_email: "",
-    contact_phone: "",
-    contact_person: "",
+    logo: "",
     is_active: true,
     is_featured: false,
   });
@@ -78,12 +73,19 @@ export default function TechnologyPartnerEditor({ mode, id }: TechnologyPartnerE
     setError(null);
 
     try {
+      // Convert boolean values to 0/1 for backend compatibility
+      const submitData = {
+        ...formData,
+        is_active: formData.is_active ? 1 : 0,
+        is_featured: formData.is_featured ? 1 : 0,
+      };
+
       if (mode === "create") {
-        await apiRequest.post("/technology-partners", formData, {
+        await apiRequest.post("/technology-partners", submitData, {
           headers: { 'Website-ID': '1' }
         });
       } else {
-        await apiRequest.put(`/technology-partners/${id}`, formData, {
+        await apiRequest.put(`/technology-partners/${id}`, submitData, {
           headers: { 'Website-ID': '1' }
         });
       }
@@ -138,12 +140,12 @@ export default function TechnologyPartnerEditor({ mode, id }: TechnologyPartnerE
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Sélectionner un type</option>
-                <option value="Technology Vendor">Fournisseur Technologique</option>
-                <option value="Strategic Partner">Partenaire Stratégique</option>
-                <option value="Integration Partner">Partenaire d'Intégration</option>
-                <option value="Reseller">Revendeur</option>
-                <option value="Solution Provider">Fournisseur de Solutions</option>
-                <option value="Other">Autre</option>
+                <option value="technology">Technologique</option>
+                <option value="strategic">Stratégique</option>
+                <option value="reseller">Revendeur</option>
+                <option value="vendor">Fournisseur</option>
+                <option value="integration">Intégration</option>
+                <option value="other">Autre</option>
               </select>
             </div>
           </div>
@@ -181,73 +183,34 @@ export default function TechnologyPartnerEditor({ mode, id }: TechnologyPartnerE
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                URL du logo
+                Logo du partenaire
               </label>
-              <input
-                type="url"
-                name="logo_url"
-                value={formData.logo_url}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://..."
+              <ImageUpload
+                module="technology-partners"
+                currentImageUrl={formData.logo || undefined}
+                onImageUploaded={(imageData) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    logo: imageData.url,
+                  }));
+                }}
+                acceptedFormats={['jpg', 'jpeg', 'png', 'webp', 'svg']}
+                maxSizeMB={2}
+                altText={`Logo ${formData.name}`}
               />
             </div>
           </div>
 
-          {/* Contact Information */}
-          <div className="border-t pt-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Informations de Contact</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Personne de contact
-                </label>
-                <input
-                  type="text"
-                  name="contact_person"
-                  value={formData.contact_person}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email de contact
-                </label>
-                <input
-                  type="email"
-                  name="contact_email"
-                  value={formData.contact_email}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Téléphone de contact
-                </label>
-                <input
-                  type="text"
-                  name="contact_phone"
-                  value={formData.contact_phone}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-          </div>
 
           {/* Preview */}
-          {(formData.logo_url || formData.name) && (
+          {(formData.logo || formData.name) && (
             <div className="border-t pt-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Aperçu</h3>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center">
-                  {formData.logo_url && (
+                  {formData.logo && (
                     <img
-                      src={formData.logo_url}
+                      src={formData.logo}
                       alt={formData.name}
                       className="h-12 w-12 object-contain mr-4"
                       onError={(e) => {

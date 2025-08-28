@@ -16,6 +16,8 @@ interface SiteSettings {
     address: string
     timezone: string
     language: string
+    mission: string
+    vision: string
   }
   social: {
     facebook: string
@@ -63,8 +65,14 @@ export default function SettingsManagement() {
   const [saving, setSaving] = useState(false)
   
   // Fetch current website settings
-  const { data: websiteData, loading } = useApiData(
+  const { data: websiteData, loading: websiteLoading } = useApiData(
     () => websiteApi.getCurrent(),
+    []
+  )
+
+  // Fetch current parameters
+  const { data: parametersData, loading: parametersLoading } = useApiData(
+    () => websiteApi.getParameters(),
     []
   )
 
@@ -78,7 +86,9 @@ export default function SettingsManagement() {
         phone: '+257 22 123 456',
         address: 'Avenue de l\'Indépendance, Bujumbura, Burundi',
         timezone: 'Africa/Bujumbura',
-        language: 'fr'
+        language: 'fr',
+        mission: 'Fournir des solutions informatiques innovantes et accessibles pour accompagner la transformation digitale au Burundi.',
+        vision: 'Devenir le leader technologique incontournable au Burundi et contribuer au développement numérique de la région.'
       },
       social: {
         facebook: 'https://facebook.com/infonetbi',
@@ -126,9 +136,10 @@ export default function SettingsManagement() {
 
   // Update settings when API data is loaded
   useEffect(() => {
-    if (websiteData?.data) {
+    if (websiteData?.data && parametersData?.data) {
       const apiData = websiteData.data
       const apiSettings = apiData.settings || {}
+      const parametersApiData = parametersData.data
       
       setSettings({
         general: {
@@ -136,19 +147,21 @@ export default function SettingsManagement() {
           siteDescription: apiData.description || 'Solutions informatiques innovantes au Burundi',
           siteUrl: apiSettings.general?.siteUrl || 'https://infonet.bi',
           adminEmail: apiSettings.general?.adminEmail || 'admin@infonet.bi',
-          contactEmail: apiSettings.general?.contactEmail || 'contact@infonet.bi',
-          phone: apiSettings.general?.phone || '+257 22 123 456',
-          address: apiSettings.general?.address || 'Avenue de l\'Indépendance, Bujumbura, Burundi',
+          contactEmail: parametersApiData.contact_email || apiSettings.general?.contactEmail || 'contact@infonet.bi',
+          phone: parametersApiData.contact_phone || apiSettings.general?.phone || '+257 22 123 456',
+          address: parametersApiData.address || apiSettings.general?.address || 'Avenue de l\'Indépendance, Bujumbura, Burundi',
           timezone: apiSettings.general?.timezone || 'Africa/Bujumbura',
-          language: apiSettings.general?.language || 'fr'
+          language: apiSettings.general?.language || 'fr',
+          mission: parametersApiData.mission || 'Fournir des solutions informatiques innovantes et accessibles pour accompagner la transformation digitale au Burundi.',
+          vision: parametersApiData.vision || 'Devenir le leader technologique incontournable au Burundi et contribuer au développement numérique de la région.'
         },
         social: {
-          facebook: apiSettings.social?.facebook || '',
-          twitter: apiSettings.social?.twitter || '',
-          linkedin: apiSettings.social?.linkedin || '',
-          instagram: apiSettings.social?.instagram || '',
-          youtube: apiSettings.social?.youtube || '',
-          github: apiSettings.social?.github || ''
+          facebook: parametersApiData.social_media?.facebook || apiSettings.social?.facebook || '',
+          twitter: parametersApiData.social_media?.twitter || apiSettings.social?.twitter || '',
+          linkedin: parametersApiData.social_media?.linkedin || apiSettings.social?.linkedin || '',
+          instagram: parametersApiData.social_media?.instagram || apiSettings.social?.instagram || '',
+          youtube: parametersApiData.social_media?.youtube || apiSettings.social?.youtube || '',
+          github: parametersApiData.social_media?.github || apiSettings.social?.github || ''
         },
         seo: {
           metaTitle: apiSettings.seo?.metaTitle || `${apiData.name} - Solutions informatiques`,
@@ -163,7 +176,7 @@ export default function SettingsManagement() {
         appearance: apiSettings.appearance || getDefaultSettings().appearance
       })
     }
-  }, [websiteData])
+  }, [websiteData, parametersData])
 
   const tabs = [
     { id: 'general', label: 'Général', icon: '⚙️' },
@@ -177,15 +190,26 @@ export default function SettingsManagement() {
   const handleSave = async () => {
     setSaving(true)
     try {
+      // Update basic website info
       await websiteApi.update({
         name: settings.general.siteName,
         description: settings.general.siteDescription,
-        settings: settings
       })
+      
+      // Update parameters (mission, vision, etc.)
+      await websiteApi.updateParameters({
+        mission: settings.general.mission,
+        vision: settings.general.vision,
+        contact_email: settings.general.contactEmail,
+        contact_phone: settings.general.phone,
+        address: settings.general.address,
+        social_media: settings.social,
+      })
+      
       alert('Paramètres sauvegardés avec succès!')
     } catch (error) {
       console.error('Error saving settings:', error)
-      alert('Erreur lors de la sauvegarde')
+      alert('Erreur lors de la sauvegarde: ' + (error.response?.data?.error || error.message))
     } finally {
       setSaving(false)
     }
@@ -201,7 +225,7 @@ export default function SettingsManagement() {
     }))
   }
 
-  if (loading) {
+  if (websiteLoading || parametersLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -351,6 +375,38 @@ export default function SettingsManagement() {
                     rows={2}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
+                </div>
+                
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Mission de l'entreprise
+                  </label>
+                  <textarea
+                    value={settings.general.mission}
+                    onChange={(e) => handleInputChange('general', 'mission', e.target.value)}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Décrivez la mission de votre entreprise..."
+                  />
+                  <p className="mt-1 text-sm text-gray-500">
+                    La mission définit le but et les objectifs de votre entreprise.
+                  </p>
+                </div>
+                
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Vision de l'entreprise
+                  </label>
+                  <textarea
+                    value={settings.general.vision}
+                    onChange={(e) => handleInputChange('general', 'vision', e.target.value)}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Décrivez la vision d'avenir de votre entreprise..."
+                  />
+                  <p className="mt-1 text-sm text-gray-500">
+                    La vision décrit où vous voyez votre entreprise dans le futur.
+                  </p>
                 </div>
               </div>
             </div>

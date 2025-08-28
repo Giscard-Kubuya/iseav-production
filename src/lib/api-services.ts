@@ -446,6 +446,10 @@ export const websiteApi = {
 
   update: (data: any) => apiRequest.put<ApiResponse<any>>("/website", data),
 
+  getParameters: () => apiRequest.get<ApiResponse<any>>("/website/parameters"),
+
+  updateParameters: (data: any) => apiRequest.put<ApiResponse<any>>("/website/parameters", data),
+
   regenerateToken: () =>
     apiRequest.post<ApiResponse<{ api_token: string }>>(
       "/website/regenerate-token"

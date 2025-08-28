@@ -10,7 +10,7 @@ export default function TechnologyPartnersManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm, 500);
 
-  const { data: response, loading, error, refetch } = useApiData<{success: boolean, data: TechnologyPartner[]}>(
+  const { data: response, loading, error, refetch } = useApiData<{data: TechnologyPartner[], meta: any}>(
     () => apiRequest.get('/technology-partners', {
       headers: { 'Website-ID': '1' }
     }),

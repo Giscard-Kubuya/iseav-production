@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import PageSEO from '@/components/layout/PageSEO'
+import { getPageSEO } from '@/hooks/useSEO'
 
 interface Comment {
   id: number
@@ -252,8 +254,16 @@ export default function BlogDetailContent({ id }: BlogDetailContentProps) {
     )
   }
 
+  const seoData = getPageSEO('blog', {
+    title: post.title,
+    description: post.excerpt,
+    image: post.image,
+    slug: id
+  });
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <PageSEO {...seoData}>
+      <div className="min-h-screen bg-gray-50">
       {/* Article Header */}
       <div className="bg-white border-b">
         <div className="max-w-4xl mx-auto px-4 py-8">
@@ -512,5 +522,6 @@ export default function BlogDetailContent({ id }: BlogDetailContentProps) {
         </div>
       </div>
     </div>
+    </PageSEO>
   )
 }

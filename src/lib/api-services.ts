@@ -448,7 +448,8 @@ export const websiteApi = {
 
   getParameters: () => apiRequest.get<ApiResponse<any>>("/website/parameters"),
 
-  updateParameters: (data: any) => apiRequest.put<ApiResponse<any>>("/website/parameters", data),
+  updateParameters: (data: any) =>
+    apiRequest.put<ApiResponse<any>>("/website/parameters", data),
 
   regenerateToken: () =>
     apiRequest.post<ApiResponse<{ api_token: string }>>(
@@ -772,41 +773,49 @@ export const companyStatisticsApi = {
 // Authentication API
 export const authApi = {
   login: (data: { email: string; password: string }) =>
-    apiRequest.post<ApiResponse<{
-      user: {
+    apiRequest.post<
+      ApiResponse<{
+        user: {
+          id: number;
+          name: string;
+          email: string;
+          role: string;
+          avatar?: string;
+        };
+        token: string;
+        expires_in: number;
+      }>
+    >("/auth/login", data),
+
+  logout: () => apiRequest.post<ApiResponse<void>>("/auth/logout"),
+
+  refresh: () =>
+    apiRequest.post<
+      ApiResponse<{
+        token: string;
+        expires_in: number;
+      }>
+    >("/auth/refresh"),
+
+  me: () =>
+    apiRequest.get<
+      ApiResponse<{
         id: number;
         name: string;
         email: string;
         role: string;
         avatar?: string;
-      };
-      token: string;
-      expires_in: number;
-    }>>("/auth/login", data),
-
-  logout: () =>
-    apiRequest.post<ApiResponse<void>>("/auth/logout"),
-
-  refresh: () =>
-    apiRequest.post<ApiResponse<{
-      token: string;
-      expires_in: number;
-    }>>("/auth/refresh"),
-
-  me: () =>
-    apiRequest.get<ApiResponse<{
-      id: number;
-      name: string;
-      email: string;
-      role: string;
-      avatar?: string;
-    }>>("/auth/me"),
+      }>
+    >("/auth/me"),
 
   forgotPassword: (data: { email: string }) =>
     apiRequest.post<ApiResponse<void>>("/auth/forgot-password", data),
 
-  resetPassword: (data: { token: string; password: string; password_confirmation: string }) =>
-    apiRequest.post<ApiResponse<void>>("/auth/reset-password", data),
+  resetPassword: (data: {
+    token: string;
+    password: string;
+    password_confirmation: string;
+  }) => apiRequest.post<ApiResponse<void>>("/auth/reset-password", data),
 };
 
 // Contact Information API

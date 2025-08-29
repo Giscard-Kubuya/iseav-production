@@ -38,6 +38,15 @@ interface WebsiteSettings {
     siteName?: string;
     siteDescription?: string;
   };
+  appearance?: {
+    logo?: string;
+    favicon?: string;
+    primaryColor?: string;
+    secondaryColor?: string;
+    fontFamily?: string;
+    headerStyle?: string;
+    footerText?: string;
+  };
   [key: string]: any; // Allow additional settings
 }
 
@@ -65,7 +74,24 @@ export const useWebsiteSettings = () => {
         const response = await apiRequest.get("/website");
         const websiteData = response.data?.data || response.data;
         setWebsite(websiteData);
-        setSettings(websiteData?.settings || {});
+        // Now all settings are directly available from the unified response
+        setSettings({
+          ...websiteData?.settings || {},
+          // Direct properties from the response
+          mission: websiteData?.mission,
+          vision: websiteData?.vision,
+          contact_email: websiteData?.contact_email,
+          contact_phone: websiteData?.contact_phone,
+          phone: websiteData?.phone,
+          address: websiteData?.address,
+          social_media: websiteData?.social_media,
+          general: websiteData?.general,
+          social: websiteData?.social,
+          seo: websiteData?.seo,
+          legal: websiteData?.legal,
+          security: websiteData?.security,
+          appearance: websiteData?.appearance,
+        });
         setError(null);
       } catch (err: any) {
         setError(err.message || "Failed to fetch website settings");

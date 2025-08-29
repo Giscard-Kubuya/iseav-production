@@ -1,0 +1,111 @@
+
+> pattern@0.1.0 build
+> next build
+
+   ▲ Next.js 15.4.6
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 1000ms
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/61) ...
+   Generating static pages (15/61) 
+   Generating static pages (30/61) 
+   Generating static pages (45/61) 
+ ✓ Generating static pages (61/61)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                  Size  First Load JS
+┌ ○ /                                     7.67 kB         136 kB
+├ ○ /_not-found                             151 B        99.8 kB
+├ ○ /about                                5.32 kB         130 kB
+├ ○ /actualites                           2.75 kB         128 kB
+├ ƒ /actualites/[id]                      5.54 kB         131 kB
+├ ○ /admin                                2.28 kB         105 kB
+├ ○ /admin/actualites                     3.36 kB         129 kB
+├ ƒ /admin/actualites/[id]/edit             135 B         131 kB
+├ ○ /admin/actualites/new                   135 B         131 kB
+├ ○ /admin/blog                           3.22 kB         128 kB
+├ ƒ /admin/blog/[id]/edit                   135 B         131 kB
+├ ○ /admin/blog/new                         135 B         131 kB
+├ ○ /admin/business-hours                 3.29 kB         127 kB
+├ ƒ /admin/business-hours/[id]/edit         128 B         123 kB
+├ ○ /admin/business-hours/new               128 B         123 kB
+├ ○ /admin/commentaires                   3.53 kB         107 kB
+├ ○ /admin/company-journey                3.24 kB         127 kB
+├ ƒ /admin/company-journey/[id]/edit        128 B         125 kB
+├ ○ /admin/company-journey/new              128 B         125 kB
+├ ○ /admin/company-statistics              2.8 kB         128 kB
+├ ƒ /admin/company-statistics/[id]/edit     128 B         123 kB
+├ ○ /admin/company-statistics/new           127 B         123 kB
+├ ○ /admin/company-values                 2.93 kB         126 kB
+├ ƒ /admin/company-values/[id]/edit         128 B         123 kB
+├ ○ /admin/company-values/new               128 B         123 kB
+├ ○ /admin/contact-info                      3 kB         128 kB
+├ ƒ /admin/contact-info/[id]/edit           128 B         123 kB
+├ ○ /admin/contact-info/new                 128 B         123 kB
+├ ○ /admin/galerie                        6.41 kB         128 kB
+├ ○ /admin/hero-slides                    3.35 kB         127 kB
+├ ƒ /admin/hero-slides/[id]/edit            131 B         128 kB
+├ ○ /admin/hero-slides/new                  131 B         128 kB
+├ ○ /admin/leadership                     3.28 kB         127 kB
+├ ƒ /admin/leadership/[id]/edit             128 B         125 kB
+├ ○ /admin/leadership/new                   128 B         125 kB
+├ ○ /admin/location                       3.26 kB         127 kB
+├ ƒ /admin/location/[id]/edit               126 B         123 kB
+├ ○ /admin/location/new                     126 B         123 kB
+├ ○ /admin/login                          3.64 kB         107 kB
+├ ○ /admin/newsletter                     2.96 kB         125 kB
+├ ○ /admin/parametres                     6.86 kB         129 kB
+├ ○ /admin/portfolio                      3.49 kB         129 kB
+├ ƒ /admin/portfolio/[id]/edit              134 B         132 kB
+├ ○ /admin/portfolio/new                    135 B         132 kB
+├ ○ /admin/recrutement                    4.63 kB         130 kB
+├ ƒ /admin/recrutement/[id]/edit            135 B         131 kB
+├ ○ /admin/recrutement/new                  135 B         131 kB
+├ ○ /admin/services                       3.13 kB         128 kB
+├ ƒ /admin/services/[id]/edit               135 B         131 kB
+├ ○ /admin/services/new                     135 B         131 kB
+├ ○ /admin/social-media                   3.33 kB         127 kB
+├ ƒ /admin/social-media/[id]/edit           128 B         123 kB
+├ ○ /admin/social-media/new                 128 B         123 kB
+├ ○ /admin/team-experts                   3.25 kB         127 kB
+├ ƒ /admin/team-experts/[id]/edit           126 B         125 kB
+├ ○ /admin/team-experts/new                 126 B         125 kB
+├ ○ /admin/technology-partners             3.3 kB         127 kB
+├ ƒ /admin/technology-partners/[id]/edit    128 B         125 kB
+├ ○ /admin/technology-partners/new          128 B         125 kB
+├ ○ /admin/test-upload                    3.26 kB         123 kB
+├ ○ /admin/testimonials                   3.32 kB         127 kB
+├ ƒ /admin/testimonials/[id]/edit           127 B         125 kB
+├ ○ /admin/testimonials/new                 128 B         125 kB
+├ ○ /admin/utilisateurs                   5.61 kB         127 kB
+├ ○ /admin/why-choose-us                  3.17 kB         126 kB
+├ ƒ /admin/why-choose-us/[id]/edit          130 B         125 kB
+├ ○ /admin/why-choose-us/new                130 B         125 kB
+├ ƒ /api/admin/users                        151 B        99.8 kB
+├ ƒ /api/auth/login                         151 B        99.8 kB
+├ ƒ /api/auth/logout                        151 B        99.8 kB
+├ ƒ /api/auth/me                            151 B        99.8 kB
+├ ƒ /api/public/programs                    151 B        99.8 kB
+├ ○ /blog                                 3.57 kB         127 kB
+├ ƒ /blog/[id]                            8.18 kB         131 kB
+├ ○ /contact                              7.63 kB         136 kB
+├ ○ /galerie                              3.15 kB         128 kB
+├ ○ /portfolio                            4.21 kB         128 kB
+├ ƒ /portfolio/[id]                       3.38 kB         129 kB
+├ ○ /recrutement                          3.87 kB         124 kB
+└ ○ /services                             5.73 kB         129 kB
++ First Load JS shared by all             99.7 kB
+  ├ chunks/4bd1b696-602635ee57868870.js   54.1 kB
+  ├ chunks/5964-2a1ddd40921d073b.js       43.5 kB
+  └ other shared chunks (total)           2.01 kB
+
+
+ƒ Middleware                              33.1 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

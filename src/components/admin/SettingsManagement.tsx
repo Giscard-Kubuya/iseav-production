@@ -64,15 +64,9 @@ export default function SettingsManagement() {
   const [activeTab, setActiveTab] = useState("general");
   const [saving, setSaving] = useState(false);
 
-  // Fetch current website settings
+  // Fetch all website data in one call
   const { data: websiteData, loading: websiteLoading } = useApiData(
     () => websiteApi.getCurrent(),
-    []
-  );
-
-  // Fetch current parameters
-  const { data: parametersData, loading: parametersLoading } = useApiData(
-    () => websiteApi.getParameters(),
     []
   );
 
@@ -142,10 +136,9 @@ export default function SettingsManagement() {
 
   // Update settings when API data is loaded
   useEffect(() => {
-    if (websiteData?.data && parametersData?.data) {
+    if (websiteData?.data) {
       const apiData = websiteData.data;
       const apiSettings = apiData.settings || {};
-      const parametersApiData = parametersData.data;
 
       setSettings({
         general: {
@@ -156,69 +149,75 @@ export default function SettingsManagement() {
           siteUrl: apiSettings.general?.siteUrl || "https://infonet.bi",
           adminEmail: apiSettings.general?.adminEmail || "admin@infonet.bi",
           contactEmail:
-            parametersApiData.contact_email ||
+            apiData.contact_email ||
             apiSettings.general?.contactEmail ||
             "contact@infonet.bi",
-          phone:
-            parametersApiData.contact_phone ||
-            apiSettings.general?.phone ||
-            "+257 22 123 456",
+          phone: apiData.contact_phone || apiSettings.general?.phone || "+257 22 123 456",
           address:
-            parametersApiData.address ||
+            apiData.address ||
             apiSettings.general?.address ||
             "Avenue de l'Indépendance, Bujumbura, Burundi",
           timezone: apiSettings.general?.timezone || "Africa/Bujumbura",
           language: apiSettings.general?.language || "fr",
           mission:
-            parametersApiData.mission ||
+            apiData.mission ||
             "Fournir des solutions informatiques innovantes et accessibles pour accompagner la transformation digitale au Burundi.",
           vision:
-            parametersApiData.vision ||
+            apiData.vision ||
             "Devenir le leader technologique incontournable au Burundi et contribuer au développement numérique de la région.",
         },
         social: {
           facebook:
-            parametersApiData.social_media?.facebook ||
+            apiData.social_media?.facebook ||
+            apiData.social?.facebook ||
             apiSettings.social?.facebook ||
             "",
           twitter:
-            parametersApiData.social_media?.twitter ||
+            apiData.social_media?.twitter ||
+            apiData.social?.twitter ||
             apiSettings.social?.twitter ||
             "",
           linkedin:
-            parametersApiData.social_media?.linkedin ||
+            apiData.social_media?.linkedin ||
+            apiData.social?.linkedin ||
             apiSettings.social?.linkedin ||
             "",
           instagram:
-            parametersApiData.social_media?.instagram ||
+            apiData.social_media?.instagram ||
+            apiData.social?.instagram ||
             apiSettings.social?.instagram ||
             "",
           youtube:
-            parametersApiData.social_media?.youtube ||
+            apiData.social_media?.youtube ||
+            apiData.social?.youtube ||
             apiSettings.social?.youtube ||
             "",
           github:
-            parametersApiData.social_media?.github ||
+            apiData.social_media?.github ||
+            apiData.social?.github ||
             apiSettings.social?.github ||
             "",
         },
         seo: {
           metaTitle:
+            apiData.seo?.metaTitle ||
             apiSettings.seo?.metaTitle ||
             `${apiData.name} - Solutions informatiques`,
           metaDescription:
-            apiSettings.seo?.metaDescription || apiData.description || "",
-          metaKeywords: apiSettings.seo?.metaKeywords || "",
-          googleAnalytics: apiSettings.seo?.googleAnalytics || "",
-          facebookPixel: apiSettings.seo?.facebookPixel || "",
-          googleVerification: apiSettings.seo?.googleVerification || "",
+            apiData.seo?.metaDescription ||
+            apiSettings.seo?.metaDescription || 
+            apiData.description || "",
+          metaKeywords: apiData.seo?.metaKeywords || apiSettings.seo?.metaKeywords || "",
+          googleAnalytics: apiData.seo?.googleAnalytics || apiSettings.seo?.googleAnalytics || "",
+          facebookPixel: apiData.seo?.facebookPixel || apiSettings.seo?.facebookPixel || "",
+          googleVerification: apiData.seo?.googleVerification || apiSettings.seo?.googleVerification || "",
         },
-        legal: apiSettings.legal || getDefaultSettings().legal,
-        security: apiSettings.security || getDefaultSettings().security,
-        appearance: apiSettings.appearance || getDefaultSettings().appearance,
+        legal: apiData.legal || apiSettings.legal || getDefaultSettings().legal,
+        security: apiData.security || apiSettings.security || getDefaultSettings().security,
+        appearance: apiData.appearance || apiSettings.appearance || getDefaultSettings().appearance,
       });
     }
-  }, [websiteData, parametersData]);
+  }, [websiteData]);
 
   const tabs = [
     { id: "general", label: "Général", icon: "⚙️" },
@@ -238,14 +237,21 @@ export default function SettingsManagement() {
         description: settings.general.siteDescription,
       });
 
-      // Update parameters (mission, vision, etc.)
+      // Update parameters with all sections
       await websiteApi.updateParameters({
         mission: settings.general.mission,
         vision: settings.general.vision,
         contact_email: settings.general.contactEmail,
         contact_phone: settings.general.phone,
+        phone: settings.general.phone,
         address: settings.general.address,
         social_media: settings.social,
+        general: settings.general,
+        social: settings.social,
+        seo: settings.seo,
+        legal: settings.legal,
+        security: settings.security,
+        appearance: settings.appearance,
       });
 
       alert("Paramètres sauvegardés avec succès!");
@@ -271,7 +277,7 @@ export default function SettingsManagement() {
     }));
   };
 
-  if (websiteLoading || parametersLoading) {
+  if (websiteLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>

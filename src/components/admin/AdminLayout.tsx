@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 export default function AdminLayout({
   children,
@@ -14,6 +15,7 @@ export default function AdminLayout({
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const pathname = usePathname();
   const { user, logout, hasPermission } = useAuth();
+  const { settings } = useSiteSettings();
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Set initial sidebar state based on screen size
@@ -244,11 +246,19 @@ export default function AdminLayout({
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-4 sm:px-6 border-b border-gray-200">
           <Link href="/admin" className="flex items-center min-w-0">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-green-500 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3 flex-shrink-0">
-              I
-            </div>
+            {settings.appearance?.logo ? (
+              <img
+                src={settings.appearance.logo}
+                alt={`${settings.general?.siteName || 'INFONET'} logo`}
+                className="w-8 h-8 rounded-lg mr-3 flex-shrink-0 object-contain"
+              />
+            ) : (
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-green-500 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3 flex-shrink-0">
+                {(settings.general?.siteName || 'INFONET').charAt(0)}
+              </div>
+            )}
             <span className="text-lg sm:text-xl font-bold text-gray-900 truncate">
-              INFONET Admin
+              {settings.general?.siteName || 'INFONET'} Admin
             </span>
           </Link>
           <button
@@ -263,7 +273,7 @@ export default function AdminLayout({
         <div className="px-4 sm:px-6 py-4 border-b border-gray-200">
           <div className="flex items-center min-w-0">
             <img
-              src={user?.avatar || "https://via.placeholder.com/40"}
+              src={user?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&background=3B82F6&color=white&size=40`}
               alt={user?.name}
               className="w-10 h-10 rounded-full mr-3 flex-shrink-0"
             />
@@ -316,9 +326,10 @@ export default function AdminLayout({
 
       {/* Mobile sidebar overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-300 ${
           sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
+        style={{ backdropFilter: sidebarOpen ? 'blur(3px)' : 'none' }}
         onClick={() => setSidebarOpen(false)}
       ></div>
 
@@ -380,7 +391,7 @@ export default function AdminLayout({
                   className="flex items-center space-x-2 sm:space-x-3 p-1 sm:p-2 rounded-lg hover:bg-gray-50"
                 >
                   <img
-                    src={user?.avatar || "https://via.placeholder.com/32"}
+                    src={user?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&background=3B82F6&color=white&size=32`}
                     alt={user?.name}
                     className="w-8 h-8 rounded-full"
                   />

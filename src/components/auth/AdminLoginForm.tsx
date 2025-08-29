@@ -17,12 +17,7 @@ export default function AdminLoginForm() {
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
-  // Demo accounts for development/testing
-  const demoAccounts = [
-    { email: 'admin@infonet.bi', password: 'admin123', role: 'admin', name: 'Jean-Baptiste Niyonzima' },
-    { email: 'editor@infonet.bi', password: 'editor123', role: 'editor', name: 'Espérance Mukamana' },
-    { email: 'author@infonet.bi', password: 'author123', role: 'author', name: 'Arlette Uwimana' }
-  ]
+  // Production mode - no demo accounts
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,7 +44,7 @@ export default function AdminLoginForm() {
             name: user.name,
             email: user.email,
             role: user.role as 'admin' | 'editor' | 'author' | 'subscriber',
-            avatar: user.avatar || `https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`
+            avatar: user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=3B82F6&color=white&size=256`
           }
           
           // Use auth context login method (this will handle localStorage and state)
@@ -64,42 +59,15 @@ export default function AdminLoginForm() {
         }
 
       } catch (apiError: any) {
-        console.error('Database authentication failed:', apiError)
+        console.error('Authentication failed:', apiError)
         
-        // Fall back to demo accounts for development
-        const account = demoAccounts.find(
-          acc => acc.email === formData.email && acc.password === formData.password
-        )
-
-        if (account) {
-          // Show warning about using demo mode
-          console.warn('Using demo authentication - database authentication failed')
-          
-          // Create user object for auth context (demo)
-          const userObj = {
-            id: Date.now(),
-            name: account.name,
-            email: account.email,
-            role: account.role as 'admin' | 'editor' | 'author' | 'subscriber',
-            avatar: `https://images.unsplash.com/photo-${account.role === 'admin' ? '1472099645785-5658abf4ff4e' : account.role === 'editor' ? '1494790108755-2616b612b786' : '1438761681033-6461ffad8d80'}?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`
-          }
-          
-          // Use auth context login method for demo auth too
-          login(userObj, `demo_token_${Date.now()}`)
-          
-          // Add small delay to ensure state updates, then redirect
-          setTimeout(() => {
-            router.push('/admin')
-          }, 100)
+        // Show appropriate error message
+        if (apiError.response?.status === 401) {
+          setError('Email ou mot de passe incorrect')
+        } else if (apiError.response?.status === 404) {
+          setError('Service d\'authentification non disponible. Veuillez vérifier la connexion API.')
         } else {
-          // Show appropriate error message
-          if (apiError.response?.status === 401) {
-            setError('Email ou mot de passe incorrect')
-          } else if (apiError.response?.status === 404) {
-            setError('Service d\'authentification non disponible. Veuillez vérifier la connexion API.')
-          } else {
-            setError('Erreur de connexion au serveur. Veuillez réessayer.')
-          }
+          setError('Erreur de connexion au serveur. Veuillez réessayer.')
         }
       }
     } catch (error) {
@@ -110,13 +78,6 @@ export default function AdminLoginForm() {
     }
   }
 
-  const handleDemoLogin = (account: typeof demoAccounts[0]) => {
-    setFormData({
-      email: account.email,
-      password: account.password,
-      remember: false
-    })
-  }
 
   return (
     <div className="space-y-6">
@@ -239,26 +200,6 @@ export default function AdminLoginForm() {
           </div>
         </div>
 
-        <div className="text-center">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">Comptes de démonstration</h3>
-          <div className="space-y-2">
-            {demoAccounts.map((account, index) => (
-              <button
-                key={index}
-                onClick={() => handleDemoLogin(account)}
-                className="w-full text-left px-3 py-2 text-xs bg-gray-50 hover:bg-gray-100 rounded border transition-colors"
-              >
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">{account.role === 'admin' ? 'Administrateur' : account.role === 'editor' ? 'Éditeur' : 'Auteur'}</span>
-                  <span className="text-gray-500">{account.email}</span>
-                </div>
-              </button>
-            ))}
-          </div>
-          <p className="text-xs text-gray-500 mt-3">
-            Cliquez sur un compte pour remplir automatiquement le formulaire
-          </p>
-        </div>
       </div>
 
       <div className="text-center">

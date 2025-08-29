@@ -205,7 +205,7 @@ export default function RecrutementContent() {
 
       {/* Application Modal */}
       {selectedJob && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backdropFilter: 'blur(3px)' }}>
           <div className="bg-white rounded-xl max-w-4xl w-full max-h-screen overflow-y-auto transform scale-100 transition-transform duration-300">
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">

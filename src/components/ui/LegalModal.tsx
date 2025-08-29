@@ -101,7 +101,7 @@ Pour toute question concernant ces conditions d'utilisation, vous pouvez nous co
   return (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ backdropFilter: 'blur(0.5px)' }}
+      style={{ backdropFilter: 'blur(3px)' }}
       onClick={handleBackdropClick}
     >
       <div className="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col border border-gray-300 ring-4 ring-white/20 drop-shadow-2xl">

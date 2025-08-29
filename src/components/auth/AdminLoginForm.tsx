@@ -3,9 +3,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function AdminLoginForm() {
   const router = useRouter()
+  const { login } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -15,7 +17,7 @@ export default function AdminLoginForm() {
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
-  // Demo accounts for the template
+  // Demo accounts for development/testing
   const demoAccounts = [
     { email: 'admin@infonet.bi', password: 'admin123', role: 'admin', name: 'Jean-Baptiste Niyonzima' },
     { email: 'editor@infonet.bi', password: 'editor123', role: 'editor', name: 'Espérance Mukamana' },
@@ -28,43 +30,80 @@ export default function AdminLoginForm() {
     setError('')
 
     try {
-      // Check demo accounts
-      const account = demoAccounts.find(
-        acc => acc.email === formData.email && acc.password === formData.password
-      )
+      // Import auth API
+      const { authApi } = await import('@/lib/api-services')
 
-      if (account) {
-        // Verify API connection
-        const { websiteApi } = await import('@/lib/api-services')
-        try {
-          await websiteApi.getCurrent()
-        } catch (apiError) {
-          console.error('API connection failed:', apiError)
-          setError('Unable to connect to API. Please ensure the backend is running.')
-          return
+      try {
+        // Attempt real database authentication
+        const response = await authApi.login({
+          email: formData.email,
+          password: formData.password
+        })
+
+        if (response.data?.data) {
+          const { user, token, expires_in } = response.data.data
+          
+          // Create user object for auth context
+          const userObj = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role as 'admin' | 'editor' | 'author' | 'subscriber',
+            avatar: user.avatar || `https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`
+          }
+          
+          // Use auth context login method (this will handle localStorage and state)
+          login(userObj, token)
+          
+          // Add small delay to ensure state updates, then redirect
+          setTimeout(() => {
+            router.push('/admin')
+          }, 100)
+        } else {
+          setError('Réponse invalide du serveur')
         }
 
-        // Store auth info in localStorage (in production, use secure HTTP-only cookies)
-        const authData = {
-          user: {
+      } catch (apiError: any) {
+        console.error('Database authentication failed:', apiError)
+        
+        // Fall back to demo accounts for development
+        const account = demoAccounts.find(
+          acc => acc.email === formData.email && acc.password === formData.password
+        )
+
+        if (account) {
+          // Show warning about using demo mode
+          console.warn('Using demo authentication - database authentication failed')
+          
+          // Create user object for auth context (demo)
+          const userObj = {
             id: Date.now(),
             name: account.name,
             email: account.email,
-            role: account.role,
+            role: account.role as 'admin' | 'editor' | 'author' | 'subscriber',
             avatar: `https://images.unsplash.com/photo-${account.role === 'admin' ? '1472099645785-5658abf4ff4e' : account.role === 'editor' ? '1494790108755-2616b612b786' : '1438761681033-6461ffad8d80'}?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`
-          },
-          token: process.env.NEXT_PUBLIC_API_TOKEN || `demo_token_${Date.now()}`,
-          expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+          }
+          
+          // Use auth context login method for demo auth too
+          login(userObj, `demo_token_${Date.now()}`)
+          
+          // Add small delay to ensure state updates, then redirect
+          setTimeout(() => {
+            router.push('/admin')
+          }, 100)
+        } else {
+          // Show appropriate error message
+          if (apiError.response?.status === 401) {
+            setError('Email ou mot de passe incorrect')
+          } else if (apiError.response?.status === 404) {
+            setError('Service d\'authentification non disponible. Veuillez vérifier la connexion API.')
+          } else {
+            setError('Erreur de connexion au serveur. Veuillez réessayer.')
+          }
         }
-        
-        localStorage.setItem('admin_auth', JSON.stringify(authData))
-        
-        // Redirect to admin dashboard
-        router.push('/admin')
-      } else {
-        setError('Email ou mot de passe incorrect')
       }
     } catch (error) {
+      console.error('Login error:', error)
       setError('Erreur de connexion. Veuillez réessayer.')
     } finally {
       setLoading(false)
@@ -181,8 +220,25 @@ export default function AdminLoginForm() {
         </div>
       </form>
 
-      {/* Demo accounts section */}
+      {/* Authentication info */}
       <div className="mt-8 border-t border-gray-200 pt-6">
+        <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-blue-800">Authentification</h3>
+              <div className="mt-2 text-xs text-blue-700">
+                <p>Le système tente d'abord l'authentification avec la base de données.</p>
+                <p>En cas d'échec, il utilise les comptes de démonstration ci-dessous.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="text-center">
           <h3 className="text-sm font-medium text-gray-900 mb-4">Comptes de démonstration</h3>
           <div className="space-y-2">

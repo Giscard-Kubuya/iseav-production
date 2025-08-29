@@ -62,12 +62,41 @@ export function useAuthState() {
         } else {
           // Verify token with API
           try {
-            const { websiteApi } = await import('@/lib/api-services')
-            await websiteApi.getCurrent()
-            setAuthData(data)
-          } catch (error) {
+            const { authApi } = await import('@/lib/api-services')
+            
+            // If it's a demo token, skip API verification
+            if (data.token && data.token.startsWith('demo_token_')) {
+              console.warn('Using demo authentication token')
+              setAuthData(data)
+            } else {
+              // Verify real token with database
+              const response = await authApi.me()
+              if (response.data?.data) {
+                // Update user data from API response
+                const updatedAuthData = {
+                  ...data,
+                  user: {
+                    ...response.data.data,
+                    avatar: response.data.data.avatar || data.user?.avatar
+                  }
+                }
+                setAuthData(updatedAuthData)
+                localStorage.setItem('admin_auth', JSON.stringify(updatedAuthData))
+              } else {
+                logout()
+              }
+            }
+          } catch (error: any) {
             console.error('Token verification failed:', error)
-            logout()
+            
+            // If it's a 401 error, the token is invalid
+            if (error.response?.status === 401) {
+              logout()
+            } else {
+              // For other errors, still allow access but log the issue
+              console.warn('API verification failed, but allowing access:', error.message)
+              setAuthData(data)
+            }
           }
         }
       }
@@ -83,14 +112,56 @@ export function useAuthState() {
     const expiresAt = Date.now() + (24 * 60 * 60 * 1000) // 24 hours
     const data = { user, token, expiresAt }
     
+    // Clear any existing auth data first
+    localStorage.removeItem('admin_auth')
+    
+    // Set new auth data
     localStorage.setItem('admin_auth', JSON.stringify(data))
     setAuthData(data)
+    
+    console.log('Auth login completed:', { userId: user.id, email: user.email, role: user.role })
   }
 
-  const logout = () => {
+  const logout = async () => {
+    console.log('Logout initiated...')
+    
+    try {
+      const stored = localStorage.getItem('admin_auth')
+      if (stored) {
+        const data = JSON.parse(stored)
+        
+        // Only call API logout for real tokens (not demo tokens)
+        if (data.token && !data.token.startsWith('demo_token_')) {
+          try {
+            const { authApi } = await import('@/lib/api-services')
+            await authApi.logout()
+            console.log('API logout successful')
+          } catch (error) {
+            console.error('API logout failed:', error)
+            // Continue with local logout even if API call fails
+          }
+        } else {
+          console.log('Demo token detected, skipping API logout')
+        }
+      }
+    } catch (error) {
+      console.error('Error during logout:', error)
+    }
+
+    // Clear local auth data immediately
     localStorage.removeItem('admin_auth')
+    console.log('LocalStorage cleared')
+    
+    // Reset state immediately
     setAuthData({ user: null, token: null, expiresAt: null })
+    console.log('Auth state reset')
+    
+    // Force a small delay to ensure state updates are processed
+    await new Promise(resolve => setTimeout(resolve, 100))
+    
+    // Navigate to login page
     router.push('/admin/login')
+    console.log('Redirected to login page')
   }
 
   const hasRole = (role: string): boolean => {

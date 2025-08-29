@@ -17,15 +17,28 @@ const api: AxiosInstance = axios.create({
 // Add request interceptor to include authentication token and website domain
 api.interceptors.request.use(
   (config) => {
-    // Skip token authentication in development
-    // if (API_TOKEN) {
-    //   config.headers.Authorization = `Bearer ${API_TOKEN}`
-    // }
+    // Add authentication token if available
+    if (typeof window !== "undefined") {
+      const authData = localStorage.getItem("admin_auth");
+      if (authData) {
+        try {
+          const { token } = JSON.parse(authData);
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+          }
+        } catch (error) {
+          console.error("Error parsing auth data:", error);
+        }
+      }
+    }
+
+    // Add static API token as fallback
+    if (API_TOKEN && !config.headers.Authorization) {
+      config.headers.Authorization = `Bearer ${API_TOKEN}`;
+    }
 
     // Add website ID header for multi-tenant API
-    // ✅ FIXED: Removed manual Origin header - browsers set this automatically
     config.headers["Website-ID"] = process.env.NEXT_PUBLIC_WEBSITE_ID || "1";
-    // config.headers["Origin"] = "http://localhost:3000";
 
     return config;
   },
@@ -41,8 +54,17 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access (disabled in development)
-      // console.error('Unauthorized access - API token may be invalid')
+      // Handle unauthorized access
+      console.error("Unauthorized access - token may be invalid or expired");
+
+      // Clear invalid auth data and redirect to login (only in browser)
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("admin_auth");
+        // Only redirect if we're not already on the login page
+        if (window.location.pathname !== "/admin/login") {
+          window.location.href = "/admin/login";
+        }
+      }
     } else if (error.response?.status === 404) {
       console.error("API endpoint not found");
     } else if (error.response?.status >= 500) {

@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useWebsiteSettings } from '@/hooks/useWebsiteSettings'
+import { useTeamExperts } from '@/hooks/useTeamExperts'
+import { useContactInfo } from '@/hooks/useContactInfo'
 
 export default function ContactContent() {
   const [isVisible, setIsVisible] = useState(false)
@@ -16,6 +19,22 @@ export default function ContactContent() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState('')
+  
+  // Get dynamic data from API
+  const { socialMedia, contactEmail, contactPhone, address } = useWebsiteSettings()
+  const { teamExperts, loading: expertsLoading, error: expertsError } = useTeamExperts(4)
+  const { 
+    contactInfo: dynamicContactInfo, 
+    loading: contactLoading, 
+    error: contactError,
+    getPublicContacts,
+    primaryPhone,
+    primaryEmail,
+    primaryAddress,
+    phones,
+    emails,
+    addresses
+  } = useContactInfo({ public: true })
 
   useEffect(() => {
     setIsVisible(true)
@@ -78,32 +97,88 @@ export default function ContactContent() {
     }
   ]
 
-  const contactInfo = [
-    {
-      type: 'Adresse Principal',
-      value: 'Boulevard de l\'Uprona, Bujumbura, Burundi',
-      icon: '📍',
-      color: 'from-blue-500 to-indigo-600'
-    },
-    {
-      type: 'Téléphone Général',
-      value: '+257 69 08 08 00',
-      icon: '📞',
-      color: 'from-green-500 to-emerald-600'
-    },
-    {
-      type: 'Email Principal',
-      value: 'info@infonet.bi',
-      icon: '✉️',
-      color: 'from-purple-500 to-violet-600'
-    },
-    {
-      type: 'Support 24/7',
-      value: '+257 69 08 08 99',
-      icon: '🆘',
-      color: 'from-teal-500 to-cyan-600'
+  // Create dynamic contact info from API with fallbacks
+  const contactInfo = (() => {
+    const publicContacts = getPublicContacts();
+    
+    if (publicContacts.length > 0) {
+      // Use dynamic data from API
+      return publicContacts.map(contact => ({
+        type: contact.label,
+        value: contact.value,
+        icon: contact.icon || getDefaultIcon(contact.type),
+        color: getColorByType(contact.type),
+        description: contact.description,
+        is_primary: contact.is_primary,
+        contact_type: contact.type
+      }));
     }
-  ]
+    
+    // Fallback to static data if no API data available
+    return [
+      {
+        type: 'Adresse Principal',
+        value: address || 'Boulevard de l\'Uprona, Bujumbura, Burundi',
+        icon: '📍',
+        color: 'from-blue-500 to-indigo-600',
+        description: 'Notre siège social à Bujumbura',
+        is_primary: true,
+        contact_type: 'address'
+      },
+      {
+        type: 'Téléphone Général',
+        value: contactPhone || '+257 69 08 08 00',
+        icon: '📞',
+        color: 'from-green-500 to-emerald-600',
+        description: 'Ligne principale pour tous vos besoins',
+        is_primary: true,
+        contact_type: 'phone'
+      },
+      {
+        type: 'Email Principal',
+        value: contactEmail || 'info@infonet.bi',
+        icon: '✉️',
+        color: 'from-purple-500 to-violet-600',
+        description: 'Contact général par email',
+        is_primary: true,
+        contact_type: 'email'
+      },
+      {
+        type: 'Support 24/7',
+        value: '+257 69 08 08 99',
+        icon: '🆘',
+        color: 'from-teal-500 to-cyan-600',
+        description: 'Support technique disponible 24h/24',
+        is_primary: false,
+        contact_type: 'phone'
+      }
+    ];
+  })();
+
+  // Helper functions for contact info styling
+  function getDefaultIcon(type: string): string {
+    const iconMap: { [key: string]: string } = {
+      phone: '📞',
+      email: '✉️',
+      address: '📍',
+      fax: '📠',
+      website: '🌐',
+      other: '📋'
+    };
+    return iconMap[type] || '📋';
+  }
+
+  function getColorByType(type: string): string {
+    const colorMap: { [key: string]: string } = {
+      phone: 'from-green-500 to-emerald-600',
+      email: 'from-purple-500 to-violet-600',
+      address: 'from-blue-500 to-indigo-600',
+      fax: 'from-orange-500 to-red-600',
+      website: 'from-cyan-500 to-blue-600',
+      other: 'from-gray-500 to-slate-600'
+    };
+    return colorMap[type] || 'from-gray-500 to-slate-600';
+  }
 
   const officeHours = [
     { day: 'Lundi - Vendredi', hours: '8h00 - 18h00', type: 'Services complets' },
@@ -111,7 +186,48 @@ export default function ContactContent() {
     { day: 'Dimanche', hours: 'Support d\'urgence', type: 'Ligne d\'urgence uniquement' }
   ]
 
+  // Create dynamic social links from API data
   const socialLinks = [
+    ...(socialMedia?.facebook ? [{ 
+      name: 'Facebook', 
+      url: socialMedia.facebook, 
+      icon: '📘', 
+      followers: '5K+' 
+    }] : []),
+    ...(socialMedia?.linkedin ? [{ 
+      name: 'LinkedIn', 
+      url: socialMedia.linkedin, 
+      icon: '💼', 
+      followers: '3K+' 
+    }] : []),
+    ...(socialMedia?.youtube ? [{ 
+      name: 'YouTube', 
+      url: socialMedia.youtube, 
+      icon: '📺', 
+      followers: '2K+' 
+    }] : []),
+    ...(socialMedia?.instagram ? [{ 
+      name: 'Instagram', 
+      url: socialMedia.instagram, 
+      icon: '📸', 
+      followers: '4K+' 
+    }] : []),
+    ...(socialMedia?.twitter ? [{ 
+      name: 'Twitter', 
+      url: socialMedia.twitter, 
+      icon: '🐦', 
+      followers: '2K+' 
+    }] : []),
+    ...(socialMedia?.github ? [{ 
+      name: 'GitHub', 
+      url: socialMedia.github, 
+      icon: '🔧', 
+      followers: '1K+' 
+    }] : [])
+  ]
+
+  // Fallback if no social media data
+  const defaultSocialLinks = [
     { name: 'Facebook', url: 'https://facebook.com/infonet.bi', icon: '📘', followers: '5K+' },
     { name: 'LinkedIn', url: 'https://linkedin.com/company/infonet-bi', icon: '💼', followers: '3K+' },
     { name: 'YouTube', url: 'https://youtube.com/@infonet-bi', icon: '📺', followers: '2K+' },
@@ -294,8 +410,24 @@ export default function ContactContent() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {contactInfo.map((info, index) => (
+          {contactLoading ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+              {[...Array(4)].map((_, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg p-6 animate-pulse">
+                  <div className="w-16 h-16 bg-gray-300 rounded-full mb-4"></div>
+                  <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                  <div className="h-6 bg-gray-300 rounded"></div>
+                </div>
+              ))}
+            </div>
+          ) : contactError ? (
+            <div className="text-center py-12">
+              <div className="text-red-500 text-lg mb-4">❌ Erreur de chargement des informations de contact</div>
+              <div className="text-gray-600">{contactError}</div>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+              {contactInfo.map((info, index) => (
               <div
                 key={index}
                 className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 overflow-hidden border border-gray-100"
@@ -309,27 +441,58 @@ export default function ContactContent() {
                 </div>
 
                 <div className="p-6">
-                  <p className="text-gray-700 font-medium text-lg">{info.value}</p>
-                  {info.type === 'Téléphone Général' && (
+                  <p className="text-gray-700 font-medium text-lg mb-2">{info.value}</p>
+                  {info.description && (
+                    <p className="text-gray-500 text-sm mb-3">{info.description}</p>
+                  )}
+                  
+                  {/* Dynamic action buttons based on contact type */}
+                  {(info.contact_type === 'phone' || info.type.toLowerCase().includes('téléphone')) && (
                     <a 
                       href={`tel:${info.value}`}
-                      className="mt-3 inline-block text-cyan-600 hover:text-cyan-700 font-semibold"
+                      className="mt-3 inline-block text-cyan-600 hover:text-cyan-700 font-semibold transition-colors"
                     >
                       Appeler maintenant →
                     </a>
                   )}
-                  {info.type === 'Email Principal' && (
+                  {(info.contact_type === 'email' || info.type.toLowerCase().includes('email')) && (
                     <a 
                       href={`mailto:${info.value}`}
-                      className="mt-3 inline-block text-cyan-600 hover:text-cyan-700 font-semibold"
+                      className="mt-3 inline-block text-cyan-600 hover:text-cyan-700 font-semibold transition-colors"
                     >
                       Envoyer un email →
                     </a>
                   )}
+                  {(info.contact_type === 'address' || info.type.toLowerCase().includes('adresse')) && (
+                    <a
+                      href={`https://maps.google.com/?q=${encodeURIComponent(info.value)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-block text-cyan-600 hover:text-cyan-700 font-semibold transition-colors"
+                    >
+                      Voir sur la carte →
+                    </a>
+                  )}
+                  {(info.contact_type === 'website' || info.type.toLowerCase().includes('site')) && (
+                    <a
+                      href={info.value.startsWith('http') ? info.value : `https://${info.value}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-block text-cyan-600 hover:text-cyan-700 font-semibold transition-colors"
+                    >
+                      Visiter le site →
+                    </a>
+                  )}
+                  {info.contact_type === 'fax' && (
+                    <p className="mt-3 text-gray-500 text-sm">
+                      Numéro de fax
+                    </p>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -630,7 +793,7 @@ export default function ContactContent() {
               </h2>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
-                {socialLinks.map((social, index) => (
+                {(socialLinks.length > 0 ? socialLinks : defaultSocialLinks).map((social, index) => (
                   <a
                     key={index}
                     href={social.url}
@@ -716,6 +879,113 @@ export default function ContactContent() {
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Expertise Team Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-green-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Nos <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Experts</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Rencontrez notre équipe d'experts passionnés et qualifiés, prêts à vous accompagner dans votre transformation digitale
+            </p>
+          </div>
+
+          {expertsLoading ? (
+            <div className="text-center py-12">
+              <div className="w-8 h-8 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <p className="mt-4 text-gray-600">Chargement de notre équipe...</p>
+            </div>
+          ) : teamExperts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              {teamExperts
+                .filter(expert => expert.is_active)
+                .slice(0, 4)
+                .map((expert) => (
+                  <div
+                    key={expert.id}
+                    className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
+                  >
+                    <div className="relative">
+                      {expert.image_url ? (
+                        <img
+                          src={expert.image_url}
+                          alt={expert.name}
+                          className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-64 bg-gradient-to-br from-blue-500 to-green-500 flex items-center justify-center">
+                          <span className="text-6xl text-white font-bold">
+                            {expert.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                        {expert.name}
+                      </h3>
+                      <p className="text-blue-600 font-semibold mb-3">{expert.position}</p>
+                      {expert.department && (
+                        <p className="text-sm text-gray-500 mb-3">{expert.department}</p>
+                      )}
+                      {expert.bio && (
+                        <p className="text-gray-600 text-sm line-clamp-3">{expert.bio}</p>
+                      )}
+                      
+                      {/* Social Links */}
+                      {(expert.social_links?.linkedin || expert.email) && (
+                        <div className="flex space-x-3 mt-4 pt-4 border-t border-gray-100">
+                          {expert.email && (
+                            <a
+                              href={`mailto:${expert.email}`}
+                              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors duration-300"
+                              title="Email"
+                            >
+                              <span className="text-sm">✉️</span>
+                            </a>
+                          )}
+                          {expert.social_links?.linkedin && (
+                            <a
+                              href={expert.social_links.linkedin}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors duration-300"
+                              title="LinkedIn"
+                            >
+                              <span className="text-sm">💼</span>
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="text-6xl mb-4">👥</div>
+              <p className="text-gray-600 text-lg">Notre équipe d'experts sera bientôt présentée ici.</p>
+            </div>
+          )}
+
+          {/* Contact Expert CTA */}
+          <div className="text-center">
+            <p className="text-lg text-gray-600 mb-6">
+              Besoin d'une expertise spécifique ? Contactez directement nos spécialistes
+            </p>
+            <Link
+              href="#contact-form"
+              className="inline-block bg-gradient-to-r from-blue-600 to-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              Contacter un Expert →
+            </Link>
           </div>
         </div>
       </section>

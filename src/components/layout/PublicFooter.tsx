@@ -1,6 +1,25 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
+import { useWebsiteSettings } from '@/hooks/useWebsiteSettings'
+import LegalModal from '@/components/ui/LegalModal'
 
 export default function PublicFooter() {
+  const [legalModal, setLegalModal] = useState<{ isOpen: boolean; type: 'privacy' | 'terms' | null }>({
+    isOpen: false,
+    type: null
+  })
+  
+  const { socialMedia, contactEmail, contactPhone, address } = useWebsiteSettings()
+
+  const openLegalModal = (type: 'privacy' | 'terms') => {
+    setLegalModal({ isOpen: true, type })
+  }
+
+  const closeLegalModal = () => {
+    setLegalModal({ isOpen: false, type: null })
+  }
   return (
     <footer className="bg-blue-900 text-white">
       <div className="max-w-7xl mx-auto px-4 py-16">
@@ -23,18 +42,72 @@ export default function PublicFooter() {
               Excellence en développement, innovation en technologie.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors">
-                <span className="text-sm">📘</span>
-              </a>
-              <a href="#" className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors">
-                <span className="text-sm">🐦</span>
-              </a>
-              <a href="#" className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors">
-                <span className="text-sm">📷</span>
-              </a>
-              <a href="#" className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors">
-                <span className="text-sm">💼</span>
-              </a>
+              {socialMedia?.facebook && (
+                <a 
+                  href={socialMedia.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
+                  title="Facebook"
+                >
+                  <span className="text-sm">📘</span>
+                </a>
+              )}
+              {socialMedia?.twitter && (
+                <a 
+                  href={socialMedia.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
+                  title="Twitter"
+                >
+                  <span className="text-sm">🐦</span>
+                </a>
+              )}
+              {socialMedia?.instagram && (
+                <a 
+                  href={socialMedia.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
+                  title="Instagram"
+                >
+                  <span className="text-sm">📷</span>
+                </a>
+              )}
+              {socialMedia?.linkedin && (
+                <a 
+                  href={socialMedia.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
+                  title="LinkedIn"
+                >
+                  <span className="text-sm">💼</span>
+                </a>
+              )}
+              {socialMedia?.youtube && (
+                <a 
+                  href={socialMedia.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
+                  title="YouTube"
+                >
+                  <span className="text-sm">📺</span>
+                </a>
+              )}
+              {socialMedia?.github && (
+                <a 
+                  href={socialMedia.github}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
+                  title="GitHub"
+                >
+                  <span className="text-sm">🔧</span>
+                </a>
+              )}
             </div>
           </div>
           
@@ -72,15 +145,15 @@ export default function PublicFooter() {
               </div>
               <div className="flex items-center">
                 <span className="mr-2">📞</span>
-                <p>+243 97 123 4567</p>
+                <p>{contactPhone || '+257 22 123 456'}</p>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">✉️</span>
-                <p>info@iseav-walungu.edu.cd</p>
+                <p>{contactEmail || 'contact@infonet.bi'}</p>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">🌐</span>
-                <p>www.iseav-walungu.edu.cd</p>
+                <p>www.infonet.bi</p>
               </div>
             </div>
             
@@ -106,14 +179,33 @@ export default function PublicFooter() {
               <p>&copy; 2025 INFONET. Tous droits réservés.</p>
             </div>
             <div className="flex space-x-6">
-              <Link href="/privacy" className="hover:text-yellow-300 transition-colors">Politique de confidentialité</Link>
-              <Link href="/terms" className="hover:text-yellow-300 transition-colors">Conditions d'utilisation</Link>
+              <button 
+                onClick={() => openLegalModal('privacy')}
+                className="hover:text-yellow-300 transition-colors cursor-pointer"
+              >
+                Politique de confidentialité
+              </button>
+              <button 
+                onClick={() => openLegalModal('terms')}
+                className="hover:text-yellow-300 transition-colors cursor-pointer"
+              >
+                Conditions d'utilisation
+              </button>
               <Link href="/accessibility" className="hover:text-yellow-300 transition-colors">Accessibilité</Link>
               <Link href="/sitemap" className="hover:text-yellow-300 transition-colors">Plan du site</Link>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Legal Modal */}
+      {legalModal.type && (
+        <LegalModal
+          isOpen={legalModal.isOpen}
+          onClose={closeLegalModal}
+          type={legalModal.type}
+        />
+      )}
     </footer>
   )
 }

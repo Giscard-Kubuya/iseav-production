@@ -14,6 +14,29 @@ interface WebsiteSettings {
     twitter?: string;
     linkedin?: string;
     instagram?: string;
+    youtube?: string;
+    github?: string;
+  };
+  privacy_policy?: string;
+  terms_of_service?: string;
+  legal?: {
+    privacyPolicy?: string;
+    termsOfService?: string;
+  };
+  social?: {
+    facebook?: string;
+    twitter?: string;
+    linkedin?: string;
+    instagram?: string;
+    youtube?: string;
+    github?: string;
+  };
+  general?: {
+    contactEmail?: string;
+    phone?: string;
+    address?: string;
+    siteName?: string;
+    siteDescription?: string;
   };
   [key: string]: any; // Allow additional settings
 }
@@ -61,6 +84,12 @@ export const useWebsiteSettings = () => {
     mission: settings.mission || '',
     vision: settings.vision || '',
     aboutUs: settings.about_us || '',
+    privacyPolicy: settings.privacy_policy || settings.legal?.privacyPolicy || '',
+    termsOfService: settings.terms_of_service || settings.legal?.termsOfService || '',
+    socialMedia: settings.social_media || settings.social || {},
+    contactEmail: settings.contact_email || settings.general?.contactEmail || '',
+    contactPhone: settings.contact_phone || settings.general?.phone || '',
+    address: settings.address || settings.general?.address || '',
     loading, 
     error 
   };

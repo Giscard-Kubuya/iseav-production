@@ -366,7 +366,7 @@ export default function PublicHeader() {
                 onClick={closeMobileMenu}
                 className={`block py-4 rounded-lg px-4 transition-all duration-300 font-medium ${
                   isActive("/")
-                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 border-l-4 border-blue-600"
+                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 "
                     : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50"
                 }`}
               >
@@ -385,7 +385,7 @@ export default function PublicHeader() {
                 onClick={closeMobileMenu}
                 className={`block py-4 rounded-lg px-4 transition-all duration-300 font-medium ${
                   isActive("/about")
-                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 border-l-4 border-blue-600"
+                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 "
                     : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50"
                 }`}
               >
@@ -404,7 +404,7 @@ export default function PublicHeader() {
                 onClick={closeMobileMenu}
                 className={`block py-4 rounded-lg px-4 transition-all duration-300 font-medium ${
                   isActive("/services")
-                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 border-l-4 border-blue-600"
+                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 "
                     : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50"
                 }`}
               >
@@ -423,7 +423,7 @@ export default function PublicHeader() {
                 onClick={closeMobileMenu}
                 className={`block py-4 rounded-lg px-4 transition-all duration-300 font-medium ${
                   isActive("/portfolio")
-                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 border-l-4 border-blue-600"
+                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 "
                     : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50"
                 }`}
               >
@@ -442,7 +442,7 @@ export default function PublicHeader() {
                 onClick={closeMobileMenu}
                 className={`block py-4 rounded-lg px-4 transition-all duration-300 font-medium ${
                   isActive("/galerie")
-                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 border-l-4 border-blue-600"
+                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 "
                     : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50"
                 }`}
               >
@@ -461,7 +461,7 @@ export default function PublicHeader() {
                 onClick={closeMobileMenu}
                 className={`block py-4 rounded-lg px-4 transition-all duration-300 font-medium ${
                   isActive("/actualites")
-                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 border-l-4 border-blue-600"
+                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 "
                     : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50"
                 }`}
               >
@@ -480,7 +480,7 @@ export default function PublicHeader() {
                 onClick={closeMobileMenu}
                 className={`block py-4 rounded-lg px-4 transition-all duration-300 font-medium ${
                   isActive("/recrutement")
-                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 border-l-4 border-blue-600"
+                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 "
                     : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50"
                 }`}
               >
@@ -499,7 +499,7 @@ export default function PublicHeader() {
                 onClick={closeMobileMenu}
                 className={`block py-4 rounded-lg px-4 transition-all duration-300 font-medium ${
                   isActive("/blog")
-                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 border-l-4 border-blue-600"
+                    ? "text-blue-600 bg-gradient-to-r from-blue-50 to-green-50 "
                     : "text-gray-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50"
                 }`}
               >

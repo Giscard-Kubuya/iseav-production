@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useLeadership } from '@/hooks/useLeadership'
 import { useCompanyJourney } from '@/hooks/useCompanyJourney'
 import { useCompanyValues } from '@/hooks/useCompanyValues'
+import { useWebsiteSettings } from '@/hooks/useWebsiteSettings'
 
 export default function AboutContent() {
   const [isVisible, setIsVisible] = useState(false)
@@ -13,6 +14,7 @@ export default function AboutContent() {
   const { leadership, loading: leadershipLoading, error: leadershipError } = useLeadership(10)
   const { companyJourney, loading: journeyLoading, error: journeyError } = useCompanyJourney(10)
   const { companyValues, loading: valuesLoading, error: valuesError } = useCompanyValues(10)
+  const { mission, vision, loading: settingsLoading, error: settingsError } = useWebsiteSettings()
 
   useEffect(() => {
     setIsVisible(true)
@@ -44,24 +46,29 @@ export default function AboutContent() {
       {/* Mission & Vision */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
-              <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Mission</h3>
-              <p className="text-gray-600 text-lg leading-relaxed">
-                Accompagner la transformation digitale des entreprises burundaises en proposant des solutions technologiques innovantes, 
-                fiables et adaptées aux besoins locaux. Nous nous engageons à faire du Burundi un hub technologique régional.
-              </p>
+          {settingsLoading ? (
+            <div className="text-center py-12">
+              <div className="w-8 h-8 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <p className="mt-4 text-gray-600">Chargement des informations...</p>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
-              <div className="text-4xl mb-4">🌟</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Vision</h3>
-              <p className="text-gray-600 text-lg leading-relaxed">
-                Être la référence en matière de solutions IT en Afrique de l'Est, reconnue pour notre expertise technique, 
-                notre innovation constante et notre impact positif sur le développement économique et social de la région.
-              </p>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
+                <div className="text-4xl mb-4">🎯</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Mission</h3>
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  {mission || 'Accompagner la transformation digitale des entreprises burundaises en proposant des solutions technologiques innovantes, fiables et adaptées aux besoins locaux. Nous nous engageons à faire du Burundi un hub technologique régional.'}
+                </p>
+              </div>
+              <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
+                <div className="text-4xl mb-4">🌟</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Vision</h3>
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  {vision || 'Être la référence en matière de solutions IT en Afrique de l\'Est, reconnue pour notre expertise technique, notre innovation constante et notre impact positif sur le développement économique et social de la région.'}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 

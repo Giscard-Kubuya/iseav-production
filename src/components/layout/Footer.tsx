@@ -1,10 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from 'react';
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import LegalModal from '@/components/ui/LegalModal';
 
 export default function Footer() {
   const { settings } = useSiteSettings();
+  const [legalModal, setLegalModal] = useState<{ isOpen: boolean; type: 'privacy' | 'terms' | null }>({
+    isOpen: false,
+    type: null
+  });
+
+  const openLegalModal = (type: 'privacy' | 'terms') => {
+    setLegalModal({ isOpen: true, type });
+  };
+
+  const closeLegalModal = () => {
+    setLegalModal({ isOpen: false, type: null });
+  };
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -276,18 +290,18 @@ export default function Footer() {
               {settings.appearance.footerText} | {settings.seo.metaDescription}
             </div>
             <div className="flex space-x-6 text-sm">
-              <Link
-                href="/privacy"
-                className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+              <button
+                onClick={() => openLegalModal('privacy')}
+                className="text-gray-400 hover:text-blue-400 transition-colors duration-300 cursor-pointer"
               >
                 Politique de Confidentialité
-              </Link>
-              <Link
-                href="/terms"
-                className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+              </button>
+              <button
+                onClick={() => openLegalModal('terms')}
+                className="text-gray-400 hover:text-blue-400 transition-colors duration-300 cursor-pointer"
               >
                 Conditions d'Utilisation
-              </Link>
+              </button>
               <Link
                 href="/sitemap"
                 className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
@@ -298,6 +312,15 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      
+      {/* Legal Modal */}
+      {legalModal.type && (
+        <LegalModal
+          isOpen={legalModal.isOpen}
+          onClose={closeLegalModal}
+          type={legalModal.type}
+        />
+      )}
     </footer>
   );
 }

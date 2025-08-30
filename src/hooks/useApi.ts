@@ -64,7 +64,7 @@ export function useApiMutation<TData = any, TVariables = any>() {
     variables: TVariables,
     options?: {
       onSuccess?: (data: TData) => void
-      onError?: (error: string) => void
+      onError?: (error: any) => void
     }
   ) => {
     try {
@@ -84,7 +84,7 @@ export function useApiMutation<TData = any, TVariables = any>() {
       const axiosError = err as AxiosError
       const errorMessage = (axiosError.response?.data as any)?.message || (axiosError as any)?.message || 'An error occurred'
       setError(errorMessage)
-      options?.onError?.(errorMessage)
+      options?.onError?.(err)
       throw err
     } finally {
       setLoading(false)

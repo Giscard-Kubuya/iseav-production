@@ -28,7 +28,8 @@ export default function ServicesManagement() {
       if (debouncedSearch) {
         const searchLower = debouncedSearch.toLowerCase();
         if (
-          !service.name.toLowerCase().includes(searchLower) &&
+          !(service.title && service.title.toLowerCase().includes(searchLower)) &&
+          !(service.name && service.name.toLowerCase().includes(searchLower)) &&
           !service.description.toLowerCase().includes(searchLower) &&
           !(service.category && service.category.toLowerCase().includes(searchLower))
         ) {
@@ -77,9 +78,38 @@ export default function ServicesManagement() {
     })
   }
 
-  const formatPrice = (price: number, unit: string) => {
-    if (!price) return 'Sur devis'
-    return `${price.toLocaleString('fr-FR')} €${unit ? ' / ' + unit : ''}`
+  const formatPrice = (price: number | string | null | undefined, unit: string) => {
+    if (!price || price === 0 || price === '0' || price === null || price === undefined) return 'Sur devis'
+    const numPrice = typeof price === 'string' ? parseFloat(price) : price
+    return `${numPrice.toLocaleString('fr-FR')} €${unit ? ' / ' + unit : ''}`
+  }
+
+  const handleDelete = async (id: number, name: string) => {
+    if (confirm(`Êtes-vous sûr de vouloir supprimer le service "${name}" ?`)) {
+      try {
+        await mutations.deleteService(id, {
+          onSuccess: () => {
+            refetch()
+          }
+        })
+      } catch (error) {
+        console.error('Error deleting service:', error)
+        alert('Erreur lors de la suppression du service')
+      }
+    }
+  }
+
+  const handleToggleActive = async (id: number) => {
+    try {
+      await mutations.toggleActive(id, {
+        onSuccess: () => {
+          refetch()
+        }
+      })
+    } catch (error) {
+      console.error('Error toggling active status:', error)
+      alert('Erreur lors de la modification du statut')
+    }
   }
 
   return (
@@ -268,7 +298,7 @@ export default function ServicesManagement() {
                         )}
                         <div>
                           <div className="text-sm font-medium text-gray-900">
-                            {service.name}
+                            {service.title || service.name}
                           </div>
                           <div className="text-sm text-gray-500 line-clamp-2">
                             {service.description}
@@ -280,7 +310,7 @@ export default function ServicesManagement() {
                       {service.category || '-'}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900">
-                      {formatPrice(service.starting_price || 0, service.price_unit || '')}
+                      {formatPrice(service.starting_price, service.price_unit || '')}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center space-x-2">
@@ -309,7 +339,10 @@ export default function ServicesManagement() {
                         >
                           Modifier
                         </Link>
-                        <button className="text-red-600 hover:text-red-900">
+                        <button 
+                          onClick={() => handleDelete(service.id, service.title || service.name)}
+                          className="text-red-600 hover:text-red-900"
+                        >
                           Supprimer
                         </button>
                       </div>

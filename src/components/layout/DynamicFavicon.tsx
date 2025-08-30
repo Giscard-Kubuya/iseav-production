@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useWebsiteSettings } from "@/hooks/useWebsiteSettings";
 
 export default function DynamicFavicon() {
   const { settings, loading } = useWebsiteSettings();
+  const [isClient, setIsClient] = useState(false);
+
+  // Only run on client after hydration is complete
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
+    if (!isClient) return; // Don't run during SSR or hydration
+
     // Remove default Next.js favicon first, regardless of API response
     const removeDefaultFavicons = () => {
       const existingLinks = document.querySelectorAll('link[rel*="icon"], link[rel*="shortcut"]');
@@ -47,7 +55,7 @@ export default function DynamicFavicon() {
       document.head.appendChild(icon192);
       document.head.appendChild(icon512);
     }
-  }, [settings?.appearance?.logo, loading]);
+  }, [settings?.appearance?.logo, loading, isClient]);
 
   return null; // This component doesn't render anything
 }

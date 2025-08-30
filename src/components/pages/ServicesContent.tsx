@@ -123,18 +123,24 @@ export default function ServicesContent() {
                       )}
 
                       <div className="mt-auto">
-                        {service.starting_price && (
-                          <div className="mb-4 text-center">
-                            <span className="text-2xl font-bold text-gray-900">
-                              {service.starting_price}
-                            </span>
-                            {service.price_unit && (
-                              <span className="text-gray-600 ml-1">
-                                {service.price_unit}
+                        <div className="mb-4 text-center">
+                          {service.starting_price ? (
+                            <>
+                              <span className="text-2xl font-bold text-gray-900">
+                                {(typeof service.starting_price === 'string' ? parseFloat(service.starting_price) : service.starting_price)?.toLocaleString('fr-FR')} €
                               </span>
-                            )}
-                          </div>
-                        )}
+                              {service.price_unit && (
+                                <span className="text-gray-600 ml-1">
+                                  / {service.price_unit}
+                                </span>
+                              )}
+                            </>
+                          ) : (
+                            <span className="text-2xl font-bold text-blue-600">
+                              Sur devis
+                            </span>
+                          )}
+                        </div>
 
                         <Link
                           href="/contact"

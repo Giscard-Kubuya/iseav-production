@@ -16,7 +16,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name: '',
+    title: '',
     description: '',
     detailed_description: '',
     icon: '',
@@ -32,6 +32,8 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
     is_active: true,
     category: '',
   })
+
+  const [pricingType, setPricingType] = useState('quote') // 'quote' for "Sur devis", 'price' for specific price
 
   const [featureInput, setFeatureInput] = useState('')
   const [techInput, setTechInput] = useState('')
@@ -50,22 +52,25 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
           const service = response.data.data
           
           setFormData({
-            name: service.name || '',
+            title: service.title || service.name || '',
             description: service.description || '',
             detailed_description: service.detailed_description || '',
             icon: service.icon || '',
             image_url: service.image_url || '',
             starting_price: service.starting_price?.toString() || '',
             price_unit: service.price_unit || '',
-            features: service.features || [],
-            technologies: service.technologies || [],
-            deliverables: service.deliverables || [],
+            features: Array.isArray(service.features) ? service.features : [],
+            technologies: Array.isArray(service.technologies) ? service.technologies : [],
+            deliverables: Array.isArray(service.deliverables) ? service.deliverables : [],
             duration_estimate: service.duration_estimate || '',
             display_order: service.display_order || 0,
             is_featured: service.is_featured || false,
             is_active: service.is_active || true,
             category: service.category || '',
           })
+
+          // Set pricing type based on whether there's a price
+          setPricingType(service.starting_price && service.starting_price > 0 ? 'price' : 'quote')
         } catch (error) {
           console.error('Error loading service:', error)
           setErrors({ general: 'Erreur lors du chargement du service' })
@@ -84,23 +89,87 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
     setSaving(true)
 
     try {
-      const payload = {
-        ...formData,
-        starting_price: formData.starting_price ? parseFloat(formData.starting_price) : undefined,
-        display_order: parseInt(formData.display_order.toString()) || 0
+      // Basic validation
+      if (!formData.title.trim()) {
+        setErrors({ title: 'Le titre du service est requis' })
+        setSaving(false)
+        return
       }
+
+      if (!formData.description.trim()) {
+        setErrors({ description: 'La description est requise' })
+        setSaving(false)
+        return
+      }
+
+      if (!formData.category.trim()) {
+        setErrors({ category: 'La catégorie est requise' })
+        setSaving(false)
+        return
+      }
+
+      const payload: any = {
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        short_description: formData.detailed_description?.trim() || '',
+        icon: formData.icon?.trim() || '',
+        category: formData.category.trim(),
+        starting_price: pricingType === 'price' && formData.starting_price ? parseFloat(formData.starting_price) : null,
+        price_unit: pricingType === 'price' ? formData.price_unit?.trim() || '' : '',
+        features: formData.features || [],
+        technologies: formData.technologies || [],
+        deliverables: formData.deliverables || [],
+        display_order: parseInt(formData.display_order.toString()) || 0,
+        is_featured: formData.is_featured ? 1 : 0,
+        is_active: formData.is_active ? 1 : 0
+      }
+
+      // Debug logging
+      console.log('Service payload:', payload)
 
       if (mode === 'create') {
         await mutations.createService(payload, {
           onSuccess: () => {
             router.push('/admin/services')
           },
+          onError: (error: any) => {
+            console.error('Error creating service:', error)
+            console.log('Full error response:', error.response)
+            if (error.response?.data?.errors) {
+              console.log('Validation errors:', error.response.data.errors)
+              setErrors(error.response.data.errors)
+            } else if (error.response?.data?.message) {
+              setErrors({ 
+                general: error.response.data.message 
+              })
+            } else {
+              setErrors({ 
+                general: 'Erreur lors de la création du service' 
+              })
+            }
+          }
         })
       } else if (id) {
         await mutations.updateService(parseInt(id), payload, {
           onSuccess: () => {
             router.push('/admin/services')
           },
+          onError: (error: any) => {
+            console.error('Error updating service:', error)
+            console.log('Full error response:', error.response)
+            if (error.response?.data?.errors) {
+              console.log('Validation errors:', error.response.data.errors)
+              setErrors(error.response.data.errors)
+            } else if (error.response?.data?.message) {
+              setErrors({ 
+                general: error.response.data.message
+              })
+            } else {
+              setErrors({ 
+                general: 'Erreur lors de la mise à jour du service' 
+              })
+            }
+          }
         })
       }
     } catch (error: any) {
@@ -130,7 +199,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
     if (featureInput.trim()) {
       setFormData(prev => ({ 
         ...prev, 
-        features: [...prev.features, featureInput.trim()] 
+        features: [...(prev.features || []), featureInput.trim()] 
       }))
       setFeatureInput('')
     }
@@ -139,7 +208,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
   const removeFeature = (index: number) => {
     setFormData(prev => ({ 
       ...prev, 
-      features: prev.features.filter((_, i) => i !== index) 
+      features: (prev.features || []).filter((_, i) => i !== index) 
     }))
   }
 
@@ -147,7 +216,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
     if (techInput.trim()) {
       setFormData(prev => ({ 
         ...prev, 
-        technologies: [...prev.technologies, techInput.trim()] 
+        technologies: [...(prev.technologies || []), techInput.trim()] 
       }))
       setTechInput('')
     }
@@ -156,7 +225,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
   const removeTechnology = (index: number) => {
     setFormData(prev => ({ 
       ...prev, 
-      technologies: prev.technologies.filter((_, i) => i !== index) 
+      technologies: (prev.technologies || []).filter((_, i) => i !== index) 
     }))
   }
 
@@ -164,7 +233,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
     if (deliverableInput.trim()) {
       setFormData(prev => ({ 
         ...prev, 
-        deliverables: [...prev.deliverables, deliverableInput.trim()] 
+        deliverables: [...(prev.deliverables || []), deliverableInput.trim()] 
       }))
       setDeliverableInput('')
     }
@@ -173,7 +242,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
   const removeDeliverable = (index: number) => {
     setFormData(prev => ({ 
       ...prev, 
-      deliverables: prev.deliverables.filter((_, i) => i !== index) 
+      deliverables: (prev.deliverables || []).filter((_, i) => i !== index) 
     }))
   }
 
@@ -222,21 +291,21 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                Nom du service *
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                Titre du service *
               </label>
               <input
                 type="text"
-                id="name"
-                value={formData.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
+                id="title"
+                value={formData.title}
+                onChange={(e) => handleInputChange('title', e.target.value)}
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  errors.name ? 'border-red-300' : 'border-gray-300'
+                  errors.title ? 'border-red-300' : 'border-gray-300'
                 }`}
-                placeholder="Nom du service"
+                placeholder="Titre du service"
                 required
               />
-              {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
+              {errors.title && <p className="text-red-600 text-sm mt-1">{errors.title}</p>}
             </div>
 
             <div className="md:col-span-2">
@@ -273,16 +342,20 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
 
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-                Catégorie
+                Catégorie *
               </label>
               <input
                 type="text"
                 id="category"
                 value={formData.category}
                 onChange={(e) => handleInputChange('category', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  errors.category ? 'border-red-300' : 'border-gray-300'
+                }`}
                 placeholder="Catégorie du service"
+                required
               />
+              {errors.category && <p className="text-red-600 text-sm mt-1">{errors.category}</p>}
             </div>
 
             <div>
@@ -309,7 +382,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
                   handleInputChange('image_url', imageData.url);
                 }}
                 currentImageUrl={formData.image_url}
-                altText={formData.name}
+                altText={formData.title}
               />
             </div>
           </div>
@@ -319,10 +392,43 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-semibold mb-6">Tarification</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Pricing Type Selector */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              Type de tarification
+            </label>
+            <div className="flex gap-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="pricingType"
+                  value="quote"
+                  checked={pricingType === 'quote'}
+                  onChange={(e) => setPricingType(e.target.value)}
+                  className="mr-2 text-blue-600 focus:ring-blue-500"
+                />
+                Sur devis
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="pricingType"
+                  value="price"
+                  checked={pricingType === 'price'}
+                  onChange={(e) => setPricingType(e.target.value)}
+                  className="mr-2 text-blue-600 focus:ring-blue-500"
+                />
+                Prix fixe
+              </label>
+            </div>
+          </div>
+
+          {/* Price Fields - Only show when pricing type is 'price' */}
+          {pricingType === 'price' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="starting_price" className="block text-sm font-medium text-gray-700 mb-2">
-                Prix de départ
+                Prix de départ *
               </label>
               <input
                 type="number"
@@ -332,6 +438,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
                 onChange={(e) => handleInputChange('starting_price', e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="0.00"
+                required
               />
             </div>
 
@@ -348,20 +455,39 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
                 placeholder="par heure, par projet, par mois..."
               />
             </div>
-
-            <div className="md:col-span-2">
-              <label htmlFor="duration_estimate" className="block text-sm font-medium text-gray-700 mb-2">
-                Durée estimée
-              </label>
-              <input
-                type="text"
-                id="duration_estimate"
-                value={formData.duration_estimate}
-                onChange={(e) => handleInputChange('duration_estimate', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="2-4 semaines, 3 mois, etc."
-              />
             </div>
+          )}
+
+          {/* Message when "Sur devis" is selected */}
+          {pricingType === 'quote' && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center">
+                <div className="text-blue-600 text-xl mr-3">💼</div>
+                <div>
+                  <p className="text-blue-800 font-medium">Tarification sur devis</p>
+                  <p className="text-blue-600 text-sm">Le prix sera affiché comme "Sur devis" pour ce service.</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Duration */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-lg font-semibold mb-6">Durée d'exécution</h2>
+          
+          <div>
+            <label htmlFor="duration_estimate" className="block text-sm font-medium text-gray-700 mb-2">
+              Durée estimée
+            </label>
+            <input
+              type="text"
+              id="duration_estimate"
+              value={formData.duration_estimate}
+              onChange={(e) => handleInputChange('duration_estimate', e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="2-4 semaines, 3 mois, etc."
+            />
           </div>
         </div>
 
@@ -390,7 +516,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {formData.features.map((feature, index) => (
+            {(formData.features || []).map((feature, index) => (
               <span
                 key={index}
                 className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
@@ -433,7 +559,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {formData.technologies.map((tech, index) => (
+            {(formData.technologies || []).map((tech, index) => (
               <span
                 key={index}
                 className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800"
@@ -476,7 +602,7 @@ export default function ServiceEditor({ mode, id }: ServiceEditorProps) {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {formData.deliverables.map((deliverable, index) => (
+            {(formData.deliverables || []).map((deliverable, index) => (
               <span
                 key={index}
                 className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-purple-100 text-purple-800"

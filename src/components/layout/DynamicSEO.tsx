@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useWebsiteSettings } from "@/hooks/useWebsiteSettings";
 
 interface DynamicSEOProps {
@@ -19,14 +19,21 @@ export default function DynamicSEO({
   canonicalUrl
 }: DynamicSEOProps) {
   const { settings, website, loading } = useWebsiteSettings();
+  const [isClient, setIsClient] = useState(false);
+
+  // Only run on client after hydration is complete
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
-    if (loading) return;
+    if (!isClient || loading) return; // Don't run during SSR, hydration, or while loading
 
     // Use page-specific data or fallback to website defaults
     const pageTitle = title || settings?.seo?.metaTitle || website?.name || 'INFONET';
     const pageDescription = description || settings?.seo?.metaDescription || website?.description || '';
     const pageKeywords = keywords || settings?.seo?.metaKeywords || '';
+    const currentUrl = canonicalUrl || (typeof window !== 'undefined' ? window.location.href : '');
     
     // Update document title
     document.title = pageTitle;
@@ -73,8 +80,8 @@ export default function DynamicSEO({
       updateOGTag('og:image', ogImage || settings?.appearance?.logo || '');
     }
 
-    if (canonicalUrl) {
-      updateOGTag('og:url', canonicalUrl);
+    if (currentUrl) {
+      updateOGTag('og:url', currentUrl);
     }
 
     // Update Twitter Card tags
@@ -97,14 +104,14 @@ export default function DynamicSEO({
     }
 
     // Add canonical URL
-    if (canonicalUrl) {
+    if (currentUrl) {
       let canonicalTag = document.querySelector('link[rel="canonical"]');
       if (!canonicalTag) {
         canonicalTag = document.createElement('link');
         canonicalTag.setAttribute('rel', 'canonical');
         document.head.appendChild(canonicalTag);
       }
-      canonicalTag.setAttribute('href', canonicalUrl);
+      canonicalTag.setAttribute('href', currentUrl);
     }
 
     // Google Analytics
@@ -179,7 +186,7 @@ export default function DynamicSEO({
       verificationTag.setAttribute('content', settings.seo.googleVerification);
     }
 
-  }, [settings, website, loading, title, description, keywords, ogImage, canonicalUrl]);
+  }, [settings, website, loading, isClient, title, description, keywords, ogImage, canonicalUrl]);
 
   return null; // This component doesn't render anything
 }

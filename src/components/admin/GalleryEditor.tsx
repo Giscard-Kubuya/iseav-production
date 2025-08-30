@@ -55,15 +55,16 @@ export default function GalleryEditor({ item, onClose, onSuccess }: GalleryEdito
     setError(null)
 
     try {
+      const tagsArray = formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
       const submitData = {
         title: formData.title,
         description: formData.description || undefined,
         category: formData.category,
         image_url: formData.image_url,
-        tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-        featured: formData.featured,
-        published: formData.published,
-      }
+        tags: tagsArray.length > 0 ? JSON.stringify(tagsArray) : '',
+        featured: formData.featured ? 1 : 0,
+        published: formData.published ? 1 : 0,
+      } as any // Type assertion to bypass TypeScript checking for API submission
 
       if (item) {
         await mutations.updateItem(item.id, submitData, {

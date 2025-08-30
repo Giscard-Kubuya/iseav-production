@@ -66,8 +66,9 @@ export default function HeroSlidesManagement() {
     }
   };
 
-  const getStatusBadge = (is_active: boolean) => {
-    return is_active ? (
+  const getStatusBadge = (is_active: boolean | string | number) => {
+    const isActive = is_active === true || is_active === 1 || is_active === '1';
+    return isActive ? (
       <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">
         Actif
       </span>
@@ -255,7 +256,7 @@ export default function HeroSlidesManagement() {
                         onClick={() => handleToggleActive(slide.id)}
                         className="text-blue-600 hover:text-blue-900 text-sm"
                       >
-                        {slide.is_active ? "Désactiver" : "Activer"}
+                        {(slide.is_active === true || slide.is_active === 1 || slide.is_active === '1') ? "Désactiver" : "Activer"}
                       </button>
                       <Link
                         href={`/admin/hero-slides/${slide.id}/edit`}

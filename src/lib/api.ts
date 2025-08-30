@@ -225,8 +225,8 @@ export interface HeroSlide {
   primary_action_url?: string;
   secondary_action_text?: string;
   secondary_action_url?: string;
-  is_active: boolean;
-  display_order: number;
+  is_active: boolean | string | number;
+  display_order: number | string;
   created_at: string;
   updated_at: string;
 }

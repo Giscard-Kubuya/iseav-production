@@ -42,8 +42,12 @@ export default function HomeContent() {
 
   // Transform API data to match component structure
   const slides = (heroSlides || [])
-    .filter((slide) => slide.is_active)
-    .sort((a, b) => a.display_order - b.display_order)
+    .filter((slide) => slide.is_active === true || slide.is_active === 1 || slide.is_active === '1')
+    .sort((a, b) => {
+      const orderA = typeof a.display_order === 'string' ? parseInt(a.display_order) : a.display_order;
+      const orderB = typeof b.display_order === 'string' ? parseInt(b.display_order) : b.display_order;
+      return orderA - orderB;
+    })
     .map((slide) => ({
       id: slide.id,
       image: slide.image_url,

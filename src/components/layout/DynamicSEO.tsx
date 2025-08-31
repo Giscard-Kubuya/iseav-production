@@ -30,7 +30,7 @@ export default function DynamicSEO({
     if (!isClient || loading) return; // Don't run during SSR, hydration, or while loading
 
     // Use page-specific data or fallback to website defaults
-    const pageTitle = title || settings?.seo?.metaTitle || website?.name || 'INFONET';
+    const pageTitle = title || settings?.seo?.metaTitle || website?.name || '8e CEPAC Projet-Beni';
     const pageDescription = description || settings?.seo?.metaDescription || website?.description || '';
     const pageKeywords = keywords || settings?.seo?.metaKeywords || '';
     const currentUrl = canonicalUrl || (typeof window !== 'undefined' ? window.location.href : '');
@@ -74,7 +74,7 @@ export default function DynamicSEO({
     updateOGTag('og:title', pageTitle);
     updateOGTag('og:description', pageDescription);
     updateOGTag('og:type', 'website');
-    updateOGTag('og:site_name', website?.name || 'INFONET');
+    updateOGTag('og:site_name', website?.name || '8e CEPAC Projet-Beni');
     
     if (ogImage || settings?.appearance?.logo) {
       updateOGTag('og:image', ogImage || settings?.appearance?.logo || '');

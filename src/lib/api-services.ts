@@ -102,11 +102,27 @@ export const actualitesApi = {
   delete: (id: number) =>
     apiRequest.delete<ApiResponse<void>>(`/actualites/${id}`),
 
-  toggleFeatured: (id: number) =>
-    apiRequest.patch<ApiResponse<Actualite>>(`/actualites/${id}/featured`),
+  toggleFeatured: async (id: number) => {
+    // First get the current actualite
+    const current = await apiRequest.get<ApiResponse<Actualite>>(`/actualites/${id}`);
+    const currentFeatured = current.data.data.featured;
+    
+    // Toggle the featured value
+    return apiRequest.put<ApiResponse<Actualite>>(`/actualites/${id}`, {
+      featured: currentFeatured ? 0 : 1
+    });
+  },
 
-  toggleUrgent: (id: number) =>
-    apiRequest.patch<ApiResponse<Actualite>>(`/actualites/${id}/urgent`),
+  toggleUrgent: async (id: number) => {
+    // First get the current actualite
+    const current = await apiRequest.get<ApiResponse<Actualite>>(`/actualites/${id}`);
+    const currentUrgent = current.data.data.urgent;
+    
+    // Toggle the urgent value
+    return apiRequest.put<ApiResponse<Actualite>>(`/actualites/${id}`, {
+      urgent: currentUrgent ? 0 : 1
+    });
+  },
 };
 
 // Portfolio Projects API

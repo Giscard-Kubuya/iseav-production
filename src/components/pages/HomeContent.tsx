@@ -179,16 +179,16 @@ export default function HomeContent() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-white text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Bienvenue chez INFONET
+              Bienvenue au 8e CEPAC
             </h1>
             <p className="text-xl mb-8">
-              Votre partenaire technologique de confiance
+              Organisation Non Gouvernementale pour le développement communautaire
             </p>
             <Link
-              href="/services"
+              href="/about"
               className="bg-white text-blue-900 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100"
             >
-              Découvrir nos services
+              Découvrir notre organisation
             </Link>
           </div>
         </div>
@@ -455,11 +455,11 @@ export default function HomeContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-blue-900 mb-4">
-              Actualités & Réalisations
+              Actualités & Activités du Projet
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Découvrez nos derniers projets et innovations dans le domaine des
-              technologies de l'information et solutions numériques
+              Découvrez nos dernières activités communautaires, événements et 
+              programmes innovants au service du développement local
             </p>
           </div>
 
@@ -588,41 +588,41 @@ export default function HomeContent() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-bold text-blue-900 mb-6">
-                Excellence Technologique
+                Excellence dans le Développement
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                INFONET se distingue par son approche innovante des solutions IT
-                et technologies numériques. Nos services sont conçus pour
-                répondre aux défis contemporains de la transformation digitale
-                des entreprises au Burundi.
+                Le 8e CEPAC Projet-Beni se distingue par son approche innovante 
+                du développement communautaire. Nos programmes sont conçus pour 
+                répondre aux défis contemporains et améliorer les conditions de vie 
+                des populations en République Démocratique du Congo.
               </p>
 
               <div className="space-y-4 mb-8">
                 <div className="flex items-start">
                   <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-4 mt-1">
-                    <span className="text-white text-xl">💻</span>
+                    <span className="text-white text-xl">📚</span>
                   </div>
                   <div>
                     <h3 className="font-semibold text-blue-900 mb-1">
-                      Solutions Sur Mesure
+                      Programmes de Développement Innovants
                     </h3>
                     <p className="text-gray-600">
-                      Développement personnalisé adapté aux besoins spécifiques
-                      de votre entreprise
+                      Approches modernes adaptées aux besoins 
+                      spécifiques des communautés bénéficiaires
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start">
                   <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mr-4 mt-1">
-                    <span className="text-white text-xl">🌍</span>
+                    <span className="text-white text-xl">🎓</span>
                   </div>
                   <div>
                     <h3 className="font-semibold text-blue-900 mb-1">
-                      Technologies Modernes
+                      Impact Communautaire d'Excellence
                     </h3>
                     <p className="text-gray-600">
-                      Utilisation des dernières technologies et standards
-                      internationaux
+                      Programmes de qualité suivant les standards
+                      internationaux de développement
                     </p>
                   </div>
                 </div>
@@ -630,10 +630,10 @@ export default function HomeContent() {
 
               <div className="mt-8">
                 <Link
-                  href="/services"
+              href="/services"
                   className="bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
-                  Découvrir nos services
+                  Découvrir nos programmes
                 </Link>
               </div>
             </div>
@@ -642,9 +642,9 @@ export default function HomeContent() {
               <div className="aspect-square bg-gradient-to-br from-blue-500 to-green-500 rounded-3xl p-8">
                 <div className="h-full bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
                   <div className="text-center text-white">
-                    <span className="text-8xl mb-4 block">💻</span>
+                    <span className="text-8xl mb-4 block">📚</span>
                     <h3 className="text-2xl font-bold">
-                      Innovation & Technologie
+                      Éducation & Formation
                     </h3>
                   </div>
                 </div>
@@ -659,11 +659,11 @@ export default function HomeContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-blue-900 mb-4">
-              Notre Équipe d'Experts IT
+              Notre Équipe
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Une équipe de professionnels qualifiés dédiés à l'excellence
-              technologique et à l'innovation
+              dans le développement communautaire et l'impact social
             </p>
           </div>
 
@@ -749,11 +749,11 @@ export default function HomeContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-blue-900 mb-4">
-              Nos Partenaires Technologiques
+              Nos Partenaires
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Collaborations d'excellence avec les leaders mondiaux de la
-              technologie
+              Collaborations d'excellence avec les institutions
+              et organismes de développement
             </p>
           </div>
 
@@ -925,15 +925,15 @@ export default function HomeContent() {
               <div className="text-3xl font-bold text-blue-600 mb-2">
                 {(technologyPartners || []).filter((p) => p.is_active).length}+
               </div>
-              <div className="text-gray-600">Partenaires Technologiques</div>
+              <div className="text-gray-600">Partenaires</div>
             </div>
             <div className="bg-white rounded-lg p-6 shadow-md">
-              <div className="text-3xl font-bold text-green-600 mb-2">100+</div>
-              <div className="text-gray-600">Solutions Déployées</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">500+</div>
+              <div className="text-gray-600">Bénéficiaires</div>
             </div>
             <div className="bg-white rounded-lg p-6 shadow-md">
-              <div className="text-3xl font-bold text-blue-600 mb-2">5</div>
-              <div className="text-gray-600">Pays d'Afrique de l'Est</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">15</div>
+              <div className="text-gray-600">Années d'Impact</div>
             </div>
           </div>
         </div>
@@ -943,24 +943,24 @@ export default function HomeContent() {
       <section className="py-20 bg-gradient-to-r from-blue-900 via-blue-800 to-green-800 text-white">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">
-            Transformez Votre Entreprise Aujourd'hui
+            Rejoignez Notre Mission Aujourd'hui
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Découvrez comment INFONET peut révolutionner votre infrastructure IT
-            et accélérer votre transformation digitale au Burundi
+            Découvrez comment le 8e CEPAC Projet-Beni peut contribuer au 
+            développement de votre communauté en République Démocratique du Congo
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
               className="bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-green-700 hover:to-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              Demander un Devis Gratuit
+              Nous Contacter
             </Link>
             <Link
               href="/services"
               className="border-2 border-green-400 text-green-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-400 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              Découvrir nos Services
+              Nos Programmes
             </Link>
           </div>
         </div>

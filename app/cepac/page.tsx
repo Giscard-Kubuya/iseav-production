@@ -3,7 +3,7 @@
 import CepacHomeContent from '@/components/pages/CepacHomeContent'
 import PageSEO from '@/components/layout/PageSEO'
 
-export default function HomePage() {
+export default function CepacHomePage() {
   return (
     <PageSEO
       title="8e CEPAC Projet-Beni | Centre d'Etudes Primaires et Cycle Complémentaire"

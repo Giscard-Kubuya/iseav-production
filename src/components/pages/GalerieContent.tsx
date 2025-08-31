@@ -125,22 +125,22 @@ export default function GalerieContent() {
             backgroundImage: "url(https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80)"
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/75 to-green-700/85" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/75 to-amber-700/85" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
         
         <div className="relative z-10 h-full flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
             <div className="text-center text-white">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 animate-fade-in-up">
-                <span className="bg-gradient-to-r from-blue-300 via-white to-green-300 bg-clip-text text-transparent">
-                  Galerie INFONET
+                <span className="bg-gradient-to-r from-blue-300 via-white to-amber-300 bg-clip-text text-transparent">
+                  Galerie CEPAC
                 </span>
               </h1>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-blue-100 animate-fade-in-up delay-200">
-                Découvrez Notre Univers Technologique
+                Découvrez Notre Univers Éducatif
               </h2>
               <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-4xl mx-auto leading-relaxed text-gray-200 animate-fade-in-up delay-400">
-                Plongez dans notre galerie photo et découvrez nos bureaux, projets, équipe et réalisations
+                Plongez dans notre galerie photo et découvrez nos salles de classe, activités, équipe éducative et moments marquants
               </p>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function GalerieContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent">
                 Explorez par Catégorie
               </span>
             </h2>
@@ -165,7 +165,7 @@ export default function GalerieContent() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`flex items-center px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
                   activeCategory === category.id
-                    ? 'bg-gradient-to-r from-blue-600 to-green-500 text-white shadow-lg'
+                    ? 'bg-gradient-to-r from-blue-600 to-amber-500 text-white shadow-lg'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -193,7 +193,7 @@ export default function GalerieContent() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   {item.featured && (
-                    <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-amber-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                       Featured
                     </div>
                   )}
@@ -225,7 +225,7 @@ export default function GalerieContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent">
                 Notre Galerie en Chiffres
               </span>
             </h2>
@@ -253,7 +253,7 @@ export default function GalerieContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-green-500">
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-amber-500">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Rejoignez Notre Histoire

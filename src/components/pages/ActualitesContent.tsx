@@ -80,7 +80,7 @@ export default function ActualitesContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-amber-50 to-blue-100">
       {/* Hero Section */}
       <section className="relative h-[60vh] overflow-hidden">
         <div 
@@ -89,14 +89,14 @@ export default function ActualitesContent() {
             backgroundImage: "url(https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80)"
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/80 to-green-700/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/80 to-amber-700/90" />
         
         <div className="relative z-10 h-full flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
             <div className="text-center text-white">
               <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-blue-300 via-white to-green-300 bg-clip-text text-transparent">
-                  Actualités INFONET
+                <span className="bg-gradient-to-r from-blue-300 via-white to-amber-300 bg-clip-text text-transparent">
+                  Actualités CEPAC
                 </span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-blue-100">
@@ -133,7 +133,7 @@ export default function ActualitesContent() {
               Actualités à la Une
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Les nouvelles les plus importantes d'INFONET
+              Les nouvelles les plus importantes du CEPAC
             </p>
           </div>
 
@@ -278,13 +278,13 @@ export default function ActualitesContent() {
       </section>
 
       {/* Newsletter Subscription */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-green-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-blue-600 to-amber-600 text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Restez informé de nos actualités
           </h2>
           <p className="text-xl mb-8">
-            Abonnez-vous à notre newsletter pour recevoir les dernières nouvelles d'INFONET
+            Abonnez-vous à notre newsletter pour recevoir les dernières nouvelles du CEPAC
           </p>
           <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
             <input

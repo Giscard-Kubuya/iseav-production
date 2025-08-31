@@ -1,0 +1,121 @@
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/UNESCO_logo.svg/300px-UNESCO_logo.svg.png" 
+                  alt="UNESCO" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/0ea5e9/white?text=UNESCO"
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/UNICEF_Logo.svg/300px-UNICEF_Logo.svg.png" 
+                  alt="UNICEF" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/0ea5e9/white?text=UNICEF"
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://logos-world.net/wp-content/uploads/2021/03/World-Bank-Logo.png" 
+                  alt="Banque Mondiale" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/0ea5e9/white?text=WORLD+BANK"
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/200px-Flag_of_France.svg.png" 
+                  alt="Coopération Française" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/1e40af/white?text=FRANCE"
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/African_Union_Flag.svg/200px-African_Union_Flag.svg.png" 
+                  alt="Union Africaine" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/22c55e/white?text=AFRICAN+UNION"
+                  }}
+                />
+              </div>
+
+              {/* Duplicate set for seamless loop */}
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Coat_of_arms_of_Benin.svg/200px-Coat_of_arms_of_Benin.svg.png" 
+                  alt="Ministère de l'Éducation du Bénin" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/1e40af/white?text=MEN+BENIN"
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/UNESCO_logo.svg/300px-UNESCO_logo.svg.png" 
+                  alt="UNESCO" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/0ea5e9/white?text=UNESCO"
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/UNICEF_Logo.svg/300px-UNICEF_Logo.svg.png" 
+                  alt="UNICEF" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/0ea5e9/white?text=UNICEF"
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://logos-world.net/wp-content/uploads/2021/03/World-Bank-Logo.png" 
+                  alt="Banque Mondiale" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/0ea5e9/white?text=WORLD+BANK"
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/200px-Flag_of_France.svg.png" 
+                  alt="Coopération Française" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/1e40af/white?text=FRANCE"
+                  }}
+                />
+              </div>
+
+              <div className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/African_Union_Flag.svg/200px-African_Union_Flag.svg.png" 
+                  alt="Union Africaine" 
+                  className="h-16 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/200x64/22c55e/white?text=AFRICAN+UNION"
+                  }}
+                />
+              </div>

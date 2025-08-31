@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import ConditionalLayout from "@/components/layout/ConditionalLayout";
+import "../globals.css";
+import CepacLayout from "@/components/layout/CepacLayout";
 import DynamicFavicon from "@/components/layout/DynamicFavicon";
 import DynamicSEO from "@/components/layout/DynamicSEO";
 
@@ -13,7 +13,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "8e CEPAC Projet-Beni | Centre d'Etudes Primaires et Cycle Complémentaire",
   description:
-    "8e CEPAC Projet-Beni - Centre d'Excellence en Education Primaire et Cycle Complémentaire en République Démocratique du Congo (RDC). Formation de qualité, programmes éducatifs innovants et développement intégral des apprenants.",
+    "8e CEPAC Projet-Beni - Centre d'Excellence en Education Primaire et Cycle Complémentaire au Bénin. Formation de qualité, programmes éducatifs innovants et développement intégral des apprenants.",
   icons: {
     icon: [], // Prevent Next.js from auto-generating favicon
     shortcut: [], // Prevent shortcut icon
@@ -26,7 +26,7 @@ export const viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default function CepacRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -36,7 +36,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased bg-white`}>
         <DynamicFavicon />
         <DynamicSEO />
-        <ConditionalLayout>{children}</ConditionalLayout>
+        <CepacLayout>{children}</CepacLayout>
       </body>
     </html>
   );

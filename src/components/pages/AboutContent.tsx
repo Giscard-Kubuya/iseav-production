@@ -33,11 +33,11 @@ export default function AboutContent() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              À Propos d'
-              <span className="block text-green-300">INFONET</span>
+              À Propos du
+              <span className="block text-green-300">8e CEPAC</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto">
-              Depuis 2010, nous sommes le partenaire technologique de confiance des entreprises burundaises et régionales
+              Organisation Non Gouvernementale dédiée au développement communautaire en République Démocratique du Congo
             </p>
           </div>
         </div>
@@ -57,14 +57,14 @@ export default function AboutContent() {
                 <div className="text-4xl mb-4">🎯</div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Mission</h3>
                 <p className="text-gray-600 text-lg leading-relaxed">
-                  {mission || 'Accompagner la transformation digitale des entreprises burundaises en proposant des solutions technologiques innovantes, fiables et adaptées aux besoins locaux. Nous nous engageons à faire du Burundi un hub technologique régional.'}
+                  {mission || 'Contribuer au développement communautaire, promouvoir le bien-être social et améliorer les conditions de vie des populations en République Démocratique du Congo à travers des programmes innovants et adaptés aux besoins locaux.'}
                 </p>
               </div>
               <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
                 <div className="text-4xl mb-4">🌟</div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Vision</h3>
                 <p className="text-gray-600 text-lg leading-relaxed">
-                  {vision || 'Être la référence en matière de solutions IT en Afrique de l\'Est, reconnue pour notre expertise technique, notre innovation constante et notre impact positif sur le développement économique et social de la région.'}
+                  {vision || 'Être une organisation de référence en République Démocratique du Congo, reconnue pour l\'excellence de ses programmes de développement communautaire et son impact positif sur les populations bénéficiaires.'}
                 </p>
               </div>
             </div>
@@ -115,7 +115,7 @@ export default function AboutContent() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Notre Équipe Dirigeante</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Une équipe expérimentée et passionnée qui guide INFONET vers l'excellence
+              Une équipe expérimentée et passionnée qui guide le 8e CEPAC vers l'excellence dans le développement communautaire
             </p>
           </div>
           {leadershipLoading ? (
@@ -210,7 +210,7 @@ export default function AboutContent() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Notre Parcours</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              13 années d'innovation, de croissance et d'impact dans l'écosystème IT burundais
+              Des années d'excellence et d'impact positif dans le développement communautaire congolais
             </p>
           </div>
           
@@ -276,14 +276,14 @@ export default function AboutContent() {
             Prêt à transformer votre entreprise ?
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Rejoignez plus de 150 entreprises qui nous font confiance pour leur transformation digitale
+            Rejoignez les communautés qui nous font confiance pour leur développement
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact" className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-200 hover:scale-105 transform">
-              Discutons de votre projet
+              Nous contacter
             </Link>
-            <Link href="/services" className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-200 hover:scale-105 transform">
-              Découvrir nos services
+            <Link href="/recrutement" className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-200 hover:scale-105 transform">
+              Rejoindre notre équipe
             </Link>
           </div>
         </div>

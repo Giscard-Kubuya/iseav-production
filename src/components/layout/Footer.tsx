@@ -30,7 +30,7 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <div className="flex items-center mb-6">
                 <img
-                  src="/images/logos/infonet-logo.png"
+                  src="/images/logos/cepac-logo.png"
                   alt={`${settings.general.siteName} logo`}
                   className="w-12 h-12 rounded-lg mr-3"
                 />

@@ -72,34 +72,34 @@ export default function SettingsManagement() {
 
   const getDefaultSettings = (): SiteSettings => ({
     general: {
-      siteName: "INFONET",
-      siteDescription: "Solutions informatiques innovantes au Burundi",
-      siteUrl: "https://infonet.bi",
-      adminEmail: "admin@infonet.bi",
-      contactEmail: "contact@infonet.bi",
-      phone: "+257 22 123 456",
-      address: "Avenue de l'Indépendance, Bujumbura, Burundi",
-      timezone: "Africa/Bujumbura",
+      siteName: "8e CEPAC Projet-Beni",
+      siteDescription: "Excellence éducative et formation de qualité en République Démocratique du Congo",
+      siteUrl: "https://cepac-beni.edu.cd",
+      adminEmail: "admin@cepac-beni.edu.cd",
+      contactEmail: "contact@cepac-beni.edu.cd",
+      phone: "+243 99 123 4567",
+      address: "Quartier Kimbanseke, Ville de Beni, Nord-Kivu, RDC",
+      timezone: "Africa/Kinshasa",
       language: "fr",
       mission:
-        "Fournir des solutions informatiques innovantes et accessibles pour accompagner la transformation digitale au Burundi.",
+        "Offrir une éducation de qualité, former des citoyens responsables et contribuer au développement intellectuel, moral et social des jeunes congolais.",
       vision:
-        "Devenir le leader technologique incontournable au Burundi et contribuer au développement numérique de la région.",
+        "Être une institution éducative de référence en République Démocratique du Congo, reconnue pour l'excellence de nos programmes.",
     },
     social: {
-      facebook: "https://facebook.com/infonetbi",
-      twitter: "https://twitter.com/infonetbi",
-      linkedin: "https://linkedin.com/company/infonet-burundi",
-      instagram: "https://instagram.com/infonetbi",
-      youtube: "https://youtube.com/@infonetbi",
-      github: "https://github.com/infonet-bi",
+      facebook: "https://facebook.com/cepacbeni",
+      twitter: "https://twitter.com/cepacbeni",
+      linkedin: "https://linkedin.com/school/cepac-beni",
+      instagram: "https://instagram.com/cepacbeni",
+      youtube: "https://youtube.com/@cepacbeni",
+      github: "https://github.com/cepac-beni",
     },
     seo: {
-      metaTitle: "INFONET - Solutions informatiques au Burundi",
+      metaTitle: "8e CEPAC Projet-Beni - Excellence Éducative en RDC",
       metaDescription:
-        "INFONET offre des solutions informatiques innovantes au Burundi. Développement web, mobile, sécurité IT et plus encore.",
+        "8e CEPAC Projet-Beni offre une éducation de qualité en République Démocratique du Congo. Formation primaire et cycle complémentaire.",
       metaKeywords:
-        "informatique, burundi, développement web, mobile, sécurité IT",
+        "éducation, école, formation, primaire, secondaire, RDC, Beni, CEPAC",
       googleAnalytics: "G-XXXXXXXXXX",
       facebookPixel: "",
       googleVerification: "",

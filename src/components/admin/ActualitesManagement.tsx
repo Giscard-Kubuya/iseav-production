@@ -46,11 +46,13 @@ export default function ActualitesManagement() {
   const displayActualites = filteredActualites;
 
   const categories = {
-    project: "Projet",
-    community: "Communauté",
+    projects: "Projets",
+    community: "Communauté", 
     partnerships: "Partenariats",
     events: "Événements",
     awards: "Récompenses",
+    company: "Entreprise",
+    "admin-test": "Test Admin",
   };
 
   const handleDelete = async (id: number) => {
@@ -116,7 +118,8 @@ export default function ActualitesManagement() {
             📰 Gestion des Actualités Projet
           </h1>
           <p className="text-sm lg:text-base text-gray-600">
-            Gérez toutes les actualités et nouvelles du projet 8e CEPAC Projet-Beni (ONG)
+            Gérez toutes les actualités et nouvelles du projet 8e CEPAC
+            Projet-Beni (ONG)
           </p>
         </div>
         <Link
@@ -163,7 +166,9 @@ export default function ActualitesManagement() {
               <p className="text-xl lg:text-2xl font-bold text-gray-900">
                 {actualites?.length || 0}
               </p>
-              <p className="text-sm lg:text-base text-gray-600">Total Actualités</p>
+              <p className="text-sm lg:text-base text-gray-600">
+                Total Actualités
+              </p>
             </div>
           </div>
         </div>
@@ -262,14 +267,18 @@ export default function ActualitesManagement() {
                             )}
                             {/* Mobile category and status */}
                             <span className="sm:hidden px-2 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">
-                              {categories[actualite.category]}
+                              {categories[actualite.category as keyof typeof categories] || actualite.category || "Non catégorisé"}
                             </span>
-                            <span className={`md:hidden px-2 py-0.5 text-xs rounded-full ${
-                              actualite.status === "published"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-yellow-100 text-yellow-800"
-                            }`}>
-                              {actualite.status === "published" ? "Publié" : "Brouillon"}
+                            <span
+                              className={`md:hidden px-2 py-0.5 text-xs rounded-full ${
+                                actualite.status === "published"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
+                              {actualite.status === "published"
+                                ? "Publié"
+                                : "Brouillon"}
                             </span>
                           </div>
                         </div>
@@ -281,13 +290,14 @@ export default function ActualitesManagement() {
                         </div>
                         {/* Mobile stats */}
                         <div className="lg:hidden text-xs text-gray-500 mt-1">
-                          👀 {actualite.views} vues • 💬 {actualite.comments_count} commentaires
+                          👀 {actualite.views} vues • 💬{" "}
+                          {actualite.comments_count} commentaires
                         </div>
                       </div>
                     </td>
                     <td className="hidden sm:table-cell px-3 lg:px-6 py-4 whitespace-nowrap">
                       <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
-                        {categories[actualite.category]}
+                        {categories[actualite.category as keyof typeof categories] || actualite.category || "Non catégorisé"}
                       </span>
                     </td>
                     <td className="hidden md:table-cell px-3 lg:px-6 py-4 whitespace-nowrap">
@@ -329,26 +339,42 @@ export default function ActualitesManagement() {
                         <button
                           onClick={() => handleToggleUrgent(actualite.id)}
                           className={`inline-flex items-center px-2 lg:px-3 py-1 lg:py-1.5 rounded-lg transition-colors text-xs lg:text-sm font-medium ${
-                            actualite.urgent 
-                              ? "bg-red-100 text-red-700 hover:bg-red-200" 
+                            actualite.urgent
+                              ? "bg-red-100 text-red-700 hover:bg-red-200"
                               : "bg-amber-100 text-amber-700 hover:bg-amber-200"
                           }`}
-                          title={actualite.urgent ? "Retirer l'urgence" : "Marquer comme urgent"}
+                          title={
+                            actualite.urgent
+                              ? "Retirer l'urgence"
+                              : "Marquer comme urgent"
+                          }
                         >
-                          <span className="lg:hidden">{actualite.urgent ? "❌" : "🚨"}</span>
-                          <span className="hidden lg:inline">{actualite.urgent ? "❌ Retirer" : "🚨 Urgent"}</span>
+                          <span className="lg:hidden">
+                            {actualite.urgent ? "❌" : "🚨"}
+                          </span>
+                          <span className="hidden lg:inline">
+                            {actualite.urgent ? "❌ Retirer" : "🚨 Urgent"}
+                          </span>
                         </button>
                         <button
                           onClick={() => handleToggleFeatured(actualite.id)}
                           className={`inline-flex items-center px-2 lg:px-3 py-1 lg:py-1.5 rounded-lg transition-colors text-xs lg:text-sm font-medium ${
-                            actualite.featured 
-                              ? "bg-purple-100 text-purple-700 hover:bg-purple-200" 
+                            actualite.featured
+                              ? "bg-purple-100 text-purple-700 hover:bg-purple-200"
                               : "bg-indigo-100 text-indigo-700 hover:bg-indigo-200"
                           }`}
-                          title={actualite.featured ? "Retirer de la vedette" : "Mettre en vedette"}
+                          title={
+                            actualite.featured
+                              ? "Retirer de la vedette"
+                              : "Mettre en vedette"
+                          }
                         >
-                          <span className="lg:hidden">{actualite.featured ? "🚫" : "⭐"}</span>
-                          <span className="hidden lg:inline">{actualite.featured ? "🚫 Retirer" : "⭐ Vedette"}</span>
+                          <span className="lg:hidden">
+                            {actualite.featured ? "🚫" : "⭐"}
+                          </span>
+                          <span className="hidden lg:inline">
+                            {actualite.featured ? "🚫 Retirer" : "⭐ Vedette"}
+                          </span>
                         </button>
                         <button
                           onClick={() => handleDelete(actualite.id)}

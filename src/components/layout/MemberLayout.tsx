@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
 
 interface MemberLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function MemberLayout({ children }: MemberLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {children}
-      
+
       {/* Member Space Footer */}
       <footer className="bg-gray-800 text-white py-6 mt-12">
         <div className="max-w-7xl mx-auto px-4">
@@ -22,7 +22,7 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
             </div>
             <div className="text-center md:text-right">
               <p className="text-sm text-gray-400">
-                Designed & Developed by{' '}
+                Designed & Developed by{" "}
                 <span className="text-blue-400 font-semibold">Gis Kubuya</span>
               </p>
             </div>
@@ -30,5 +30,5 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
         </div>
       </footer>
     </div>
-  )
+  );
 }

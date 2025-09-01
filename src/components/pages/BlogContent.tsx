@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useBlogPostsFront } from '@/hooks/useBlogPostsFront'
+import { NewsSkeleton } from '@/components/ui/LoadingSkeleton'
 
 export default function BlogContent() {
   const [activeCategory, setActiveCategory] = useState('all')
@@ -12,10 +13,11 @@ export default function BlogContent() {
 
   const categories = [
     { id: 'all', name: 'Tous les Articles' },
-    { id: 'technology', name: 'Technologie' },
-    { id: 'security', name: 'Sécurité IT' },
-    { id: 'development', name: 'Développement' },
-    { id: 'business', name: 'Business' }
+    { id: 'community', name: 'Développement Communautaire' },
+    { id: 'projects', name: 'Nos Projets' },
+    { id: 'social', name: 'Impact Social' },
+    { id: 'education', name: 'Éducation' },
+    { id: 'health', name: 'Santé' }
   ]
 
   const filteredArticles = blogPosts || []
@@ -39,14 +41,14 @@ export default function BlogContent() {
             <div className="text-center text-white">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 animate-fade-in-up">
                 <span className="bg-gradient-to-r from-blue-300 via-white to-green-300 bg-clip-text text-transparent">
-                  Blog INFONET
+                  Blog CEPAC
                 </span>
               </h1>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-blue-100 animate-fade-in-up delay-200">
-                Actualités & Insights Technologiques
+                Actualités & Perspectives Communautaires
               </h2>
               <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-4xl mx-auto leading-relaxed text-gray-200 animate-fade-in-up delay-400">
-                Restez informés des dernières tendances IT et des meilleures pratiques technologiques
+                Restez informés de nos activités et des enjeux du développement communautaire
               </p>
             </div>
           </div>
@@ -65,9 +67,10 @@ export default function BlogContent() {
           </div>
 
           {loading ? (
-            <div className="text-center">
-              <div className="w-12 h-12 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-xl text-gray-600">Chargement des articles...</p>
+            <div className="grid md:grid-cols-3 gap-8">
+              {Array.from({ length: 3 }, (_, index) => (
+                <NewsSkeleton key={index} />
+              ))}
             </div>
           ) : error ? (
             <div className="text-center text-red-600">
@@ -123,7 +126,7 @@ export default function BlogContent() {
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Par {article.author || 'INFONET'}</span>
+                      <span className="text-sm text-gray-600">Par {article.author || 'CEPAC'}</span>
                       <span className="text-blue-600 font-semibold text-sm">
                         Lire la suite →
                       </span>
@@ -166,9 +169,10 @@ export default function BlogContent() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           {loading ? (
-            <div className="text-center">
-              <div className="w-12 h-12 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-xl text-gray-600">Chargement des articles...</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Array.from({ length: 6 }, (_, index) => (
+                <NewsSkeleton key={index} />
+              ))}
             </div>
           ) : error ? (
             <div className="text-center text-red-600">
@@ -227,7 +231,7 @@ export default function BlogContent() {
                     </div>
                     
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{article.author || 'INFONET'}</span>
+                      <span className="text-gray-600">{article.author || 'CEPAC'}</span>
                       <span className="text-blue-600 font-semibold flex items-center">
                         Lire l'article
                         <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -255,7 +259,7 @@ export default function BlogContent() {
             Restez Informés
           </h2>
           <p className="text-xl text-white/90 mb-8">
-            Recevez nos derniers articles et insights technologiques directement dans votre boîte mail
+            Recevez nos dernières actualités et informations sur nos projets communautaires directement dans votre boîte mail
           </p>
           
           <form className="max-w-md mx-auto">
@@ -294,10 +298,10 @@ export default function BlogContent() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: 'Cloud Computing', count: '12 articles', icon: '☁️' },
-              { name: 'Cybersécurité', count: '8 articles', icon: '🔒' },
-              { name: 'Développement Web', count: '15 articles', icon: '💻' },
-              { name: 'Intelligence Artificielle', count: '6 articles', icon: '🤖' }
+              { name: 'Développement Rural', count: '12 articles', icon: '🌾' },
+              { name: 'Éducation Communautaire', count: '8 articles', icon: '🎓' },
+              { name: 'Santé Publique', count: '15 articles', icon: '🏥' },
+              { name: 'Agriculture Durable', count: '6 articles', icon: '🌱' }
             ].map((topic, index) => (
               <div
                 key={index}

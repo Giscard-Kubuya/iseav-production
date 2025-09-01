@@ -58,7 +58,8 @@ export function useAuthState() {
         
         // Check if token is expired
         if (data.expiresAt && Date.now() > data.expiresAt) {
-          logout()
+          console.log('Token expired, logging out...');
+          logoutWithRedirect('session=expired');
         } else {
           // Verify token with API
           try {
@@ -122,8 +123,8 @@ export function useAuthState() {
     console.log('Auth login completed:', { userId: user.id, email: user.email, role: user.role })
   }
 
-  const logout = async () => {
-    console.log('Logout initiated...')
+  const logoutWithRedirect = async (params?: string) => {
+    console.log('Logout initiated with params:', params);
     
     try {
       const stored = localStorage.getItem('admin_auth')
@@ -159,9 +160,14 @@ export function useAuthState() {
     // Force a small delay to ensure state updates are processed
     await new Promise(resolve => setTimeout(resolve, 100))
     
-    // Navigate to login page
-    router.push('/admin/login')
-    console.log('Redirected to login page')
+    // Navigate to login page with params
+    const loginUrl = params ? `/admin/login?${params}` : '/admin/login';
+    router.push(loginUrl);
+    console.log('Redirected to login page:', loginUrl);
+  }
+
+  const logout = async () => {
+    await logoutWithRedirect();
   }
 
   const hasRole = (role: string): boolean => {

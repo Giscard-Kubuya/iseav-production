@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { galleryItemsApi } from '@/lib/api-services'
 import { GalleryItem } from '@/lib/api'
+import { CardSkeleton } from '@/components/ui/LoadingSkeleton'
 
 export default function GalerieContent() {
   const [activeCategory, setActiveCategory] = useState('all')
@@ -90,12 +91,44 @@ export default function GalerieContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-4 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-xl text-gray-600">Chargement de la galerie...</p>
-        </div>
-      </div>
+      <>
+        {/* Hero Section */}
+        <section className="relative h-[70vh] overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url(https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80)"
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/75 to-amber-700/85" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
+          
+          <div className="relative z-10 h-full flex items-center">
+            <div className="max-w-7xl mx-auto px-4 w-full">
+              <div className="text-center text-white">
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 animate-fade-in-up">
+                  <span className="bg-gradient-to-r from-blue-300 via-white to-amber-300 bg-clip-text text-transparent">
+                    Galerie CEPAC
+                  </span>
+                </h1>
+                <div className="w-12 h-12 mx-auto border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-xl text-gray-200">Chargement de la galerie...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* Loading Skeleton */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {Array.from({ length: 12 }, (_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </>
     )
   }
 
@@ -137,10 +170,10 @@ export default function GalerieContent() {
                 </span>
               </h1>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-blue-100 animate-fade-in-up delay-200">
-                Découvrez Notre Univers Éducatif
+                Découvrez Notre Action Communautaire
               </h2>
               <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-4xl mx-auto leading-relaxed text-gray-200 animate-fade-in-up delay-400">
-                Plongez dans notre galerie photo et découvrez nos salles de classe, activités, équipe éducative et moments marquants
+                Plongez dans notre galerie photo et découvrez nos projets, activités communautaires, équipe et moments marquants
               </p>
             </div>
           </div>

@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import PageSEO from '@/components/layout/PageSEO'
+import PageSEO from "@/components/layout/PageSEO";
 
 export default function CepacAboutPage() {
   return (
@@ -25,12 +25,14 @@ export default function CepacAboutPage() {
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-16 items-center">
               <div>
-                <h2 className="text-4xl font-bold text-green-800 mb-6">Notre Mission</h2>
+                <h2 className="text-4xl font-bold text-green-800 mb-6">
+                  Notre Mission
+                </h2>
                 <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                  Le 8e CEPAC Projet-Beni s'engage à offrir une éducation de qualité 
-                  qui favorise l'épanouissement intégral de chaque apprenant. Nous 
-                  préparons nos élèves à devenir des citoyens responsables et des 
-                  leaders de demain.
+                  Le 8e CEPAC Projet-Beni s'engage à offrir une éducation de
+                  qualité qui favorise l'épanouissement intégral de chaque
+                  apprenant. Nous préparons nos élèves à devenir des citoyens
+                  responsables et des leaders de demain.
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center">
@@ -39,15 +41,19 @@ export default function CepacAboutPage() {
                   </div>
                   <div className="flex items-center">
                     <div className="w-3 h-3 bg-yellow-600 rounded-full mr-4"></div>
-                    <span className="text-gray-700">Développement intégral</span>
+                    <span className="text-gray-700">
+                      Développement intégral
+                    </span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-3 h-3 bg-green-600 rounded-full mr-4"></div>
-                    <span className="text-gray-700">Innovation pédagogique</span>
+                    <span className="text-gray-700">
+                      Innovation pédagogique
+                    </span>
                   </div>
                 </div>
               </div>
-              
+
               <div className="relative">
                 <div className="aspect-square bg-gradient-to-br from-green-500 to-yellow-500 rounded-3xl p-8">
                   <div className="h-full bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
@@ -79,7 +85,9 @@ export default function CepacAboutPage() {
                 <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl text-white">🎓</span>
                 </div>
-                <h3 className="text-xl font-bold text-green-800 mb-4">Excellence</h3>
+                <h3 className="text-xl font-bold text-green-800 mb-4">
+                  Excellence
+                </h3>
                 <p className="text-gray-600">
                   Nous visons l'excellence dans tous les aspects de l'éducation
                 </p>
@@ -89,7 +97,9 @@ export default function CepacAboutPage() {
                 <div className="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl text-white">🤝</span>
                 </div>
-                <h3 className="text-xl font-bold text-yellow-800 mb-4">Respect</h3>
+                <h3 className="text-xl font-bold text-yellow-800 mb-4">
+                  Respect
+                </h3>
                 <p className="text-gray-600">
                   Le respect mutuel est au cœur de nos relations
                 </p>
@@ -99,7 +109,9 @@ export default function CepacAboutPage() {
                 <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl text-white">💡</span>
                 </div>
-                <h3 className="text-xl font-bold text-green-800 mb-4">Innovation</h3>
+                <h3 className="text-xl font-bold text-green-800 mb-4">
+                  Innovation
+                </h3>
                 <p className="text-gray-600">
                   Nous adoptons des méthodes pédagogiques innovantes
                 </p>
@@ -109,5 +121,5 @@ export default function CepacAboutPage() {
         </section>
       </div>
     </PageSEO>
-  )
+  );
 }

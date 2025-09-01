@@ -22,6 +22,7 @@ export default function AdminSidebar({ isOpen = true, onToggle }: AdminSidebarPr
     { href: '/admin/galerie', label: 'Galerie Photos', icon: '📸' },
 
     // Team & Organization
+    { href: '/admin/about', label: 'Page À Propos', icon: '📖' },
     { href: '/admin/team-experts', label: 'Équipe Projet', icon: '👨‍💼' },
     { href: '/admin/leadership', label: 'Direction & Coordination', icon: '👔' },
     { href: '/admin/services', label: 'Services & Programmes', icon: '🎯' },

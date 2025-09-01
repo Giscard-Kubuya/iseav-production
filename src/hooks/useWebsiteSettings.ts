@@ -16,6 +16,7 @@ interface WebsiteSettings {
     instagram?: string;
     youtube?: string;
     github?: string;
+    whatsapp?: string;
   };
   privacy_policy?: string;
   terms_of_service?: string;
@@ -30,6 +31,7 @@ interface WebsiteSettings {
     instagram?: string;
     youtube?: string;
     github?: string;
+    whatsapp?: string;
   };
   general?: {
     contactEmail?: string;

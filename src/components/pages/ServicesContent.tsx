@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useServicesFront } from "@/hooks/useServicesFront";
 import { useWhyChooseUsFront } from "@/hooks/useWhyChooseUsFront";
+import { ServiceSkeleton } from "@/components/ui/LoadingSkeleton";
 
 export default function ServicesContent() {
   const [activeService, setActiveService] = useState(null);
@@ -65,11 +66,10 @@ export default function ServicesContent() {
           </div>
 
           {loading ? (
-            <div className="text-center">
-              <div className="w-12 h-12 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-xl text-gray-600">
-                Chargement des services...
-              </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Array.from({ length: 6 }, (_, index) => (
+                <ServiceSkeleton key={index} />
+              ))}
             </div>
           ) : error ? (
             <div className="text-center text-red-600">

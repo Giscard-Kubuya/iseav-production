@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { useWebsiteConfig } from '@/hooks/useWebsiteConfig'
 
 export default function ContactContent() {
+  const { websiteConfig, loading: configLoading } = useWebsiteConfig()
+  
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -49,7 +52,7 @@ export default function ContactContent() {
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">Contactez-Nous</h1>
           <p className="text-xl max-w-3xl mx-auto">
-            N'hésitez pas à nous contacter pour toute information concernant notre établissement
+            N'hésitez pas à nous contacter pour toute information concernant nos programmes de développement communautaire
           </p>
         </div>
       </section>
@@ -63,7 +66,7 @@ export default function ContactContent() {
               Formulaire de <span className="text-blue-600">Contact</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Nous contacter pour toute information concernant l'éducation de votre enfant
+              Nous contacter pour toute information concernant nos projets et programmes communautaires
             </p>
           </div>
 
@@ -158,11 +161,11 @@ export default function ContactContent() {
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors duration-300 bg-white"
               >
                 <option value="">Sélectionnez un sujet</option>
-                <option value="inscription">Inscription d'un élève</option>
+                <option value="collaboration">Collaboration/Partenariat</option>
                 <option value="information">Demande d'information</option>
-                <option value="pedagogie">Questions pédagogiques</option>
-                <option value="administration">Questions administratives</option>
-                <option value="vie-scolaire">Vie scolaire</option>
+                <option value="beneficiaire">Devenir bénéficiaire</option>
+                <option value="volontariat">Volontariat/Bénévolat</option>
+                <option value="donation">Dons et contributions</option>
                 <option value="emploi">Recrutement/Emploi</option>
                 <option value="other">Autre demande</option>
               </select>
@@ -224,14 +227,14 @@ export default function ContactContent() {
                 <div className="text-6xl mb-4">🗺️</div>
                 <h3 className="text-2xl font-bold text-gray-800 mb-2">Carte Interactive</h3>
                 <p className="text-gray-600 mb-6 text-lg">
-                  Projet-Beni, République Démocratique du Congo (RDC)
+                  {websiteConfig?.address || websiteConfig?.settings?.address || 'Projet-Beni, République Démocratique du Congo (RDC)'}
                 </p>
                 <div className="space-y-3">
                   <p className="text-gray-700">
-                    <span className="font-semibold">📞 Téléphone:</span> +243 XX XX XX XX
+                    <span className="font-semibold">📞 Téléphone:</span> {websiteConfig?.phone || websiteConfig?.contact_phone || '+243 970 102 102'}
                   </p>
                   <p className="text-gray-700">
-                    <span className="font-semibold">📧 Email:</span> contact@cepac-beni.edu.cd
+                    <span className="font-semibold">📧 Email:</span> {websiteConfig?.contact_email || websiteConfig?.settings?.contact_email || 'contact@projetcepacbeni.org'}
                   </p>
                 </div>
                 <a

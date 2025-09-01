@@ -81,12 +81,19 @@ export default function LeadershipEditor({ mode, id }: LeadershipEditorProps) {
     setError(null);
 
     try {
+      // Convert boolean values to integers for API compatibility
+      const submitData = {
+        ...formData,
+        is_active: formData.is_active ? 1 : 0,
+        is_featured: formData.is_featured ? 1 : 0
+      };
+
       if (mode === "create") {
-        await apiRequest.post("/leadership", formData, {
+        await apiRequest.post("/leadership", submitData, {
           headers: { 'Website-ID': '1' }
         });
       } else {
-        await apiRequest.put(`/leadership/${id}`, formData, {
+        await apiRequest.put(`/leadership/${id}`, submitData, {
           headers: { 'Website-ID': '1' }
         });
       }

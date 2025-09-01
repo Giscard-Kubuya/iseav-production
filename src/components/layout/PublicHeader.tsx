@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { useWebsiteConfig } from "@/hooks/useWebsiteConfig";
 
 export default function PublicHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,7 +12,7 @@ export default function PublicHeader() {
     null
   );
   const pathname = usePathname();
-  const { settings } = useSiteSettings();
+  const { websiteConfig, loading: configLoading } = useWebsiteConfig();
 
   const isActive = (path: string) => {
     if (path === "/" && pathname === "/") return true;
@@ -28,6 +28,7 @@ export default function PublicHeader() {
     setIsMenuOpen(false);
     setMobileActiveSubmenu(null);
   };
+
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -47,10 +48,18 @@ export default function PublicHeader() {
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                 </svg>
                 <a
-                  href={`mailto:${settings.general.contactEmail}`}
+                  href={`mailto:${
+                    websiteConfig?.contact_email ||
+                    websiteConfig?.settings?.contact_email ||
+                    websiteConfig?.general?.contactEmail ||
+                    "contact@cepac.org"
+                  }`}
                   className="hover:text-green-200 transition-colors duration-300 group-hover:underline"
                 >
-                  {settings.general.contactEmail}
+                  {websiteConfig?.contact_email ||
+                    websiteConfig?.settings?.contact_email ||
+                    websiteConfig?.general?.contactEmail ||
+                    "contact@cepac.org"}
                 </a>
               </div>
               <div className="hidden sm:flex items-center space-x-2 group">
@@ -62,19 +71,35 @@ export default function PublicHeader() {
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                 </svg>
                 <a
-                  href={`tel:${settings.general.phone}`}
+                  href={`tel:${
+                    websiteConfig?.contact_phone ||
+                    websiteConfig?.phone ||
+                    websiteConfig?.settings?.phone ||
+                    websiteConfig?.general?.phone ||
+                    "+243 970 102 102"
+                  }`}
                   className="hover:text-green-200 transition-colors duration-300 group-hover:underline"
                 >
-                  {settings.general.phone}
+                  {websiteConfig?.contact_phone ||
+                    websiteConfig?.phone ||
+                    websiteConfig?.settings?.phone ||
+                    websiteConfig?.general?.phone ||
+                    "+243 970 102 102"}
                 </a>
               </div>
             </div>
 
             {/* Social Media Icons - Right */}
             <div className="flex items-center space-x-3">
-              {settings.social.twitter && (
+              {(websiteConfig?.social_media?.twitter ||
+                websiteConfig?.social?.twitter ||
+                websiteConfig?.settings?.social?.twitter) && (
                 <a
-                  href={settings.social.twitter}
+                  href={
+                    websiteConfig?.social_media?.twitter ||
+                    websiteConfig?.social?.twitter ||
+                    websiteConfig?.settings?.social?.twitter
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group"
@@ -90,9 +115,15 @@ export default function PublicHeader() {
                   </div>
                 </a>
               )}
-              {settings.social.facebook && (
+              {(websiteConfig?.social_media?.facebook ||
+                websiteConfig?.social?.facebook ||
+                websiteConfig?.settings?.social?.facebook) && (
                 <a
-                  href={settings.social.facebook}
+                  href={
+                    websiteConfig?.social_media?.facebook ||
+                    websiteConfig?.social?.facebook ||
+                    websiteConfig?.settings?.social?.facebook
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group"
@@ -108,9 +139,15 @@ export default function PublicHeader() {
                   </div>
                 </a>
               )}
-              {settings.social.instagram && (
+              {(websiteConfig?.social_media?.instagram ||
+                websiteConfig?.social?.instagram ||
+                websiteConfig?.settings?.social?.instagram) && (
                 <a
-                  href={settings.social.instagram}
+                  href={
+                    websiteConfig?.social_media?.instagram ||
+                    websiteConfig?.social?.instagram ||
+                    websiteConfig?.settings?.social?.instagram
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group"
@@ -126,9 +163,15 @@ export default function PublicHeader() {
                   </div>
                 </a>
               )}
-              {settings.social.github && (
+              {(websiteConfig?.social_media?.github ||
+                websiteConfig?.social?.github ||
+                websiteConfig?.settings?.social?.github) && (
                 <a
-                  href={settings.social.github}
+                  href={
+                    websiteConfig?.social_media?.github ||
+                    websiteConfig?.social?.github ||
+                    websiteConfig?.settings?.social?.github
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group"
@@ -144,9 +187,15 @@ export default function PublicHeader() {
                   </div>
                 </a>
               )}
-              {settings.social.linkedin && (
+              {(websiteConfig?.social_media?.linkedin ||
+                websiteConfig?.social?.linkedin ||
+                websiteConfig?.settings?.social?.linkedin) && (
                 <a
-                  href={settings.social.linkedin}
+                  href={
+                    websiteConfig?.social_media?.linkedin ||
+                    websiteConfig?.social?.linkedin ||
+                    websiteConfig?.settings?.social?.linkedin
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group"
@@ -223,16 +272,23 @@ export default function PublicHeader() {
                   <div className="w-20 h-20 mb-2 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                     <img
                       src={
-                        settings.appearance.logo ||
-                        "/images/logos/infonet-logo.png"
+                        websiteConfig?.settings?.appearance?.logo ||
+                        websiteConfig?.appearance?.logo ||
+                        "/images/logos/cepac-logo.png"
                       }
-                      alt={`${settings.general.siteName} Logo`}
+                      alt={`${
+                        websiteConfig?.name ||
+                        websiteConfig?.settings?.general?.siteName ||
+                        "8e CEPAC"
+                      } Logo`}
                       className="w-full h-full object-contain rounded-lg shadow-sm transition-all duration-500 group-hover:brightness-110 group-hover:shadow-lg group-hover:shadow-blue-200/50"
                     />
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent group-hover:from-blue-700 group-hover:to-green-600 transition-all duration-300 group-hover:scale-105 pb-2 border-b-2 border-gradient-to-r from-blue-600 to-green-500 relative">
-                      {settings.general.siteName}
+                      {websiteConfig?.name ||
+                        websiteConfig?.settings?.general?.siteName ||
+                        "8e CEPAC"}
                       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-64 h-1 bg-gradient-to-r from-blue-600 to-green-500 group-hover:w-80 transition-all duration-300"></div>
                     </div>
                   </div>
@@ -305,19 +361,28 @@ export default function PublicHeader() {
                   <div className="w-14 h-14 sm:w-16 sm:h-16 mb-2 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                     <img
                       src={
-                        settings.appearance.logo ||
-                        "/images/logos/infonet-logo.png"
+                        websiteConfig?.settings?.appearance?.logo ||
+                        websiteConfig?.appearance?.logo ||
+                        "/images/logos/cepac-logo.png"
                       }
-                      alt={`${settings.general.siteName} Logo`}
+                      alt={`${
+                        websiteConfig?.name ||
+                        websiteConfig?.settings?.general?.siteName ||
+                        "8e CEPAC"
+                      } Logo`}
                       className="w-full h-full object-contain rounded-lg shadow-sm transition-all duration-500 group-hover:brightness-110 group-hover:shadow-lg group-hover:shadow-amber-200/50"
                     />
                   </div>
                   <div className="text-center">
                     <div className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent group-hover:from-blue-700 group-hover:to-green-600 transition-all duration-300 group-hover:scale-105">
-                      {settings.general.siteName}
+                      {websiteConfig?.name ||
+                        websiteConfig?.settings?.general?.siteName ||
+                        "8e CEPAC"}
                     </div>
                     <div className="text-xs sm:text-sm text-gray-500 group-hover:text-gray-600 transition-colors duration-300 max-w-xs text-center leading-tight group-hover:text-blue-600 px-2">
-                      {settings.seo.metaTitle}
+                      {websiteConfig?.settings?.seo?.metaTitle ||
+                        websiteConfig?.seo?.metaTitle ||
+                        "Organisation Non Gouvernementale"}
                     </div>
                   </div>
                 </Link>

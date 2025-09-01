@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useWebsiteSettings } from '@/hooks/useWebsiteSettings'
+import { useWebsiteConfig } from '@/hooks/useWebsiteConfig'
 import LegalModal from '@/components/ui/LegalModal'
 
 export default function PublicFooter() {
@@ -11,7 +11,7 @@ export default function PublicFooter() {
     type: null
   })
   
-  const { socialMedia, contactEmail, contactPhone, address } = useWebsiteSettings()
+  const { websiteConfig, loading: configLoading } = useWebsiteConfig()
 
   const openLegalModal = (type: 'privacy' | 'terms') => {
     setLegalModal({ isOpen: true, type })
@@ -28,23 +28,22 @@ export default function PublicFooter() {
             <div className="flex items-center mb-4">
               <div className="w-12 h-12 mr-3">
                 <img 
-                  src="/images/logos/logo_extracted.png" 
-                  alt="INFONET Logo"
+                  src={websiteConfig?.settings?.appearance?.logo || websiteConfig?.appearance?.logo || "/images/logos/cepac-logo.png"} 
+                  alt={`${websiteConfig?.name || '8e CEPAC'} Logo`}
                   className="w-full h-full object-contain rounded-lg"
                 />
               </div>
               <div>
-                <div className="font-bold text-lg">INFONET</div>
+                <div className="font-bold text-lg">{websiteConfig?.name || websiteConfig?.settings?.general?.siteName || '8e CEPAC'}</div>
               </div>
             </div>
             <p className="text-blue-200 text-sm mb-6 leading-relaxed">
-              Solutions IT innovantes pour votre entreprise. 
-              Excellence en développement, innovation en technologie.
+              {websiteConfig?.description || websiteConfig?.settings?.general?.siteDescription || 'Contribuer au développement communautaire, promouvoir le bien-être social et améliorer les conditions de vie des populations en République Démocratique du Congo.'}
             </p>
             <div className="flex space-x-4">
-              {socialMedia?.facebook && (
+              {(websiteConfig?.social_media?.facebook || websiteConfig?.social?.facebook || websiteConfig?.settings?.social?.facebook) && (
                 <a 
-                  href={socialMedia.facebook}
+                  href={websiteConfig?.social_media?.facebook || websiteConfig?.social?.facebook || websiteConfig?.settings?.social?.facebook}
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
@@ -53,9 +52,9 @@ export default function PublicFooter() {
                   <span className="text-sm">📘</span>
                 </a>
               )}
-              {socialMedia?.twitter && (
+              {(websiteConfig?.social_media?.twitter || websiteConfig?.social?.twitter || websiteConfig?.settings?.social?.twitter) && (
                 <a 
-                  href={socialMedia.twitter}
+                  href={websiteConfig?.social_media?.twitter || websiteConfig?.social?.twitter || websiteConfig?.settings?.social?.twitter}
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
@@ -64,9 +63,9 @@ export default function PublicFooter() {
                   <span className="text-sm">🐦</span>
                 </a>
               )}
-              {socialMedia?.instagram && (
+              {(websiteConfig?.social_media?.instagram || websiteConfig?.social?.instagram || websiteConfig?.settings?.social?.instagram) && (
                 <a 
-                  href={socialMedia.instagram}
+                  href={websiteConfig?.social_media?.instagram || websiteConfig?.social?.instagram || websiteConfig?.settings?.social?.instagram}
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
@@ -75,9 +74,9 @@ export default function PublicFooter() {
                   <span className="text-sm">📷</span>
                 </a>
               )}
-              {socialMedia?.linkedin && (
+              {(websiteConfig?.social_media?.linkedin || websiteConfig?.social?.linkedin || websiteConfig?.settings?.social?.linkedin) && (
                 <a 
-                  href={socialMedia.linkedin}
+                  href={websiteConfig?.social_media?.linkedin || websiteConfig?.social?.linkedin || websiteConfig?.settings?.social?.linkedin}
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
@@ -86,9 +85,9 @@ export default function PublicFooter() {
                   <span className="text-sm">💼</span>
                 </a>
               )}
-              {socialMedia?.youtube && (
+              {(websiteConfig?.social_media?.youtube || websiteConfig?.social?.youtube || websiteConfig?.settings?.social?.youtube) && (
                 <a 
-                  href={socialMedia.youtube}
+                  href={websiteConfig?.social_media?.youtube || websiteConfig?.social?.youtube || websiteConfig?.settings?.social?.youtube}
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
@@ -97,9 +96,9 @@ export default function PublicFooter() {
                   <span className="text-sm">📺</span>
                 </a>
               )}
-              {socialMedia?.github && (
+              {(websiteConfig?.social_media?.github || websiteConfig?.social?.github || websiteConfig?.settings?.social?.github) && (
                 <a 
-                  href={socialMedia.github}
+                  href={websiteConfig?.social_media?.github || websiteConfig?.social?.github || websiteConfig?.settings?.social?.github}
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors"
@@ -139,21 +138,20 @@ export default function PublicFooter() {
               <div className="flex items-start">
                 <span className="mr-2 mt-1">📍</span>
                 <div>
-                  <p>Campus Universitaire</p>
-                  <p>Walungu, République Démocratique du Congo</p>
+                  <p>{websiteConfig?.address || websiteConfig?.settings?.address || websiteConfig?.general?.address || 'Projet-Beni, République Démocratique du Congo'}</p>
                 </div>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">📞</span>
-                <p>{contactPhone || '+257 22 123 456'}</p>
+                <p>{websiteConfig?.contact_phone || websiteConfig?.phone || websiteConfig?.settings?.phone || websiteConfig?.general?.phone || '+243 970 102 102'}</p>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">✉️</span>
-                <p>{contactEmail || 'contact@infonet.bi'}</p>
+                <p>{websiteConfig?.contact_email || websiteConfig?.settings?.contact_email || websiteConfig?.general?.contactEmail || 'contact@projetcepacbeni.org'}</p>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">🌐</span>
-                <p>www.infonet.bi</p>
+                <p>{websiteConfig?.domain || websiteConfig?.settings?.general?.siteUrl || 'projetcepacbeni.org'}</p>
               </div>
             </div>
             
@@ -176,7 +174,7 @@ export default function PublicFooter() {
         <div className="border-t border-blue-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-blue-300">
             <div className="mb-4 md:mb-0">
-              <p>&copy; 2025 INFONET. Tous droits réservés.</p>
+              <p>{websiteConfig?.settings?.appearance?.footerText || websiteConfig?.appearance?.footerText || '© 2025 8e CEPAC. Tous droits réservés.'}</p>
             </div>
             <div className="flex space-x-6">
               <button 

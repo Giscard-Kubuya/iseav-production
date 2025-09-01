@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useState } from 'react';
-import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { useWebsiteConfig } from "@/hooks/useWebsiteConfig";
 import LegalModal from '@/components/ui/LegalModal';
 
 export default function Footer() {
-  const { settings } = useSiteSettings();
+  const { websiteConfig, loading: configLoading } = useWebsiteConfig();
   const [legalModal, setLegalModal] = useState<{ isOpen: boolean; type: 'privacy' | 'terms' | null }>({
     isOpen: false,
     type: null
@@ -30,28 +30,28 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <div className="flex items-center mb-6">
                 <img
-                  src="/images/logos/cepac-logo.png"
-                  alt={`${settings.general.siteName} logo`}
+                  src={websiteConfig?.settings?.appearance?.logo || websiteConfig?.appearance?.logo || "/images/logos/cepac-logo.png"}
+                  alt={`${websiteConfig?.name || websiteConfig?.settings?.general?.siteName || '8e CEPAC'} logo`}
                   className="w-12 h-12 rounded-lg mr-3"
                 />
                 <div>
                   <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
-                    {settings.general.siteName}
+                    {websiteConfig?.name || websiteConfig?.settings?.general?.siteName || '8e CEPAC'}
                   </h3>
                   <p className="text-sm text-gray-400">
-                    {settings.seo.metaTitle}
+                    {websiteConfig?.settings?.seo?.metaTitle || websiteConfig?.seo?.metaTitle || 'Organisation Non Gouvernementale'}
                   </p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                {settings.general.siteDescription}
+                {websiteConfig?.description || websiteConfig?.settings?.general?.siteDescription || 'Contribuer au développement communautaire, promouvoir le bien-être social et améliorer les conditions de vie des populations en République Démocratique du Congo.'}
               </p>
 
               {/* Social Media Links */}
               <div className="flex space-x-4">
-                {settings.social.twitter && (
+                {(websiteConfig?.social_media?.twitter || websiteConfig?.social?.twitter || websiteConfig?.settings?.social?.twitter) && (
                   <a
-                    href={settings.social.twitter}
+                    href={websiteConfig?.social_media?.twitter || websiteConfig?.social?.twitter || websiteConfig?.settings?.social?.twitter}
                     className="group"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -67,9 +67,9 @@ export default function Footer() {
                     </div>
                   </a>
                 )}
-                {settings.social.facebook && (
+                {(websiteConfig?.social_media?.facebook || websiteConfig?.social?.facebook || websiteConfig?.settings?.social?.facebook) && (
                   <a
-                    href={settings.social.facebook}
+                    href={websiteConfig?.social_media?.facebook || websiteConfig?.social?.facebook || websiteConfig?.settings?.social?.facebook}
                     className="group"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -85,9 +85,9 @@ export default function Footer() {
                     </div>
                   </a>
                 )}
-                {settings.social.linkedin && (
+                {(websiteConfig?.social_media?.linkedin || websiteConfig?.social?.linkedin || websiteConfig?.settings?.social?.linkedin) && (
                   <a
-                    href={settings.social.linkedin}
+                    href={websiteConfig?.social_media?.linkedin || websiteConfig?.social?.linkedin || websiteConfig?.settings?.social?.linkedin}
                     className="group"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -103,9 +103,9 @@ export default function Footer() {
                     </div>
                   </a>
                 )}
-                {settings.social.github && (
+                {(websiteConfig?.social_media?.github || websiteConfig?.social?.github || websiteConfig?.settings?.social?.github) && (
                   <a
-                    href={settings.social.github}
+                    href={websiteConfig?.social_media?.github || websiteConfig?.social?.github || websiteConfig?.settings?.social?.github}
                     className="group"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -196,7 +196,7 @@ export default function Footer() {
                   </svg>
                   <div>
                     <p className="text-gray-300 leading-relaxed">
-                      {settings.general.address}
+                      {websiteConfig?.address || websiteConfig?.settings?.address || websiteConfig?.general?.address || 'Projet-Beni, République Démocratique du Congo'}
                     </p>
                   </div>
                 </div>
@@ -210,10 +210,10 @@ export default function Footer() {
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
                   <a
-                    href={`tel:${settings.general.phone}`}
+                    href={`tel:${websiteConfig?.contact_phone || websiteConfig?.phone || websiteConfig?.settings?.phone || websiteConfig?.general?.phone || '+243 970 102 102'}`}
                     className="text-gray-300 hover:text-blue-400 transition-colors duration-300"
                   >
-                    {settings.general.phone}
+                    {websiteConfig?.contact_phone || websiteConfig?.phone || websiteConfig?.settings?.phone || websiteConfig?.general?.phone || '+243 970 102 102'}
                   </a>
                 </div>
 
@@ -227,10 +227,10 @@ export default function Footer() {
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
                   <a
-                    href={`mailto:${settings.general.contactEmail}`}
+                    href={`mailto:${websiteConfig?.contact_email || websiteConfig?.settings?.contact_email || websiteConfig?.general?.contactEmail || 'contact@projetcepacbeni.org'}`}
                     className="text-gray-300 hover:text-blue-400 transition-colors duration-300"
                   >
-                    {settings.general.contactEmail}
+                    {websiteConfig?.contact_email || websiteConfig?.settings?.contact_email || websiteConfig?.general?.contactEmail || 'contact@projetcepacbeni.org'}
                   </a>
                 </div>
               </div>
@@ -287,7 +287,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              {settings.appearance.footerText} | {settings.seo.metaDescription}
+              {websiteConfig?.settings?.appearance?.footerText || websiteConfig?.appearance?.footerText || '© 2025 8e CEPAC. Tous droits réservés.'} | {websiteConfig?.description || websiteConfig?.settings?.seo?.metaDescription || websiteConfig?.seo?.metaDescription || 'Organisation Non Gouvernementale dédiée au développement communautaire'}
             </div>
             <div className="flex space-x-6 text-sm">
               <button

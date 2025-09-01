@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://nic-africa-api-ci.infonet.bi/api";
+  process.env.NEXT_PUBLIC_API_URL || "https://new-api.projetcepacbeni.org/api";
 const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
 
 // Create axios instance with default configuration
@@ -66,12 +66,26 @@ api.interceptors.response.use(
         }
       }
     } else if (error.response?.status === 404) {
-      console.error("API endpoint not found");
+      // Don't log errors for expected missing endpoints (like About API)
+      const url = error.config?.url || '';
+      if (url.includes('/about')) {
+        // About API endpoint expected to be unavailable during development
+        console.log("About API endpoint not yet available - using fallback data");
+      } else {
+        console.error("API endpoint not found:", url);
+      }
     } else if (error.response?.status >= 500) {
-      console.error(
-        "Server error:",
-        error.response?.data?.message || "Internal server error"
-      );
+      // Don't log server errors for expected missing endpoints
+      const url = error.config?.url || '';
+      if (url.includes('/about')) {
+        // About API endpoint expected to have server errors during development
+        console.log("About API server error - using fallback data");
+      } else {
+        console.error(
+          "Server error:",
+          error.response?.data?.message || "Internal server error"
+        );
+      }
     }
 
     return Promise.reject(error);
@@ -489,12 +503,17 @@ export interface Leadership {
   position: string;
   bio?: string;
   image_url?: string;
+  email?: string;
+  phone?: string;
+  linkedin_url?: string;
   education?: string;
   experience?: string;
   expertise?: string[];
-  achievements?: string[];
+  achievements?: string;
+  experience_years?: number;
   display_order: number;
   is_active: boolean;
+  is_featured: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -509,6 +528,36 @@ export interface CompanyJourney {
   details?: string[];
   display_order: number;
   is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface About {
+  id: number;
+  website_id: number;
+  hero_title: string;
+  hero_subtitle: string;
+  organization_description: string;
+  mission: string;
+  vision: string;
+  our_story_title?: string;
+  our_story_content?: string;
+  achievements?: {
+    title: string;
+    description: string;
+    icon?: string;
+  }[];
+  certifications?: {
+    name: string;
+    issuer: string;
+    year: string;
+    description?: string;
+  }[];
+  why_choose_us?: {
+    title: string;
+    description: string;
+    icon?: string;
+  }[];
   created_at: string;
   updated_at: string;
 }

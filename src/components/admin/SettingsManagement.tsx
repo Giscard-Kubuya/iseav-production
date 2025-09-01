@@ -26,6 +26,7 @@ interface SiteSettings {
     instagram: string;
     youtube: string;
     github: string;
+    whatsapp: string;
   };
   seo: {
     metaTitle: string;
@@ -93,6 +94,7 @@ export default function SettingsManagement() {
       instagram: "https://instagram.com/cepacbeni",
       youtube: "https://youtube.com/@cepacbeni",
       github: "https://github.com/cepac-beni",
+      whatsapp: "https://wa.me/243000000000",
     },
     seo: {
       metaTitle: "8e CEPAC Projet-Beni - Excellence Éducative en RDC",
@@ -196,6 +198,11 @@ export default function SettingsManagement() {
             apiData.social_media?.github ||
             apiData.social?.github ||
             apiSettings.social?.github ||
+            "",
+          whatsapp:
+            apiData.social_media?.whatsapp ||
+            apiData.social?.whatsapp ||
+            apiSettings.social?.whatsapp ||
             "",
         },
         seo: {

@@ -20,6 +20,7 @@ export interface SiteSettings {
     instagram: string
     youtube: string
     github: string
+    whatsapp: string
   }
   seo: {
     metaTitle: string
@@ -72,7 +73,8 @@ const getDefaultSettings = (): SiteSettings => ({
     linkedin: '',
     instagram: '',
     youtube: '',
-    github: ''
+    github: '',
+    whatsapp: ''
   },
   seo: {
     metaTitle: 'INFONET - Solutions informatiques au Burundi',
@@ -138,7 +140,8 @@ export function useSiteSettings() {
         linkedin: apiSettings.social?.linkedin || settings.social.linkedin,
         instagram: apiSettings.social?.instagram || settings.social.instagram,
         youtube: apiSettings.social?.youtube || settings.social.youtube,
-        github: apiSettings.social?.github || settings.social.github
+        github: apiSettings.social?.github || settings.social.github,
+        whatsapp: apiSettings.social?.whatsapp || settings.social.whatsapp
       },
       seo: {
         metaTitle: apiSettings.seo?.metaTitle || `${apiData.name} - Solutions informatiques`,

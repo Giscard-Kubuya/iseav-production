@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test About Form Submission</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        button { padding: 10px 15px; margin: 5px; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 About API Form Submission Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Configuration</h2>
+        <p><strong>API Base URL:</strong> <span id="apiUrl">https://new-api.projetcepacbeni.org</span></p>
+        <p><strong>Endpoint:</strong> /api/about</p>
+        <p><strong>Website-ID:</strong> 1</p>
+    </div>
+
+    <div class="test-section">
+        <h2>Form Data (Exactly as sent by admin interface)</h2>
+        <pre id="formData"></pre>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Operations</h2>
+        <button onclick="testGet()">🔍 Test GET /api/about</button>
+        <button onclick="testPost()">📤 Test POST /api/about</button>
+        <button onclick="testPut()">✏️ Test PUT /api/about/1</button>
+        <button onclick="clearResults()">🧹 Clear Results</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Exact form data from admin interface
+        const aboutFormData = {
+            website_id: 1,
+            hero_title: "8e CEPAC Projet-Beni",
+            hero_subtitle: "Organisation Non Gouvernementale dédiée au développement communautaire en République Démocratique du Congo",
+            organization_description: "Contribuer au développement communautaire, promouvoir le bien-être social et améliorer les conditions de vie des populations en République Démocratique du Congo à travers des programmes innovants et adaptés aux besoins locaux.",
+            our_story: "Fondée avec la mission de transformer les communautés en République Démocratique du Congo, le 8e CEPAC Projet-Beni s'engage depuis plusieurs années dans des programmes de développement communautaire innovants et durables.",
+            why_choose_us: [
+                {
+                    title: "Expertise Locale",
+                    description: "Une connaissance approfondie du contexte local et des besoins communautaires",
+                    icon: "🏆"
+                },
+                {
+                    title: "Programmes Durables",
+                    description: "Des solutions à long terme qui créent un impact positif durable",
+                    icon: "🌱"
+                },
+                {
+                    title: "Transparence",
+                    description: "Une gestion transparente et responsable de tous nos programmes",
+                    icon: "💎"
+                }
+            ],
+            achievements: [
+                {
+                    title: "Familles Aidées",
+                    count: "500+",
+                    description: "Familles bénéficiaires de nos programmes"
+                },
+                {
+                    title: "Projets Réalisés",
+                    count: "25",
+                    description: "Projets de développement communautaire menés à bien"
+                },
+                {
+                    title: "Partenaires",
+                    count: "15",
+                    description: "Partenaires locaux et internationaux"
+                }
+            ],
+            certifications: [
+                {
+                    name: "Agrément ONG",
+                    description: "Agréé officiellement comme ONG en RDC",
+                    year: "2020"
+                }
+            ],
+            team_intro: "Notre équipe dirigeante expérimentée guide le 8e CEPAC vers l'excellence dans le développement communautaire",
+            impact_statement: "Ensemble, nous construisons un avenir meilleur pour les communautés de la République Démocratique du Congo",
+            future_goals: "D'ici 2030, nous aspirons à étendre nos programmes à 10 nouvelles régions et toucher 2000 familles supplémentaires.",
+            call_to_action_title: "Rejoignez Notre Mission",
+            call_to_action_description: "Rejoignez les communautés qui nous font confiance pour leur développement",
+            is_active: true
+        };
+
+        // Display form data
+        document.getElementById('formData').textContent = JSON.stringify(aboutFormData, null, 2);
+
+        function addResult(type, title, content) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <h3 class="${type}">${title}</h3>
+                <pre>${content}</pre>
+                <hr>
+            `;
+            results.appendChild(div);
+        }
+
+        async function testGet() {
+            try {
+                addResult('info', '🔍 Testing GET /api/about', 'Sending GET request...');
+                
+                const response = await fetch('https://new-api.projetcepacbeni.org/api/about', {
+                    method: 'GET',
+                    headers: {
+                        'Website-ID': '1',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const responseText = await response.text();
+                
+                addResult(
+                    response.ok ? 'success' : 'error',
+                    `GET Response: ${response.status} ${response.statusText}`,
+                    `Headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}\n\nBody:\n${responseText}`
+                );
+            } catch (error) {
+                addResult('error', 'GET Error', error.message);
+            }
+        }
+
+        async function testPost() {
+            try {
+                addResult('info', '📤 Testing POST /api/about', 'Sending POST request with form data...');
+                
+                const response = await fetch('https://new-api.projetcepacbeni.org/api/about', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Website-ID': '1',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(aboutFormData)
+                });
+
+                const responseText = await response.text();
+                
+                addResult(
+                    response.ok ? 'success' : 'error',
+                    `POST Response: ${response.status} ${response.statusText}`,
+                    `Headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}\n\nBody:\n${responseText}`
+                );
+            } catch (error) {
+                addResult('error', 'POST Error', error.message);
+            }
+        }
+
+        async function testPut() {
+            try {
+                addResult('info', '✏️ Testing PUT /api/about/1', 'Sending PUT request...');
+                
+                const response = await fetch('https://new-api.projetcepacbeni.org/api/about/1', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Website-ID': '1',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({...aboutFormData, id: 1})
+                });
+
+                const responseText = await response.text();
+                
+                addResult(
+                    response.ok ? 'success' : 'error',
+                    `PUT Response: ${response.status} ${response.statusText}`,
+                    `Headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}\n\nBody:\n${responseText}`
+                );
+            } catch (error) {
+                addResult('error', 'PUT Error', error.message);
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Auto-run tests when page loads
+        window.onload = function() {
+            setTimeout(() => {
+                testGet();
+                setTimeout(() => {
+                    testPost();
+                }, 1000);
+            }, 500);
+        }
+    </script>
+</body>
+</html>

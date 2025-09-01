@@ -22,7 +22,10 @@ export default function AuthGuard({
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/admin/login')
+      // Get current path to redirect back after login
+      const currentPath = window.location.pathname;
+      const loginUrl = `/admin/login?redirect=${encodeURIComponent(currentPath)}`;
+      router.push(loginUrl);
     }
   }, [isAuthenticated, isLoading, router])
 

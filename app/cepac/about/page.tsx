@@ -5,9 +5,12 @@ import PageSEO from "@/components/layout/PageSEO";
 export default function CepacAboutPage() {
   return (
     <PageSEO
-      title="À Propos - 8e CEPAC Projet-Beni"
-      description="Découvrez l'histoire, la mission et les valeurs du 8e CEPAC Projet-Beni, centre d'excellence éducative au Bénin."
-      keywords="CEPAC, à propos, histoire, mission, valeurs, éducation, Bénin"
+      title="Projet 8e CEPAC Beni | Centre d’Actions Humanitaires et de
+          Développement Communautaire"
+      description="Projet 8e CEPAC Beni -
+          Organisation humanitaire en RDC. Assistance sociale, projets innovants et
+          promotion du bien-être des populations."
+      keywords="CEPAC, Humanitaire, projet Beni"
     >
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-yellow-50">
         {/* Hero Section */}
@@ -29,7 +32,7 @@ export default function CepacAboutPage() {
                   Notre Mission
                 </h2>
                 <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                  Le 8e CEPAC Projet-Beni s'engage à offrir une éducation de
+                  Le Projet 8e CEPAC Beni s'engage à offrir une éducation de
                   qualité qui favorise l'épanouissement intégral de chaque
                   apprenant. Nous préparons nos élèves à devenir des citoyens
                   responsables et des leaders de demain.

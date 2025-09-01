@@ -29,7 +29,6 @@ export default function PublicHeader() {
     setMobileActiveSubmenu(null);
   };
 
-
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       {/* Top Contact Bar */}
@@ -52,14 +51,14 @@ export default function PublicHeader() {
                     websiteConfig?.contact_email ||
                     websiteConfig?.settings?.contact_email ||
                     websiteConfig?.general?.contactEmail ||
-                    "contact@cepac.org"
+                    "contact@projetcepacbeni.org"
                   }`}
                   className="hover:text-green-200 transition-colors duration-300 group-hover:underline"
                 >
                   {websiteConfig?.contact_email ||
                     websiteConfig?.settings?.contact_email ||
                     websiteConfig?.general?.contactEmail ||
-                    "contact@cepac.org"}
+                    "contact@projetcepacbeni.org"}
                 </a>
               </div>
               <div className="hidden sm:flex items-center space-x-2 group">

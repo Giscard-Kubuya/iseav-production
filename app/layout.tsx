@@ -11,9 +11,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "8e CEPAC Projet-Beni | Centre d'Etudes Primaires et Cycle Complémentaire",
+  title:
+    "Projet 8e CEPAC Beni | Centre d’Actions Humanitaires et de Développement Communautaire",
   description:
-    "8e CEPAC Projet-Beni - Centre d'Excellence en Education Primaire et Cycle Complémentaire en République Démocratique du Congo (RDC). Formation de qualité, programmes éducatifs innovants et développement intégral des apprenants.",
+    "Projet 8e CEPAC Beni - Organisation humanitaire en RDC. Assistance sociale, projets innovants et promotion du bien-être des populations.",
   icons: {
     icon: [], // Prevent Next.js from auto-generating favicon
     shortcut: [], // Prevent shortcut icon

@@ -15,9 +15,9 @@ export default function AboutPage() {
   if (loading) {
     return (
       <PageSEO
-        title="À Propos - 8e CEPAC Projet-Beni"
-        description="Découvrez l'histoire, la mission et les valeurs du 8e CEPAC Projet-Beni, organisation dédiée au développement communautaire en République Démocratique du Congo."
-        keywords="CEPAC, à propos, histoire, mission, valeurs, développement communautaire, RDC, République Démocratique du Congo"
+        title="À Propos - Projet 8e CEPAC Beni"
+        description="Découvrez l'histoire, la mission et les valeurs du Projet 8e CEPAC Beni, organisation dédiée au développement communautaire en République Démocratique du Congo."
+        keywords="Projet CEPAC, à propos, histoire, mission, valeurs, développement communautaire, RDC, République Démocratique du Congo"
       >
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
           <div className="flex items-center justify-center min-h-screen">
@@ -35,10 +35,10 @@ export default function AboutPage() {
 
   return (
     <PageSEO
-      title={`À Propos - ${about?.hero_title || "8e CEPAC Projet-Beni"}`}
+      title={`À Propos - ${about?.hero_title || "Projet 8e CEPAC Beni"}`}
       description={
         about?.hero_subtitle ||
-        "Découvrez l'histoire, la mission et les valeurs du 8e CEPAC Projet-Beni, organisation dédiée au développement communautaire en République Démocratique du Congo."
+        "Découvrez l'histoire, la mission et les valeurs du Projet 8e CEPAC Beni, organisation dédiée au développement communautaire en République Démocratique du Congo."
       }
       keywords="CEPAC, à propos, histoire, mission, valeurs, développement communautaire, RDC, République Démocratique du Congo"
     >
@@ -57,7 +57,7 @@ export default function AboutPage() {
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
                 À Propos du
                 <span className="block text-green-300">
-                  {about?.hero_title || "8e CEPAC Projet-Beni"}
+                  {about?.hero_title || "Projet 8e CEPAC Beni"}
                 </span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto">

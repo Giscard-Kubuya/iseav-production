@@ -67,17 +67,19 @@ api.interceptors.response.use(
       }
     } else if (error.response?.status === 404) {
       // Don't log errors for expected missing endpoints (like About API)
-      const url = error.config?.url || '';
-      if (url.includes('/about')) {
+      const url = error.config?.url || "";
+      if (url.includes("/about")) {
         // About API endpoint expected to be unavailable during development
-        console.log("About API endpoint not yet available - using fallback data");
+        console.log(
+          "About API endpoint not yet available - using fallback data"
+        );
       } else {
         console.error("API endpoint not found:", url);
       }
     } else if (error.response?.status >= 500) {
       // Don't log server errors for expected missing endpoints
-      const url = error.config?.url || '';
-      if (url.includes('/about')) {
+      const url = error.config?.url || "";
+      if (url.includes("/about")) {
         // About API endpoint expected to have server errors during development
         console.log("About API server error - using fallback data");
       } else {

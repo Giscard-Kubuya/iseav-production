@@ -11,8 +11,16 @@ export default function PortfolioContent() {
 
   // Fetch projects, company stats, and testimonials from API
   const { portfolioProjects, loading, error } = usePortfolioProjectsFront();
-  const { companyStats, loading: statsLoading, error: statsError } = useCompanyStatsFront();
-  const { testimonials, loading: testimonialsLoading, error: testimonialsError } = useTestimonialsFront({ limit: 3 });
+  const {
+    companyStats,
+    loading: statsLoading,
+    error: statsError,
+  } = useCompanyStatsFront();
+  const {
+    testimonials,
+    loading: testimonialsLoading,
+    error: testimonialsError,
+  } = useTestimonialsFront({ limit: 3 });
 
   const categories = [
     { id: "all", name: "Tous les Projets" },
@@ -198,17 +206,28 @@ export default function PortfolioContent() {
           {statsLoading ? (
             <div className="text-center">
               <div className="w-12 h-12 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-xl text-gray-600">Chargement des statistiques...</p>
+              <p className="mt-4 text-xl text-gray-600">
+                Chargement des statistiques...
+              </p>
             </div>
           ) : statsError ? (
             <div className="text-center text-red-600">
-              <p className="text-xl">Erreur lors du chargement des statistiques</p>
+              <p className="text-xl">
+                Erreur lors du chargement des statistiques
+              </p>
             </div>
           ) : companyStats.length > 0 ? (
             <div className="grid md:grid-cols-4 gap-8 text-center">
               {companyStats.map((stat, index) => (
-                <div key={stat.id} className="transform hover:scale-105 transition-transform duration-300">
-                  <div className={`text-5xl font-bold mb-2 ${index % 2 === 0 ? 'text-blue-600' : 'text-green-600'}`}>
+                <div
+                  key={stat.id}
+                  className="transform hover:scale-105 transition-transform duration-300"
+                >
+                  <div
+                    className={`text-5xl font-bold mb-2 ${
+                      index % 2 === 0 ? "text-blue-600" : "text-green-600"
+                    }`}
+                  >
                     {stat.value}
                   </div>
                   <div className="text-gray-600 font-medium">{stat.label}</div>
@@ -219,11 +238,17 @@ export default function PortfolioContent() {
             // Fallback to static data if no dynamic stats available
             <div className="grid md:grid-cols-4 gap-8 text-center">
               <div className="transform hover:scale-105 transition-transform duration-300">
-                <div className="text-5xl font-bold text-blue-600 mb-2">200+</div>
-                <div className="text-gray-600 font-medium">Projets Réalisés</div>
+                <div className="text-5xl font-bold text-blue-600 mb-2">
+                  200+
+                </div>
+                <div className="text-gray-600 font-medium">
+                  Projets Réalisés
+                </div>
               </div>
               <div className="transform hover:scale-105 transition-transform duration-300">
-                <div className="text-5xl font-bold text-green-600 mb-2">150+</div>
+                <div className="text-5xl font-bold text-green-600 mb-2">
+                  150+
+                </div>
                 <div className="text-gray-600 font-medium">
                   Clients Satisfaits
                 </div>
@@ -235,7 +260,9 @@ export default function PortfolioContent() {
                 </div>
               </div>
               <div className="transform hover:scale-105 transition-transform duration-300">
-                <div className="text-5xl font-bold text-green-600 mb-2">24/7</div>
+                <div className="text-5xl font-bold text-green-600 mb-2">
+                  24/7
+                </div>
                 <div className="text-gray-600 font-medium">Support Client</div>
               </div>
             </div>
@@ -258,11 +285,15 @@ export default function PortfolioContent() {
           {testimonialsLoading ? (
             <div className="text-center">
               <div className="w-12 h-12 mx-auto border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-4 text-xl text-gray-600">Chargement des témoignages...</p>
+              <p className="mt-4 text-xl text-gray-600">
+                Chargement des témoignages...
+              </p>
             </div>
           ) : testimonialsError ? (
             <div className="text-center text-red-600">
-              <p className="text-xl">Erreur lors du chargement des témoignages</p>
+              <p className="text-xl">
+                Erreur lors du chargement des témoignages
+              </p>
             </div>
           ) : testimonials.length > 0 ? (
             <div className="grid md:grid-cols-3 gap-8">
@@ -273,7 +304,10 @@ export default function PortfolioContent() {
                 >
                   <div className="flex items-center mb-4">
                     <img
-                      src={testimonial.client_photo_url || `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80`}
+                      src={
+                        testimonial.client_photo_url ||
+                        `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80`
+                      }
                       alt={testimonial.client_name}
                       className="w-12 h-12 rounded-full mr-4"
                     />
@@ -282,7 +316,8 @@ export default function PortfolioContent() {
                         {testimonial.client_name}
                       </h4>
                       <p className="text-sm text-blue-600">
-                        {testimonial.client_position}, {testimonial.client_company}
+                        {testimonial.client_position},{" "}
+                        {testimonial.client_company}
                       </p>
                     </div>
                   </div>
@@ -293,7 +328,11 @@ export default function PortfolioContent() {
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
-                        className={`w-5 h-5 fill-current ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                        className={`w-5 h-5 fill-current ${
+                          i < testimonial.rating
+                            ? "text-yellow-400"
+                            : "text-gray-300"
+                        }`}
                         viewBox="0 0 24 24"
                       >
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />

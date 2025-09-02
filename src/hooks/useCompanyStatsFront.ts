@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import { apiRequest } from "@/lib/api";
+import { apiRequest, CompanyStatistic } from "@/lib/api";
 
-interface CompanyStatistic {
-  id: number;
-  name: string;
-  value: string;
-  label: string;
-  icon: string;
-  display_order: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-}
+// interface CompanyStatistic {
+//   id: number;
+//   name: string;
+//   value: string;
+//   label: string;
+//   icon: string;
+//   display_order: number;
+//   is_active: boolean;
+//   created_at: string;
+//   updated_at: string;
+// }
 
 export const useCompanyStatsFront = () => {
   const [companyStats, setCompanyStats] = useState<CompanyStatistic[]>([]);
@@ -22,8 +22,13 @@ export const useCompanyStatsFront = () => {
     const fetchCompanyStats = async () => {
       try {
         setLoading(true);
-        const response = await apiRequest.get("/company-statistics?is_active=1");
-        const sortedStats = (response.data.data || []).sort((a: CompanyStatistic, b: CompanyStatistic) => a.display_order - b.display_order);
+        const response = await apiRequest.get(
+          "/company-statistics?is_active=1"
+        );
+        const sortedStats = (response.data.data || []).sort(
+          (a: CompanyStatistic, b: CompanyStatistic) =>
+            a.display_order - b.display_order
+        );
         setCompanyStats(sortedStats);
         setError(null);
       } catch (err: any) {

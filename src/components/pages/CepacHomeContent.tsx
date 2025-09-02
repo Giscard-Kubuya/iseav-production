@@ -8,9 +8,11 @@ import { useServicesFront } from "@/hooks/useServicesFront";
 import { useLatestNews } from "@/hooks/useLatestNews";
 import { useTeamExperts } from "@/hooks/useTeamExperts";
 import { useCompanyValuesFront } from "@/hooks/useCompanyValuesFront";
+import { useCompanyStatsFront } from "@/hooks/useCompanyStatsFront";
 import { useWebsiteSettings } from "@/hooks/useWebsiteSettings";
 import { useTechnologyPartners } from "@/hooks/useTechnologyPartners";
 import { useWebsiteConfig } from "@/hooks/useWebsiteConfig";
+import { useAboutFront } from "@/hooks/useAboutFront";
 import {
   HeroSkeleton,
   ServiceSkeleton,
@@ -19,7 +21,7 @@ import {
   StatsSkeleton,
   CardSkeleton,
 } from "@/components/ui/LoadingSkeleton";
-import PartnersCarousel from "@/components/ui/PartnersCarousel";
+import ModernPartnersGrid from "@/components/ui/ModernPartnersGrid";
 
 export default function CepacHomeContent() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -31,10 +33,13 @@ export default function CepacHomeContent() {
   const { news, loading: newsLoading } = useLatestNews(3);
   const { teamExperts, loading: teamLoading } = useTeamExperts();
   const { companyValues, loading: valuesLoading } = useCompanyValuesFront();
-  const { settings: websiteSettings, loading: settingsLoading } = useWebsiteSettings();
+  const { companyStats, loading: statsLoading } = useCompanyStatsFront();
+  const { settings: websiteSettings, loading: settingsLoading } =
+    useWebsiteSettings();
   const { technologyPartners, loading: partnersLoading } =
     useTechnologyPartners();
   const { websiteConfig, loading: configLoading } = useWebsiteConfig();
+  const { aboutData, loading: aboutLoading } = useAboutFront();
 
   // Auto-play functionality for hero slides
   useEffect(() => {
@@ -201,84 +206,185 @@ export default function CepacHomeContent() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {settingsLoading ? (
-              Array.from({ length: 4 }, (_, index) => (
-                <StatsSkeleton key={index} />
-              ))
-            ) : (
-              <>
-                <div className="transform hover:scale-105 transition-transform duration-300 bg-white p-6 rounded-lg shadow-lg">
-                  <div className="text-4xl font-bold text-blue-600 mb-2">
-                    500+
+            {statsLoading
+              ? Array.from({ length: 4 }, (_, index) => (
+                  <StatsSkeleton key={index} />
+                ))
+              : companyStats.map((stat, index) => (
+                  <div
+                    key={stat.id}
+                    className="transform hover:scale-105 transition-transform duration-300 bg-white p-6 rounded-lg shadow-lg"
+                    style={{
+                      animationDelay: stat.animation_delay || `${index * 0.1}s`,
+                    }}
+                  >
+                    <div
+                      className={`text-4xl font-bold mb-2 ${
+                        stat.text_color
+                          ? `text-${stat.text_color}`
+                          : index % 2 === 0
+                          ? "text-blue-600"
+                          : "text-amber-600"
+                      }`}
+                    >
+                      {stat.value}
+                    </div>
+                    <div className="text-gray-600 font-medium">
+                      {stat.label}
+                    </div>
                   </div>
-                  <div className="text-gray-600 font-medium">
-                    Vistes Totales
-                  </div>
-                </div>
-                <div className="transform hover:scale-105 transition-transform duration-300 bg-white p-6 rounded-lg shadow-lg">
-                  <div className="text-4xl font-bold text-amber-600 mb-2">
-                    25+
-                  </div>
-                  <div className="text-gray-600 font-medium">
-                    Actions humanitaires
-                  </div>
-                </div>
-                <div className="transform hover:scale-105 transition-transform duration-300 bg-white p-6 rounded-lg shadow-lg">
-                  <div className="text-4xl font-bold text-blue-600 mb-2">
-                    15
-                  </div>
-                  <div className="text-gray-600 font-medium">
-                    Années d'Excellence
-                  </div>
-                </div>
-                <div className="transform hover:scale-105 transition-transform duration-300 bg-white p-6 rounded-lg shadow-lg">
-                  <div className="text-4xl font-bold text-amber-600 mb-2">
-                    98%
-                  </div>
-                  <div className="text-gray-600 font-medium">
-                    Taux de Réussite
-                  </div>
-                </div>
-              </>
-            )}
+                ))}
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* About Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Nos <span className="text-blue-600">Services</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Des programmes d'excellence adaptés à chaque niveau pour assurer
-              la réussite et l'épanouissement
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {servicesLoading
-              ? Array.from({ length: 3 }, (_, index) => (
-                  <ServiceSkeleton key={index} />
-                ))
-              : services.map((service) => (
-                  <div
-                    key={service.id}
-                    className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                      <span className="text-2xl">{service.icon || "📚"}</span>
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-600 text-center leading-relaxed">
-                      {service.description}
-                    </p>
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="text-left mb-12">
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                  À Propos de{" "}
+                  <span className="bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent">
+                    Projet 8e CEPAC Beni
+                  </span>
+                </h2>
+                {aboutLoading ? (
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
                   </div>
-                ))}
+                ) : (
+                  <p className="text-xl text-gray-600 leading-relaxed">
+                    {aboutData?.hero_subtitle ||
+                      "Organisation Non Gouvernementale dédiée au développement communautaire en République Démocratique du Congo"}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-6">
+                {aboutLoading ? (
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                  </div>
+                ) : (
+                  <p className="text-lg text-gray-700 leading-relaxed">
+                    {aboutData?.organization_description ||
+                      "Contribuer au développement communautaire, promouvoir le bien-être social et améliorer les conditions de vie des populations en République Démocratique du Congo à travers des programmes innovants et adaptés aux besoins locaux."}
+                  </p>
+                )}
+
+                {aboutData?.achievements && (
+                  <div className="grid grid-cols-3 gap-6 mt-12">
+                    {aboutData.achievements.map((achievement, index) => (
+                      <div key={index} className="text-center">
+                        <div className="text-3xl font-bold text-blue-600 mb-2">
+                          {achievement.count}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {achievement.title}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                  <Link
+                    href="/about"
+                    className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
+                  >
+                    En Savoir Plus
+                  </Link>
+                  <Link
+                    href="/services"
+                    className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
+                  >
+                    Nos Services
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="bg-gradient-to-br from-blue-50 to-amber-50 p-8 rounded-3xl shadow-lg">
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                    Pourquoi Nous Choisir ?
+                  </h3>
+                  {aboutLoading ? (
+                    Array.from({ length: 3 }, (_, index) => (
+                      <div key={index} className="animate-pulse">
+                        <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                        <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+                      </div>
+                    ))
+                  ) : aboutData?.why_choose_us ? (
+                    aboutData.why_choose_us.map((item, index) => (
+                      <div key={index} className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-amber-500 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+                          {item.icon}
+                        </div>
+                        <div>
+                          <h4 className="text-lg font-semibold text-gray-900 mb-1">
+                            {item.title}
+                          </h4>
+                          <p className="text-gray-600 text-sm">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-amber-500 rounded-xl flex items-center justify-center text-xl">
+                          🏆
+                        </div>
+                        <div>
+                          <h4 className="text-lg font-semibold text-gray-900 mb-1">
+                            Expertise Locale
+                          </h4>
+                          <p className="text-gray-600 text-sm">
+                            Une connaissance approfondie du contexte local
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-amber-500 rounded-xl flex items-center justify-center text-xl">
+                          🌱
+                        </div>
+                        <div>
+                          <h4 className="text-lg font-semibold text-gray-900 mb-1">
+                            Programmes Durables
+                          </h4>
+                          <p className="text-gray-600 text-sm">
+                            Des solutions à long terme qui créent un impact
+                            positif
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-amber-500 rounded-xl flex items-center justify-center text-xl">
+                          💎
+                        </div>
+                        <div>
+                          <h4 className="text-lg font-semibold text-gray-900 mb-1">
+                            Transparence
+                          </h4>
+                          <p className="text-gray-600 text-sm">
+                            Une gestion transparente de tous nos programmes
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -429,85 +535,81 @@ export default function CepacHomeContent() {
       )}
 
       {/* Partners Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50 overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-white via-blue-50/30 to-amber-50/30 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center mb-6">
+              <div className="h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent w-24"></div>
+              <div className="mx-4 text-blue-600 text-2xl">🤝</div>
+              <div className="h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent w-24"></div>
+            </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Nos{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent">
                 Partenaires
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Des collaborations stratégiques avec des organisations
-              internationales et locales pour renforcer notre impact
-              communautaire
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Collaborations stratégiques pour un impact communautaire renforcé
             </p>
           </div>
 
           {partnersLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
-              {Array.from({ length: 6 }, (_, index) => (
-                <CardSkeleton key={index} />
-              ))}
-            </div>
-          ) : (
-            <>
-              {/* Partners Carousel */}
-              <div className="mb-16">
-                <PartnersCarousel partners={technologyPartners} />
+            <div className="flex justify-center items-center py-16">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 w-full">
+                {Array.from({ length: 6 }, (_, index) => (
+                  <div key={index} className="animate-pulse">
+                    <div className="bg-gray-200 rounded-2xl h-24 w-full"></div>
+                  </div>
+                ))}
               </div>
+            </div>
+          ) : technologyPartners.length > 0 ? (
+            <>
+              {/* Modern Partners Grid */}
+              <ModernPartnersGrid partners={technologyPartners} />
 
-              {/* Partnership Statistics */}
-              <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
-                <div className="grid md:grid-cols-4 gap-8 text-center">
-                  <div className="group">
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-2xl">🤝</span>
-                    </div>
-                    <div className="text-3xl font-bold text-blue-600 mb-2">
-                      15+
-                    </div>
-                    <div className="text-gray-600 font-medium">
-                      Partenaires Actifs
-                    </div>
-                  </div>
-                  <div className="group">
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-2xl">🌍</span>
-                    </div>
-                    <div className="text-3xl font-bold text-green-600 mb-2">
-                      8
-                    </div>
-                    <div className="text-gray-600 font-medium">
-                      Pays Partenaires
-                    </div>
-                  </div>
-                  <div className="group">
-                    <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-2xl">💼</span>
-                    </div>
-                    <div className="text-3xl font-bold text-amber-600 mb-2">
-                      25+
-                    </div>
-                    <div className="text-gray-600 font-medium">
-                      Projets Collaboratifs
-                    </div>
-                  </div>
-                  <div className="group">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-2xl">🎯</span>
-                    </div>
-                    <div className="text-3xl font-bold text-purple-600 mb-2">
-                      5
-                    </div>
-                    <div className="text-gray-600 font-medium">
-                      Années de Collaboration
+              {/* Partnership Impact Statement */}
+              <div className="mt-16 text-center">
+                <div className="max-w-4xl mx-auto">
+                  <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/50">
+                    <div className="flex items-center justify-center space-x-8 text-center">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full animate-pulse"></div>
+                        <span className="text-2xl font-bold text-blue-600">
+                          {technologyPartners.length}+
+                        </span>
+                        <span className="text-gray-600 font-medium">
+                          Partenaires de Confiance
+                        </span>
+                      </div>
+                      <div className="hidden md:block w-px h-8 bg-gray-300"></div>
+                      <div className="flex items-center space-x-2">
+                        <div
+                          className="w-3 h-3 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full animate-pulse"
+                          style={{ animationDelay: "0.5s" }}
+                        ></div>
+                        <span className="text-2xl font-bold text-amber-600">
+                          5+
+                        </span>
+                        <span className="text-gray-600 font-medium">
+                          Années de Collaboration
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </>
+          ) : (
+            <div className="text-center py-16">
+              <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🤝</span>
+              </div>
+              <p className="text-gray-500">
+                Aucun partenaire disponible pour le moment.
+              </p>
+            </div>
           )}
         </div>
       </section>

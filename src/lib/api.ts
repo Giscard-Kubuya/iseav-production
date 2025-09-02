@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-
-const API_BASE_URL = "https://new-api.projetcepacbeni.org/api";
+//localhost:8080/api
+//  const API_BASE_URL = "https://new-api.projetcepacbeni.org/api";
+const API_BASE_URL = "http://localhost:8080/api";
 const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
 
 // Create axios instance with default configuration
@@ -179,6 +180,12 @@ export interface Actualite {
   comments_count: number;
   created_at: string;
   updated_at: string;
+  share_facebook?: boolean;
+  share_twitter?: boolean;
+  share_linkedin?: boolean;
+  share_whatsapp?: boolean;
+  share_telegram?: boolean;
+  share_email?: boolean;
 }
 
 export interface PortfolioProject {

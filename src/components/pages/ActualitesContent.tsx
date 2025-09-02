@@ -334,7 +334,7 @@ export default function ActualitesContent() {
           </h2>
           <p className="text-xl mb-8">
             Abonnez-vous à notre newsletter pour recevoir les dernières
-            nouvelles du CEPAC
+            nouvelles du Projet 8e CEPAC Beni
           </p>
           <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
             <input

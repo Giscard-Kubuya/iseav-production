@@ -1,5 +1,31 @@
 @import "tailwindcss";
 
+/* Modern Partners Animation */
+@keyframes scroll-horizontal {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-horizontal {
+  animation: scroll-horizontal 40s linear infinite;
+}
+
+/* Slower animation for desktop */
+@media (min-width: 1024px) {
+  .animate-scroll-horizontal {
+    animation: scroll-horizontal 60s linear infinite;
+  }
+}
+
+/* Animation controls - only pause when explicitly requested */
+.animate-scroll-horizontal.paused {
+  animation-play-state: paused;
+}
+
 :root {
   --background: #fafafa;
   --foreground: #262626;

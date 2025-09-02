@@ -38,12 +38,11 @@ export default function ServicesContent() {
                 </span>
               </h1>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-blue-100 animate-fade-in-up delay-200">
-                Solutions IT Complètes pour votre Entreprise
+                Développement Communautaire et Social
               </h2>
               <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-4xl mx-auto leading-relaxed text-gray-200 animate-fade-in-up delay-400">
-                De l'hébergement web au développement d'applications, nous
-                offrons une gamme complète de services technologiques pour
-                accompagner votre croissance.
+                Des programmes complets de développement pour l'autonomisation
+                des communautés et l'amélioration des conditions de vie.
               </p>
             </div>
           </div>
@@ -60,8 +59,8 @@ export default function ServicesContent() {
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Des solutions technologiques adaptées à vos besoins, avec
-              l'expertise et la qualité que mérite votre entreprise
+              Des programmes de développement adaptés aux besoins des
+              communautés, avec l'expertise et l'engagement du Projet 8e CEPAC Beni
             </p>
           </div>
 
@@ -146,7 +145,7 @@ export default function ServicesContent() {
                           href="/contact"
                           className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-green-600 transition-all duration-300 transform hover:scale-105 text-center block"
                         >
-                          Demander un Devis
+                          Participer au Programme
                         </Link>
                       </div>
                     </div>
@@ -170,13 +169,13 @@ export default function ServicesContent() {
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Pourquoi Choisir{" "}
               <span className="bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
-                INFONET
+                Projet 8e CEPAC Beni
               </span>{" "}
               ?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Notre engagement : des solutions de qualité, un service client
-              exceptionnel et une expertise reconnue
+              Notre engagement : des programmes communautaires de qualité, un
+              accompagnement personnalisé et une expertise reconnue en développement social
             </p>
           </div>
 
@@ -273,24 +272,24 @@ export default function ServicesContent() {
       <section className="py-20 bg-gradient-to-r from-blue-600 to-green-500">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Prêt à Transformer votre Entreprise ?
+            Prêt à Transformer votre Communauté ?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
             Contactez-nous dès aujourd'hui pour discuter de vos besoins et
-            découvrir comment nous pouvons vous aider à atteindre vos objectifs.
+            découvrir comment nous pouvons accompagner votre développement communautaire.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
               className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
             >
-              Obtenir un Devis Gratuit
+              Nous Contacter
             </Link>
             <Link
-              href="/portfolio"
+              href="/galerie"
               className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-105 shadow-2xl"
             >
-              Voir nos Réalisations
+              Voir notre Galerie
             </Link>
           </div>
         </div>

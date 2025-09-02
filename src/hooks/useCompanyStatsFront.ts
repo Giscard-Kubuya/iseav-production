@@ -12,6 +12,7 @@ import { apiRequest, CompanyStatistic } from "@/lib/api";
 //   created_at: string;
 //   updated_at: string;
 // }
+// this is new update
 
 export const useCompanyStatsFront = () => {
   const [companyStats, setCompanyStats] = useState<CompanyStatistic[]>([]);

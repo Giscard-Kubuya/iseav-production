@@ -29,9 +29,10 @@
 :root {
   --background: #fafafa;
   --foreground: #262626;
-  --brand-primary: #0ea5e9;
-  --brand-secondary: #22c55e;
-  --brand-accent: #e85a5e;
+  --brand-primary: #2563eb;
+  --brand-secondary: #16a34a;
+  --brand-accent: #eab308;
+  --brand-neutral: #ffffff;
 }
 
 @theme inline {
@@ -174,8 +175,16 @@ body {
 /* Hero section background pattern with refined colors */
 .hero-pattern {
   background-image: 
-    radial-gradient(circle at 2px 2px, rgba(14, 165, 233, 0.08) 1px, transparent 0);
+    radial-gradient(circle at 2px 2px, rgba(37, 99, 235, 0.08) 1px, transparent 0);
   background-size: 40px 40px;
+}
+
+/* ISEAV specific patterns */
+.agricultural-pattern {
+  background-image: 
+    radial-gradient(circle at 10px 10px, rgba(22, 163, 74, 0.1) 2px, transparent 0),
+    radial-gradient(circle at 30px 30px, rgba(234, 179, 8, 0.08) 1px, transparent 0);
+  background-size: 60px 60px, 40px 40px;
 }
 
 /* Modern interaction effects - no borders */

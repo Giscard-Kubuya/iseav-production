@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 
 interface AdminSidebarProps {
   isOpen?: boolean
@@ -13,42 +14,67 @@ export default function AdminSidebar({ isOpen = true, onToggle }: AdminSidebarPr
   const pathname = usePathname()
   
   const menuItems = [
-    { href: '/admin', label: 'Tableau de bord', icon: '📊' },
+    { href: '/admin', label: 'Tableau de Bord', icon: '📊' },
     
-    // Content Management
-    { href: '/admin/hero-slides', label: 'Bannières Accueil', icon: '🖼️' },
-    { href: '/admin/actualites', label: 'Actualités Projet', icon: '📰' },
-    { href: '/admin/blog', label: 'Articles & Publications', icon: '📝' },
-    { href: '/admin/galerie', label: 'Galerie Photos', icon: '📸' },
+    // Academic Management
+    { 
+      category: 'Gestion Académique',
+      items: [
+        { href: '/admin/etudiants', label: 'Étudiants', icon: '👨‍🎓' },
+        { href: '/admin/professeurs', label: 'Professeurs', icon: '👨‍🏫' },
+        { href: '/admin/programmes', label: 'Programmes d\'Études', icon: '📚' },
+        { href: '/admin/cours', label: 'Cours & Modules', icon: '📖' },
+        { href: '/admin/examens', label: 'Examens & Évaluations', icon: '📝' },
+        { href: '/admin/diplomes', label: 'Diplômes & Certificats', icon: '🎓' },
+      ]
+    },
 
-    // Team & Organization
-    { href: '/admin/about', label: 'Page À Propos', icon: '📖' },
-    { href: '/admin/team-experts', label: 'Équipe Projet', icon: '👨‍💼' },
-    { href: '/admin/leadership', label: 'Direction & Coordination', icon: '👔' },
-    { href: '/admin/services', label: 'Services & Programmes', icon: '🎯' },
-    
-    // Partners & Community
-    { href: '/admin/technology-partners', label: 'Partenaires', icon: '🤝' },
-    { href: '/admin/testimonials', label: 'Témoignages', icon: '💬' },
+    // Research & Innovation
+    { 
+      category: 'Recherche & Innovation',
+      items: [
+        { href: '/admin/projets-recherche', label: 'Projets de Recherche', icon: '🔬' },
+        { href: '/admin/publications', label: 'Publications', icon: '📄' },
+        { href: '/admin/laboratoires', label: 'Laboratoires', icon: '🧪' },
+        { href: '/admin/partenariats', label: 'Partenariats Recherche', icon: '🤝' },
+      ]
+    },
 
-    // Project Information
-    { href: '/admin/company-statistics', label: 'Statistiques Projet', icon: '📈' },
-    { href: '/admin/company-values', label: 'Valeurs & Mission', icon: '💎' },
-    { href: '/admin/company-journey', label: 'Histoire du Projet', icon: '🛣️' },
+    // Campus Management
+    { 
+      category: 'Gestion Campus',
+      items: [
+        { href: '/admin/infrastructures', label: 'Infrastructures', icon: '🏫' },
+        { href: '/admin/residence', label: 'Résidence Étudiante', icon: '🏠' },
+        { href: '/admin/bibliotheque', label: 'Bibliothèque', icon: '📚' },
+        { href: '/admin/ferme-experimentale', label: 'Ferme Expérimentale', icon: '🚜' },
+        { href: '/admin/equipements', label: 'Équipements', icon: '⚙️' },
+      ]
+    },
 
-    // Contact & Location
-    { href: '/admin/contact-info', label: 'Informations Contact', icon: '📞' },
-    { href: '/admin/business-hours', label: 'Horaires d\'Ouverture', icon: '🕒' },
-    { href: '/admin/location', label: 'Localisation', icon: '📍' },
-    { href: '/admin/social-media', label: 'Réseaux Sociaux', icon: '📱' },
+    // Communications
+    { 
+      category: 'Communications',
+      items: [
+        { href: '/admin/actualites', label: 'Actualités Institut', icon: '📰' },
+        { href: '/admin/evenements', label: 'Événements', icon: '📅' },
+        { href: '/admin/galerie', label: 'Galerie Photos', icon: '📸' },
+        { href: '/admin/site-web', label: 'Contenu Site Web', icon: '🌐' },
+      ]
+    },
 
-    // Users & Recruitment  
-    { href: '/admin/utilisateurs', label: 'Utilisateurs', icon: '👥' },
-    { href: '/admin/recrutement', label: 'Recrutement', icon: '🎯' },
-    { href: '/admin/commentaires', label: 'Messages', icon: '💭' },
-
-    // System
-    { href: '/admin/parametres', label: 'Paramètres', icon: '⚙️' }
+    // Administration
+    { 
+      category: 'Administration',
+      items: [
+        { href: '/admin/finance', label: 'Finances & Frais', icon: '💰' },
+        { href: '/admin/personnel', label: 'Gestion Personnel', icon: '👥' },
+        { href: '/admin/admissions', label: 'Processus Admission', icon: '📋' },
+        { href: '/admin/alumni', label: 'Réseau Alumni', icon: '🎓' },
+        { href: '/admin/rapports', label: 'Rapports & Statistiques', icon: '📊' },
+        { href: '/admin/parametres', label: 'Paramètres Système', icon: '⚙️' }
+      ]
+    }
   ]
 
   return (
@@ -64,22 +90,31 @@ export default function AdminSidebar({ isOpen = true, onToggle }: AdminSidebarPr
       {/* Sidebar */}
       <aside className={`
         fixed lg:static inset-y-0 left-0 z-50
-        w-64 bg-gradient-to-b from-blue-900 to-blue-800 shadow-xl border-r border-blue-700 h-screen
+        w-64 bg-gradient-to-b from-green-900 via-blue-900 to-green-800 shadow-xl border-r border-green-700 h-screen
         transform transition-transform duration-300 ease-in-out lg:transform-none
         flex flex-col
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Header */}
-        <div className="p-4 lg:p-6 border-b border-blue-700">
+        <div className="p-4 lg:p-6 border-b border-green-700">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-white font-bold text-lg">Administration CEPAC</h1>
-              <p className="text-blue-200 text-xs lg:text-sm">8e CEPAC Projet-Beni - ONG</p>
+            <div className="flex items-center space-x-3">
+              <Image 
+                src="/images/logos/logo_iseav.png" 
+                alt="ISEAV-WALUNGU" 
+                width={40} 
+                height={40} 
+                className="rounded-full"
+              />
+              <div>
+                <h1 className="text-white font-bold text-lg">ISEAV-WALUNGU</h1>
+                <p className="text-green-200 text-xs lg:text-sm">Administration Académique</p>
+              </div>
             </div>
             {/* Close button for mobile */}
             <button
               onClick={onToggle}
-              className="lg:hidden text-white hover:text-blue-200 p-1"
+              className="lg:hidden text-white hover:text-green-200 p-1"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -90,31 +125,61 @@ export default function AdminSidebar({ isOpen = true, onToggle }: AdminSidebarPr
       
         {/* Navigation */}
         <nav className="flex-1 p-3 lg:p-4 overflow-y-auto">
-          <ul className="space-y-1">
-            {menuItems.map((item) => {
-              const isActive = pathname === item.href
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={onToggle} // Close mobile menu on navigation
-                    className={`
-                      flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 group
-                      ${isActive 
-                        ? 'bg-blue-100 text-blue-800 shadow-lg' 
-                        : 'text-blue-100 hover:bg-blue-700 hover:text-white'
-                      }
-                    `}
-                  >
-                    <span className={`text-lg transition-transform duration-200 ${
-                      isActive ? 'scale-110' : 'group-hover:scale-110'
-                    }`}>{item.icon}</span>
-                    <span className="text-xs lg:text-sm font-medium">{item.label}</span>
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
+          <div className="space-y-6">
+            {/* Dashboard Link */}
+            {menuItems[0] && (
+              <div>
+                <Link
+                  href={menuItems[0].href}
+                  onClick={onToggle}
+                  className={`
+                    flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group
+                    ${pathname === menuItems[0].href
+                      ? 'bg-green-100 text-green-800 shadow-lg' 
+                      : 'text-green-100 hover:bg-green-700 hover:text-white'
+                    }
+                  `}
+                >
+                  <span className="text-lg">{menuItems[0].icon}</span>
+                  <span className="text-sm font-medium">{menuItems[0].label}</span>
+                </Link>
+              </div>
+            )}
+
+            {/* Academic Categories */}
+            {menuItems.slice(1).map((section, sectionIndex) => (
+              <div key={sectionIndex} className="space-y-2">
+                <h3 className="text-xs font-semibold text-green-300 uppercase tracking-wider px-3">
+                  {section.category}
+                </h3>
+                <ul className="space-y-1">
+                  {section.items?.map((item) => {
+                    const isActive = pathname === item.href
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          onClick={onToggle}
+                          className={`
+                            flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-all duration-200 group
+                            ${isActive 
+                              ? 'bg-green-100 text-green-800 shadow-lg' 
+                              : 'text-green-100 hover:bg-green-700 hover:text-white'
+                            }
+                          `}
+                        >
+                          <span className={`text-lg transition-transform duration-200 ${
+                            isActive ? 'scale-110' : 'group-hover:scale-110'
+                          }`}>{item.icon}</span>
+                          <span className="text-xs lg:text-sm font-medium">{item.label}</span>
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
         </nav>
       </aside>
     </>

@@ -1,6 +1,6 @@
-# ISEAV-ARU Website
+# ISEAV-WALUNGU Website
 
-Institut Supérieur d'Enseignement Appliqué et de Valorisation - Ariana
+Institut Supérieur d'Études Agronomiques et Vétérinaires de Walungu
 
 ## Architecture du Projet
 
@@ -8,9 +8,9 @@ Ce projet utilise **Next.js 13+ App Router** avec une architecture séparée en 
 
 ### 🌐 Site Web Public - `app/(public)/`
 - Pages publiques du site institutionnel
-- Informations sur l'université, programmes, actualités
+- Informations sur l'institut, programmes, actualités
 - Processus de candidature en ligne
-- Multilingue (Français, Anglais, Arabe)
+- Multilingue (Français, Anglais)
 
 ### 🔐 Portails Utilisateurs - `app/portal/`
 - **Portail Étudiant** (`/portal/student/`) : Notes, présences, devoirs, finances

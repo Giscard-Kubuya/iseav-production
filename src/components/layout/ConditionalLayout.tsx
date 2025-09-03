@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { ReactNode } from 'react'
-import CepacLayout from './CepacLayout'
+import ISEAVLayout from './ISEAVLayout'
 
 interface ConditionalLayoutProps {
   children: ReactNode
@@ -22,6 +22,6 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
     return <>{children}</>
   }
   
-  // Otherwise, use the main website layout
-  return <CepacLayout>{children}</CepacLayout>
+  // Otherwise, use the new ISEAV website layout
+  return <ISEAVLayout>{children}</ISEAVLayout>
 }

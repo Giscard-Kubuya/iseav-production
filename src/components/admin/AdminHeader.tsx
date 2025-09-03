@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function AdminHeader() {
   const router = useRouter()
@@ -14,23 +15,49 @@ export default function AdminHeader() {
   }
 
   return (
-    <header className="bg-gradient-to-r from-blue-900 to-blue-800 shadow-lg border-b border-blue-700 flex-shrink-0">
+    <header className="bg-gradient-to-r from-green-900 via-blue-900 to-green-800 shadow-lg border-b border-green-700 flex-shrink-0 ml-64">
       <div className="px-4 lg:px-6 py-3 lg:py-4">
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-between">
+          {/* Institution Info */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
+              <span className="text-2xl">🎓</span>
+              <div>
+                <h1 className="text-white font-bold text-lg">Administration ISEAV-WALUNGU</h1>
+                <p className="text-green-200 text-sm">Institut Supérieur d'Études Agronomiques et Vétérinaires</p>
+              </div>
+            </div>
+          </div>
 
           {/* Actions */}
           <div className="flex items-center space-x-3 lg:space-x-4">
+            {/* Quick Stats */}
+            <div className="hidden lg:flex items-center space-x-4 mr-6">
+              <div className="text-center">
+                <div className="text-green-300 text-xl font-bold">342</div>
+                <div className="text-green-200 text-xs">Étudiants</div>
+              </div>
+              <div className="text-center">
+                <div className="text-blue-300 text-xl font-bold">28</div>
+                <div className="text-blue-200 text-xs">Professeurs</div>
+              </div>
+              <div className="text-center">
+                <div className="text-yellow-300 text-xl font-bold">5</div>
+                <div className="text-yellow-200 text-xs">Programmes</div>
+              </div>
+            </div>
+
             {/* Visit Website */}
             <Link
               href="/"
               target="_blank"
               className="inline-flex items-center px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
-              title="Visiter le site web"
+              title="Visiter le site ISEAV-WALUNGU"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
-              <span className="hidden sm:inline">Visiter le site</span>
+              <span className="hidden sm:inline">Visiter ISEAV</span>
               <span className="sm:hidden">Site</span>
             </Link>
 
@@ -38,12 +65,12 @@ export default function AdminHeader() {
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center space-x-2 px-3 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
+                className="flex items-center space-x-2 px-3 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg transition-colors duration-200"
               >
-                <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                  A
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  I
                 </div>
-                <span className="hidden lg:block text-sm font-medium">Admin</span>
+                <span className="hidden lg:block text-sm font-medium">Admin ISEAV</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
@@ -59,11 +86,11 @@ export default function AdminHeader() {
                   />
                   
                   {/* Menu */}
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-20">
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-20">
                     <div className="py-2">
                       <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="text-sm font-semibold text-gray-900">Administrateur</p>
-                        <p className="text-xs text-gray-600">admin@cepac.org</p>
+                        <p className="text-sm font-semibold text-gray-900">Administrateur ISEAV</p>
+                        <p className="text-xs text-gray-600">admin@iseav-walungu.ac.cd</p>
                       </div>
                       
                       <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">

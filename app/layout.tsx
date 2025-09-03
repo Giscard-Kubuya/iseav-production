@@ -12,9 +12,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title:
-    "Projet 8e CEPAC Beni | Centre d’Actions Humanitaires et de Développement Communautaire",
+    "ISEAV-WALUNGU | Institut Supérieur d'Études Agronomiques et Vétérinaires de Walungu",
   description:
-    "Projet 8e CEPAC Beni - Organisation humanitaire en RDC. Assistance sociale, projets innovants et promotion du bien-être des populations.",
+    "ISEAV-WALUNGU - Institut supérieur d'études agronomiques et vétérinaires situé à Walungu, Sud-Kivu, RDC. Formation en agronomie, agrovétérinaire, agroforesterie et gestion des ressources naturelles.",
   icons: {
     icon: [], // Prevent Next.js from auto-generating favicon
     shortcut: [], // Prevent shortcut icon

@@ -79,48 +79,48 @@ export default function ISEAVRevolutionaryHome() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Revolutionary Hero Section with Vertical Layout */}
-      <section className="relative h-screen flex">
-        {/* Left Panel - Content */}
-        <div className="w-1/2 bg-gradient-to-br from-blue-900 via-blue-800 to-green-900 flex items-center justify-center relative overflow-hidden">
+      {/* Revolutionary Hero Section with Responsive Layout */}
+      <section className="relative min-h-screen flex flex-col lg:flex-row">
+        {/* Content Panel */}
+        <div className="w-full lg:w-1/2 bg-gradient-to-br from-blue-900 via-blue-800 to-green-900 flex items-center justify-center relative overflow-hidden min-h-[60vh] lg:min-h-screen">
           <div className="absolute inset-0 agricultural-pattern opacity-10"></div>
-          <div className="relative z-10 text-center text-white px-8">
+          <div className="relative z-10 text-center text-white px-8 py-12 lg:py-8">
             {/* Logo */}
             <div className="mb-8">
               <Image 
                 src="/images/logos/logo_iseav.png" 
                 alt="ISEAV-WALUNGU Logo" 
-                width={150} 
-                height={150} 
-                className="mx-auto filter drop-shadow-xl"
+                width={120} 
+                height={120} 
+                className="mx-auto filter drop-shadow-xl lg:w-[150px] lg:h-[150px]"
               />
             </div>
             
-            <h1 className="text-6xl font-bold mb-4 leading-tight">
+            <h1 className="text-4xl lg:text-6xl font-bold mb-4 leading-tight">
               ISEAV
-              <span className="block text-4xl font-normal text-yellow-300">WALUNGU</span>
+              <span className="block text-3xl lg:text-4xl font-normal text-yellow-300">WALUNGU</span>
             </h1>
             
             <div className="w-24 h-1 bg-yellow-400 mx-auto mb-6"></div>
             
-            <h2 className="text-xl mb-8 max-w-md mx-auto leading-relaxed">
+            <h2 className="text-lg lg:text-xl mb-8 max-w-md mx-auto leading-relaxed">
               Institut Supérieur d'Études Agronomiques et Vétérinaires de Walungu
             </h2>
             
-            <p className="text-lg mb-12 max-w-lg mx-auto opacity-90">
+            <p className="text-base lg:text-lg mb-8 lg:mb-12 max-w-lg mx-auto opacity-90">
               Pionnier de l'excellence agricole au Sud-Kivu • Formation • Recherche • Innovation
             </p>
             
             <div className="flex flex-col gap-4">
               <Link 
                 href="#programs" 
-                className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-900 px-8 py-4 rounded-full text-lg font-semibold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-xl"
+                className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-blue-900 px-6 lg:px-8 py-3 lg:py-4 rounded-full text-base lg:text-lg font-semibold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-xl"
               >
                 Découvrir nos Programmes
               </Link>
               <Link 
                 href="/inscription" 
-                className="border-2 border-yellow-400 text-yellow-300 px-8 py-4 rounded-full text-lg font-semibold hover:bg-yellow-400 hover:text-blue-900 transition-all duration-300 transform hover:scale-105"
+                className="border-2 border-yellow-400 text-yellow-300 px-6 lg:px-8 py-3 lg:py-4 rounded-full text-base lg:text-lg font-semibold hover:bg-yellow-400 hover:text-blue-900 transition-all duration-300 transform hover:scale-105"
               >
                 Candidater Maintenant
               </Link>
@@ -128,12 +128,12 @@ export default function ISEAVRevolutionaryHome() {
           </div>
         </div>
 
-        {/* Right Panel - Visual */}
-        <div className="w-1/2 relative overflow-hidden">
+        {/* Stats Panel - Responsive Layout */}
+        <div className="w-full lg:w-1/2 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-blue-500/20"></div>
-          <div className="h-full flex flex-col justify-center items-center p-12">
+          <div className="h-full flex flex-col justify-center items-center p-6 lg:p-12 py-12 lg:py-0">
             {/* Animated Agricultural Stats */}
-            <div className="grid grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-2 gap-4 lg:gap-8 mb-8 lg:mb-12 w-full max-w-lg">
               {[
                 { number: "15+", label: "Années d'Excellence", icon: "🏆" },
                 { number: "500+", label: "Diplômés", icon: "🎓" },
@@ -141,20 +141,20 @@ export default function ISEAVRevolutionaryHome() {
                 { number: "20+", label: "Enseignants Experts", icon: "👨‍🏫" }
               ].map((stat, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-4xl mb-2">{stat.icon}</div>
-                  <div className="text-3xl font-bold text-blue-900 mb-1">{stat.number}</div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
+                  <div className="text-3xl lg:text-4xl mb-2">{stat.icon}</div>
+                  <div className="text-2xl lg:text-3xl font-bold text-blue-900 mb-1">{stat.number}</div>
+                  <div className="text-xs lg:text-sm text-gray-600">{stat.label}</div>
                 </div>
               ))}
             </div>
             
             {/* Visual Elements */}
-            <div className="relative w-full max-w-md">
+            <div className="relative w-full max-w-sm lg:max-w-md">
               <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-full opacity-20 animate-pulse"></div>
-              <div className="relative bg-white rounded-2xl p-8 shadow-2xl">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">Autorisation Ministérielle</h3>
+              <div className="relative bg-white rounded-2xl p-6 lg:p-8 shadow-2xl">
+                <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-4 text-center">Autorisation Ministérielle</h3>
                 <div className="text-center">
-                  <div className="text-3xl mb-2">📜</div>
+                  <div className="text-2xl lg:text-3xl mb-2">📜</div>
                   <p className="text-sm text-gray-600">Arrêté N° 0041/2021</p>
                   <p className="text-xs text-gray-500">Ministère ESU - RDC</p>
                 </div>
@@ -329,6 +329,106 @@ export default function ISEAVRevolutionaryHome() {
                 </ul>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Logos Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Nos <span className="text-blue-600">Partenaires</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Collaboration avec des institutions de renommée internationale pour l'excellence académique
+            </p>
+          </div>
+
+          {/* Partners Slider */}
+          <div className="relative">
+            <div className="overflow-hidden">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                id="partnersSlider"
+                style={{ transform: `translateX(-${activeTab * 100}%)` }}
+              >
+                {/* Slide 1 */}
+                <div className="w-full flex-shrink-0 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+                  {[
+                    { name: "Université de Kinshasa", logo: "🏛️" },
+                    { name: "FAO", logo: "🌾" },
+                    { name: "USAID", logo: "🤝" },
+                    { name: "Université de Liège", logo: "🎓" },
+                    { name: "CGIAR", logo: "🔬" },
+                    { name: "World Bank", logo: "🏦" }
+                  ].map((partner, index) => (
+                    <div 
+                      key={index} 
+                      className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center"
+                    >
+                      <div className="text-4xl mb-3">{partner.logo}</div>
+                      <p className="text-sm font-medium text-gray-700 text-center">{partner.name}</p>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Slide 2 */}
+                <div className="w-full flex-shrink-0 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+                  {[
+                    { name: "Belgian Development", logo: "🇧🇪" },
+                    { name: "EU Cooperation", logo: "🇪🇺" },
+                    { name: "Swiss Development", logo: "🇨🇭" },
+                    { name: "IFAD", logo: "🌱" },
+                    { name: "ACIAR", logo: "🦘" },
+                    { name: "CIAT", logo: "🌿" }
+                  ].map((partner, index) => (
+                    <div 
+                      key={index} 
+                      className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex flex-col items-center"
+                    >
+                      <div className="text-4xl mb-3">{partner.logo}</div>
+                      <p className="text-sm font-medium text-gray-700 text-center">{partner.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => setActiveTab(activeTab === 0 ? 1 : 0)}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 text-blue-600 hover:bg-blue-50"
+              aria-label="Previous partners"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab(activeTab === 0 ? 1 : 0)}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 text-blue-600 hover:bg-blue-50"
+              aria-label="Next partners"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Slide Indicators */}
+            <div className="flex justify-center mt-8 space-x-2">
+              {[0, 1].map((slide) => (
+                <button
+                  key={slide}
+                  onClick={() => setActiveTab(slide)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    activeTab === slide ? 'bg-blue-600' : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  aria-label={`Go to slide ${slide + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>

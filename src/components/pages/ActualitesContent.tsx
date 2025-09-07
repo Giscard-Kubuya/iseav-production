@@ -83,27 +83,25 @@ export default function ActualitesContent() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-amber-50 to-blue-100">
       {/* Hero Section */}
-      <section className="relative h-[60vh] overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              "url(https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80)",
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/80 to-amber-700/90" />
+      <section className="relative py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-green-900 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-black opacity-10"></div>
 
-        <div className="relative z-10 h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-4 w-full">
-            <div className="text-center text-white">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-blue-300 via-white to-amber-300 bg-clip-text text-transparent">
-                  Actualités CEPAC
-                </span>
-              </h1>
-              <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-blue-100">
-                Suivez nos dernières actualités, projets et réalisations
-              </p>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up">
+            Actualités <span className="text-yellow-300 animate-fade-in-up delay-200">ISEAV-WALUNGU</span>
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto animate-fade-in-up delay-400">
+            Suivez nos dernières actualités, projets et réalisations
+          </p>
+          <p className="text-lg mb-12 max-w-3xl mx-auto opacity-90 animate-fade-in-up delay-600">
+            Information • Innovation • Excellence Académique
+          </p>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4">
 
               {/* Urgent News Ticker */}
               {urgentNews.length > 0 && (
@@ -129,8 +127,6 @@ export default function ActualitesContent() {
                   </div>
                 </div>
               )}
-            </div>
-          </div>
         </div>
       </section>
 
@@ -327,7 +323,7 @@ export default function ActualitesContent() {
       </section>
 
       {/* Newsletter Subscription */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-amber-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-gray-900 via-blue-900 to-green-900 text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Restez informé de nos actualités

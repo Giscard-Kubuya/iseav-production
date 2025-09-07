@@ -68,16 +68,16 @@ export default function ContactPage() {
     >
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-r from-blue-600 to-green-600 text-white overflow-hidden agricultural-pattern">
+        <section className="relative py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-green-900 text-white overflow-hidden">
           <div className="absolute inset-0 bg-black opacity-10"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Contactez <span className="text-yellow-300">ISEAV-WALUNGU</span>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up">
+              Contactez <span className="text-yellow-300 animate-fade-in-up delay-200">ISEAV-WALUNGU</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto">
+            <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto animate-fade-in-up delay-400">
               Notre équipe est à votre disposition pour répondre à toutes vos questions
             </p>
-            <p className="text-lg mb-12 max-w-3xl mx-auto opacity-90">
+            <p className="text-lg mb-12 max-w-3xl mx-auto opacity-90 animate-fade-in-up delay-600">
               Admissions • Orientation • Programmes • Partenariats
             </p>
           </div>
@@ -85,10 +85,9 @@ export default function ContactPage() {
 
         {/* Contact Content */}
         <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-16">
-              {/* Contact Form */}
-              <div className="bg-white rounded-3xl shadow-xl p-8">
+          <div className="max-w-4xl mx-auto px-4">
+            {/* Contact Form */}
+            <div className="bg-white rounded-3xl shadow-xl p-8 mb-16">
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold text-gray-900 mb-4">Envoyez-nous un Message</h2>
                   <p className="text-gray-600">Nous vous répondrons dans les 24 heures</p>
@@ -212,102 +211,32 @@ export default function ContactPage() {
                     )}
                   </button>
                 </form>
+            </div>
+
+            {/* Google Maps */}
+            <div className="bg-white rounded-3xl shadow-xl p-8">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Localisation</h3>
+                <p className="text-gray-600">Territoire de Walungu, Province du Sud-Kivu</p>
               </div>
-
-              {/* Contact Information */}
-              <div className="space-y-8">
-                {/* Institution Info */}
-                <div className="bg-white rounded-3xl shadow-xl p-8">
-                  <div className="text-center mb-8">
-                    <Image 
-                      src="/images/logos/logo_iseav.png" 
-                      alt="ISEAV-WALUNGU" 
-                      width={120} 
-                      height={120} 
-                      className="mx-auto mb-4 rounded-full"
-                    />
-                    <h3 className="text-2xl font-bold text-gray-900">ISEAV-WALUNGU</h3>
-                    <p className="text-gray-600">Institut Supérieur d'Études Agronomiques et Vétérinaires</p>
-                  </div>
-
-                  <div className="space-y-6">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-xl">📍</span>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-1">Adresse</h4>
-                        <p className="text-gray-600">
-                          Territoire de Walungu<br />
-                          Province du Sud-Kivu<br />
-                          République Démocratique du Congo
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-xl">📞</span>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-1">Téléphone</h4>
-                        <p className="text-gray-600">
-                          +243 XXX XXX XXX<br />
-                          +243 XXX XXX XXX
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-xl">✉️</span>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
-                        <p className="text-gray-600">
-                          info@iseav-walungu.ac.cd<br />
-                          admission@iseav-walungu.ac.cd
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-xl">🕒</span>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-1">Heures d'ouverture</h4>
-                        <p className="text-gray-600">
-                          Lun - Ven: 7h30 - 17h00<br />
-                          Sam: 8h00 - 12h00<br />
-                          Dim: Fermé
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Departments */}
-                <div className="bg-white rounded-3xl shadow-xl p-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Contacts Spécialisés</h3>
-                  <div className="space-y-6">
-                    <div className="border-l-4 border-blue-500 pl-4">
-                      <h4 className="font-semibold text-gray-900">Service des Admissions</h4>
-                      <p className="text-gray-600 text-sm">admission@iseav-walungu.ac.cd</p>
-                      <p className="text-gray-600 text-sm">+243 XXX XXX XXX</p>
-                    </div>
-                    <div className="border-l-4 border-green-500 pl-4">
-                      <h4 className="font-semibold text-gray-900">Direction des Études</h4>
-                      <p className="text-gray-600 text-sm">etudes@iseav-walungu.ac.cd</p>
-                      <p className="text-gray-600 text-sm">+243 XXX XXX XXX</p>
-                    </div>
-                    <div className="border-l-4 border-yellow-500 pl-4">
-                      <h4 className="font-semibold text-gray-900">Recherche et Partenariats</h4>
-                      <p className="text-gray-600 text-sm">recherche@iseav-walungu.ac.cd</p>
-                      <p className="text-gray-600 text-sm">+243 XXX XXX XXX</p>
-                    </div>
-                  </div>
-                </div>
+              
+              <div className="rounded-2xl overflow-hidden shadow-lg">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127732.47305145308!2d28.623456954687504!3d-2.3344080999999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c2b0b8b8b8b8b8%3A0x0!2sWalungu%2C%20Democratic%20Republic%20of%20the%20Congo!5e0!3m2!1sen!2sus!4v1234567890123"
+                  width="100%"
+                  height="400"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full"
+                ></iframe>
+              </div>
+              
+              <div className="mt-6 text-center">
+                <p className="text-sm text-gray-500">
+                  📍 Cliquez et glissez pour explorer la carte • Utilisez la molette pour zoomer
+                </p>
               </div>
             </div>
           </div>

@@ -12,7 +12,7 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
   const pathname = usePathname()
   
   // Routes that should NOT have the main website layout
-  const memberRoutes = ['/inscription', '/dashboard', '/admin']
+  const memberRoutes = ['/dashboard', '/admin']
   
   // Check if current route is a member space route
   const isMemberSpace = memberRoutes.some(route => pathname.startsWith(route))

@@ -221,7 +221,8 @@ export default function RecrutementContent() {
     >
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-amber-50 to-blue-100">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-r from-blue-800 to-amber-600 text-white">
+        <section className="relative py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-green-900 text-white overflow-hidden">
+          <div className="absolute inset-0 bg-black opacity-10"></div>
           <div className="max-w-7xl mx-auto px-4 text-center">
             <h1 className="text-5xl font-bold mb-6">Rejoignez Notre Équipe</h1>
             <p className="text-xl max-w-3xl mx-auto mb-8">
@@ -680,7 +681,8 @@ export default function RecrutementContent() {
 
         {/* CTA Section */}
         {!showApplication && (
-          <section className="py-20 bg-gradient-to-r from-blue-800 to-amber-600 text-white">
+          <section className="relative py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-green-900 text-white overflow-hidden">
+          <div className="absolute inset-0 bg-black opacity-10"></div>
             <div className="max-w-7xl mx-auto px-4 text-center">
               <h2 className="text-4xl font-bold mb-6">
                 Vous ne trouvez pas le poste idéal ?

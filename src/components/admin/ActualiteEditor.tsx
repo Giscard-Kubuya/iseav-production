@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useActualiteMutations } from '@/hooks/useActualites'
 import { actualitesApi } from '@/lib/api-services'
 import ImageUpload from './ImageUpload'
+import { PageHeader, Button, Card } from './shared'
 
 interface ActualiteEditorProps {
   mode: 'create' | 'edit'
@@ -20,7 +21,7 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
     title: '',
     content: '',
     excerpt: '',
-    author: 'Direction INFONET',
+    author: 'Direction ISEAV-WALUNGU',
     category: 'company' as 'company' | 'projects' | 'partnerships' | 'events' | 'awards',
     urgent: false,
     featured: false,
@@ -36,10 +37,10 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
 
   const categories = [
     { value: 'company', label: 'Entreprise' },
-    { value: 'projects', label: 'Projets' },
+    { value: 'projects', label: 'Projets de Recherche' },
     { value: 'partnerships', label: 'Partenariats' },
-    { value: 'events', label: 'Événements' },
-    { value: 'awards', label: 'Récompenses' }
+    { value: 'events', label: 'Événements Académiques' },
+    { value: 'awards', label: 'Récompenses & Distinctions' }
   ]
 
   useEffect(() => {
@@ -146,39 +147,52 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            {mode === 'create' ? 'Créer une Nouvelle Actualité' : 'Modifier l\'Actualité'}
-          </h1>
-          <p className="text-gray-600">
-            {mode === 'create' ? 'Rédigez une nouvelle actualité' : 'Modifiez le contenu de votre actualité'}
-          </p>
-        </div>
-        <div className="flex space-x-3">
-          <Link
-            href="/admin/actualites"
-            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-          >
-            Annuler
-          </Link>
-          <button
-            onClick={handleSaveDraft}
-            disabled={saving}
-            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50"
-          >
-            {saving ? 'Sauvegarde...' : 'Sauvegarder brouillon'}
-          </button>
-          <button
-            onClick={() => setPreview(!preview)}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-          >
-            {preview ? 'Éditer' : 'Aperçu'}
-          </button>
+    <div className="h-full flex flex-col">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 bg-gray-50 border-b border-gray-200 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
+            <div className="flex-1">
+              <h1 className="text-2xl lg:text-3xl font-semibold text-gray-800 mb-2">
+                {mode === 'create' ? 'Nouvelle Actualité' : 'Modifier l\'Actualité'}
+              </h1>
+              <p className="text-sm lg:text-base text-gray-600">
+                {mode === 'create' ? 'Rédigez une nouvelle actualité pour l\'Institut ISEAV-WALUNGU' : 'Modifiez le contenu de cette actualité'}
+              </p>
+            </div>
+            
+            <div className="flex-shrink-0">
+              <div className="flex space-x-3">
+                <Link href="/admin/actualites">
+                  <Button variant="outline" size="md">
+                    Annuler
+                  </Button>
+                </Link>
+                <Button
+                  variant="secondary" 
+                  size="md"
+                  onClick={handleSaveDraft}
+                  disabled={saving}
+                  loading={saving}
+                >
+                  Sauvegarder brouillon
+                </Button>
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={() => setPreview(!preview)}
+                >
+                  {preview ? 'Éditer' : 'Aperçu'}
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto p-6">
+        <div className="max-w-4xl mx-auto space-y-6">
 
       {!preview ? (
         /* Editor Form */
@@ -187,7 +201,7 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
             {/* Main content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Title */}
-              <div className="bg-white rounded-lg shadow p-6">
+              <Card>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Titre de l'actualité *
                 </label>
@@ -196,10 +210,10 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                   required
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Entrez le titre de votre actualité"
                 />
-              </div>
+              </Card>
 
               {/* Excerpt */}
               <div className="bg-white rounded-lg shadow p-6">
@@ -211,7 +225,7 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                   value={formData.excerpt}
                   onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Écrivez un résumé court de votre actualité"
                 />
                 <p className="text-xs text-gray-500 mt-1">Ce résumé sera affiché dans la liste des actualités</p>
@@ -247,7 +261,7 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                       type="text"
                       value={formData.metaTitle}
                       onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Titre optimisé pour les moteurs de recherche"
                     />
                   </div>
@@ -259,7 +273,7 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                       value={formData.metaDescription}
                       onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
                       rows={2}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Description pour les moteurs de recherche"
                     />
                   </div>
@@ -280,7 +294,7 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                     <select
                       value={formData.status}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="draft">Brouillon</option>
                       <option value="published">Publié</option>
@@ -294,7 +308,7 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                       type="date"
                       value={formData.publishDate}
                       onChange={(e) => setFormData({ ...formData, publishDate: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                   <div className="flex items-center">
@@ -336,7 +350,7 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                       type="text"
                       value={formData.author}
                       onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                   <div>
@@ -346,7 +360,7 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       {categories.map(cat => (
                         <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -437,6 +451,8 @@ export default function ActualiteEditor({ mode, id }: ActualiteEditorProps) {
           </div>
         </div>
       )}
+        </div>
+      </div>
     </div>
   )
 }

@@ -627,13 +627,13 @@ export default function CepacHomeContent() {
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link
               href="/inscription"
-              className="bg-gradient-to-r from-amber-600 to-amber-500 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:from-amber-700 hover:to-amber-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               S'inscrire Maintenant
             </Link>
             <Link
               href="/contact"
-              className="border-2 border-amber-400 text-amber-300 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-amber-400 hover:text-blue-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               Nous Contacter
             </Link>

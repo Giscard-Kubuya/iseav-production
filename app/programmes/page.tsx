@@ -131,16 +131,16 @@ export default function ProgrammesPage() {
     >
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-r from-blue-600 to-green-600 text-white overflow-hidden agricultural-pattern">
+        <section className="relative py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-green-900 text-white overflow-hidden">
           <div className="absolute inset-0 bg-black opacity-10"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Nos Programmes d'<span className="text-yellow-300">Excellence</span>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up">
+              Nos Programmes d'<span className="text-yellow-300 animate-fade-in-up delay-200">Excellence</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto">
+            <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto animate-fade-in-up delay-400">
               5 Programmes Accrédités par l'Arrêté Ministériel N° 0041/2021
             </p>
-            <p className="text-lg mb-12 max-w-3xl mx-auto opacity-90">
+            <p className="text-lg mb-12 max-w-3xl mx-auto opacity-90 animate-fade-in-up delay-600">
               Des formations de qualité reconnues par l'État, conçues pour répondre aux défis agricoles du 21ème siècle
             </p>
           </div>
@@ -246,7 +246,7 @@ export default function ProgrammesPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-blue-900 to-green-900 text-white">
+        <section className="py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-green-900 text-white">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-4xl font-bold mb-6">
               Prêt à Transformer Votre <span className="text-yellow-400">Avenir</span> ?
@@ -257,13 +257,13 @@ export default function ProgrammesPage() {
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link
                 href="/inscription"
-                className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 px-10 py-4 rounded-full text-lg font-bold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+                className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-10 py-4 rounded-lg text-lg font-bold hover:from-blue-700 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-2xl"
               >
                 Déposer ma Candidature
               </Link>
               <Link
                 href="/contact"
-                className="border-2 border-yellow-400 text-yellow-300 px-10 py-4 rounded-full text-lg font-bold hover:bg-yellow-400 hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-10 py-4 rounded-lg text-lg font-bold hover:from-blue-700 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-2xl"
               >
                 Demander des Informations
               </Link>

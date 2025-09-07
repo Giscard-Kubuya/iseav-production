@@ -190,7 +190,7 @@ export default function ProgramDetailPage() {
     // Add other programs...
   };
 
-  const program = programs[id as string];
+  const program = programs[id as keyof typeof programs];
   
   if (!program) {
     notFound();

@@ -15,12 +15,13 @@ export default function GalerieContent() {
 
   const categories = [
     { id: 'all', name: 'Tous', icon: '🖼️' },
-    { id: 'office', name: 'Bureaux', icon: '🏢' },
-    { id: 'projects', name: 'Projets', icon: '💻' },
-    { id: 'team', name: 'Équipe', icon: '👥' },
+    { id: 'campus', name: 'Campus', icon: '🏛️' },
+    { id: 'research', name: 'Recherche', icon: '🔬' },
+    { id: 'students', name: 'Étudiants', icon: '🎓' },
+    { id: 'fields', name: 'Champs & Fermes', icon: '🌾' },
+    { id: 'labs', name: 'Laboratoires', icon: '🧪' },
     { id: 'events', name: 'Événements', icon: '🎉' },
-    { id: 'training', name: 'Formation', icon: '🎓' },
-    { id: 'awards', name: 'Récompenses', icon: '🏆' }
+    { id: 'graduation', name: 'Diplômations', icon: '👩‍🎓' }
   ]
 
   useEffect(() => {
@@ -93,28 +94,17 @@ export default function GalerieContent() {
     return (
       <>
         {/* Hero Section */}
-        <section className="relative h-[70vh] overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: "url(https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80)"
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/75 to-amber-700/85" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
-          
-          <div className="relative z-10 h-full flex items-center">
-            <div className="max-w-7xl mx-auto px-4 w-full">
-              <div className="text-center text-white">
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 animate-fade-in-up">
-                  <span className="bg-gradient-to-r from-blue-300 via-white to-amber-300 bg-clip-text text-transparent">
-                    Galerie CEPAC
-                  </span>
-                </h1>
-                <div className="w-12 h-12 mx-auto border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p className="text-xl text-gray-200">Chargement de la galerie...</p>
-              </div>
-            </div>
+        <section className="relative py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-green-900 text-white overflow-hidden">
+          <div className="absolute inset-0 bg-black opacity-10"></div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up">
+              Galerie <span className="text-yellow-300 animate-fade-in-up delay-200">ISEAV-WALUNGU</span>
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto animate-fade-in-up delay-400">
+              Découvrez l'Excellence Agricole et Vétérinaire au Sud-Kivu
+            </p>
+            <div className="w-12 h-12 mx-auto border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p className="text-lg opacity-90 animate-fade-in-up delay-600">Chargement de la galerie...</p>
           </div>
         </section>
         
@@ -151,32 +141,18 @@ export default function GalerieContent() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[70vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url(https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80)"
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/75 to-amber-700/85" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
-        
-        <div className="relative z-10 h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-4 w-full">
-            <div className="text-center text-white">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 animate-fade-in-up">
-                <span className="bg-gradient-to-r from-blue-300 via-white to-amber-300 bg-clip-text text-transparent">
-                  Galerie CEPAC
-                </span>
-              </h1>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-blue-100 animate-fade-in-up delay-200">
-                Découvrez Notre Action Communautaire
-              </h2>
-              <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-4xl mx-auto leading-relaxed text-gray-200 animate-fade-in-up delay-400">
-                Plongez dans notre galerie photo et découvrez nos projets, activités communautaires, équipe et moments marquants
-              </p>
-            </div>
-          </div>
+      <section className="relative py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-green-900 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-black opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up">
+            Galerie <span className="text-yellow-300 animate-fade-in-up delay-200">ISEAV-WALUNGU</span>
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto animate-fade-in-up delay-400">
+            Découvrez l'Excellence Agricole et Vétérinaire au Sud-Kivu
+          </p>
+          <p className="text-lg mb-12 max-w-3xl mx-auto opacity-90 animate-fade-in-up delay-600">
+            Explorez notre campus, nos laboratoires de recherche, nos projets innovants et la vie étudiante dynamique
+          </p>
         </div>
       </section>
 
@@ -185,7 +161,7 @@ export default function GalerieContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
                 Explorez par Catégorie
               </span>
             </h2>
@@ -198,7 +174,7 @@ export default function GalerieContent() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`flex items-center px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
                   activeCategory === category.id
-                    ? 'bg-gradient-to-r from-blue-600 to-amber-500 text-white shadow-lg'
+                    ? 'bg-gradient-to-r from-blue-600 to-green-500 text-white shadow-lg'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -226,7 +202,7 @@ export default function GalerieContent() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   {item.featured && (
-                    <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-amber-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                       Featured
                     </div>
                   )}
@@ -258,7 +234,7 @@ export default function GalerieContent() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
                 Notre Galerie en Chiffres
               </span>
             </h2>
@@ -271,7 +247,7 @@ export default function GalerieContent() {
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="text-4xl font-bold text-green-600 mb-2">{gallery.filter(item => item.category === 'projects').length}</div>
-              <div className="text-gray-600 font-medium">Projets Documentés</div>
+              <div className="text-gray-600 font-medium">Projets de Recherche</div>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="text-4xl font-bold text-blue-600 mb-2">{gallery.filter(item => item.category === 'events').length}</div>
@@ -286,7 +262,7 @@ export default function GalerieContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-amber-500">
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-green-500">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Rejoignez Notre Histoire

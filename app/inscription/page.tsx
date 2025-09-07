@@ -1,18 +1,14 @@
 import InscriptionContent from "@/components/pages/InscriptionContent";
-import MemberLayout from "@/components/layout/MemberLayout";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Inscription Employé - Projet 8e CEPAC Beni",
-  description:
-    "Créez votre compte employé CEPAC pour accéder aux fonctionnalités internes de l'établissement.",
-  keywords: "inscription, employé, CEPAC, compte, connexion, dashboard",
-};
+import PageSEO from "@/components/layout/PageSEO";
 
 export default function InscriptionPage() {
   return (
-    <MemberLayout>
+    <PageSEO
+      title="Inscription Étudiants - ISEAV-WALUNGU"
+      description="Déposez votre candidature pour intégrer l'Institut Supérieur d'Études Agronomiques et Vétérinaires de Walungu. Formation d'excellence en agronomie et médecine vétérinaire."
+      keywords="inscription, ISEAV, candidature, étudiants, agronomie, vétérinaire, Walungu, Sud-Kivu"
+    >
       <InscriptionContent />
-    </MemberLayout>
+    </PageSEO>
   );
 }

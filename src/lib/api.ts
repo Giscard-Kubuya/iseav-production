@@ -38,7 +38,7 @@ api.interceptors.request.use(
     }
 
     // Add website ID header for multi-tenant API
-    config.headers["Website-ID"] = process.env.NEXT_PUBLIC_WEBSITE_ID || "8";
+    config.headers["Website-ID"] = process.env.NEXT_PUBLIC_WEBSITE_ID || "4";
 
     return config;
   },
